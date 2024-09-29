@@ -128,7 +128,7 @@ const Login = () => {
                             <button className=' border-[#116630] border-2 rounded-xl p-2 text-[#116630] shadow-xl '>Demo Account</button>
 
                         </form>
-                        <div className='absolute left-1/3 bottom-1 flex flex-col justify-center items-center'>
+                        <div className='absolute md:left-[43%] left-1/3 bottom-1 flex flex-col justify-center items-center'>
 
                             <hr className='w-[140%]  ' />
                             <p className='flex justify-center items-center gap-2 text-xs pt-1 '><FaRegCopyright /> 2024 <span className='font-semibold'>ERPNext</span ></p>
