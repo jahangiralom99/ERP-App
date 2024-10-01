@@ -11,8 +11,8 @@ import { MdArrowDropDown } from 'react-icons/md';
 const Login = () => {
     const [checked, setChecked] = useState(false);
     const [protocol, setProtocol] = useState("http");
-  
-    
+
+
 
     const {
         register,
@@ -61,22 +61,22 @@ const Login = () => {
 
                                 {/* -------------modal--------------- */}
                                 {/* Open the modal using document.getElementById('ID').showModal() method */}
-                               
+
                                 {/* <div className="" onClick={() => document.getElementById('my_modal_2').showModal()} > */}
                                 <div className="" onClick={() => document.getElementById('my_modal_2').showModal()} >
-                                  
 
-                                    <button className='flex justify-center items-center'> <IoIosGlobe className='text-[#116630] text-xl mr-[2px]'/><span >{protocol}</span> <MdArrowDropDown /></button>
-                                  
-                                    </div>
+
+                                    <button className='flex justify-center items-center'> <IoIosGlobe className='text-[#116630] text-xl mr-[2px]' /><span >{protocol}</span> <MdArrowDropDown /></button>
+
+                                </div>
                                 <dialog id="my_modal_2" className="modal">
                                     <div className="h-40 w-80 mx-10 bg-white rounded-xl  absolute bottom-5 px-5 pt-3">
                                         <h3 className="font-semibold text-black text-lg py-2">Select Protocol</h3>
                                         <hr />
                                         <div className="flex flex-col gap-3 py-2">
 
-                                        <p onClick={() => setProtocol("http")} className='flex justify-start gap-3 text-black items-center'> <IoIosGlobe className='text-[#116630] text-xl'/> http</p>
-                                        <p onClick={() => setProtocol("https")} className='flex justify-start gap-3 text-black items-center'> <IoIosGlobe className='text-[#116630] text-xl'/> https</p>
+                                            <p onClick={() => setProtocol("http")} className='flex justify-start gap-3 text-black items-center'> <IoIosGlobe className='text-[#116630] text-xl' /> http</p>
+                                            <p onClick={() => setProtocol("https")} className='flex justify-start gap-3 text-black items-center'> <IoIosGlobe className='text-[#116630] text-xl' /> https</p>
                                         </div>
                                     </div>
                                     <form method="dialog" className="modal-backdrop">
@@ -87,7 +87,7 @@ const Login = () => {
 
 
 
-                                
+
 
                                 <input
                                     className='outline-none focus:ring-0 focus:border-[#116630]'
@@ -107,10 +107,10 @@ const Login = () => {
                                 {/* {errors.username && <span className='text-red-500'>This field is required</span>} */}
                             </div>
                             <div className='flex  items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl' >
-                                <button className=''> <CiLock className='text-[#116630] text-xl'/></button>
+                                <button className=''> <CiLock className='text-[#116630] text-xl' /></button>
 
                                 <input
-                                   className='outline-none focus:ring-0 focus:border-[#116630]'
+                                    className='outline-none focus:ring-0 focus:border-[#116630]'
                                     type='password'
                                     placeholder='Password'
                                     {...register("password", { required: true })}
@@ -128,11 +128,13 @@ const Login = () => {
                             <button className=' border-[#116630] border-2 rounded-xl p-2 text-[#116630] shadow-xl '>Demo Account</button>
 
                         </form>
-                        <div className='absolute md:left-[43%] left-1/3 bottom-1 flex flex-col justify-center items-center'>
-
-                            <hr className='w-[140%]  ' />
-                            <p className='flex justify-center items-center gap-2 text-xs pt-1 '><FaRegCopyright /> 2024 <span className='font-semibold'>ERPNext</span ></p>
+                        <div className="fixed bottom-1 left-0 right-0 flex flex-col justify-center items-center">
+                            <hr className="w-[70%]" />
+                            <p className="flex justify-center items-center gap-2 text-xs pt-1">
+                                <FaRegCopyright /> 2024 <span className="font-semibold">ERPNext</span>
+                            </p>
                         </div>
+
                     </div>
                 </div>
             </div>
