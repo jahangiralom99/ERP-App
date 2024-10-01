@@ -1,6 +1,6 @@
 import { IoIosGlobe } from 'react-icons/io';
 import bgImg from '../assets/abstract-line-hexagon-geometric-texture_1035-17372.avif';
-import erp from '../assets/unnamed.webp';
+import erp from '../assets/IONIC-ERP-icon.png';
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import Switch from "react-switch";
@@ -26,30 +26,32 @@ const Login = () => {
     };
 
     return (
-        <div style={{ background: `url(${bgImg})` }} className='h-screen'>
+        <div 
+        // style={{ background: `url(${bgImg})` }}
+         className='h-screen bg-gray-200'>
             {/* ---------heading-------------- */}
             <div className='flex justify-between items-center gap-5 px-5 h-1/4'>
-                <div className='flex justify-center items-center gap-2 bg-[#b4e2ba] rounded-2xl p-2 bg-opacity-60'>
-                    <img className='w-[50px] rounded-2xl' src={erp} alt="" />
+                <div className='flex justify-center items-center gap-2  rounded-2xl p-2 bg-opacity-60'>
+                    <img className='w-[40px] ' src={erp} alt="" />
                     <div>
                         <p className='text-2xl'>
-                            <span className='font-bold'>ERP</span><span className='font-'>NEXT</span>
+                            <span className='font-bold'>IONIC</span> <span className='font-'>ERP</span>
                         </p>
-                        <p>
-                            <span>Employee</span><span className='font-bold'>HUB</span>
+                        <p className='pt-1'>
+                           <span className='font-medium '>  Total Solution</span>
                         </p>
                     </div>
                 </div>
-                <div className='bg-[#b4e2ba] rounded-lg p-2 text-2xl bg-opacity-60'>
+                <div className='bg-white rounded-lg p-2 text-2xl text-[#FF0000] '>
                     <IoIosGlobe />
                 </div>
             </div>
 
             {/* ----------------login interface------------- */}
-            <div className='bg-[#139141] rounded-t-3xl h-3/4 pt-[3px] px-[2px] pb-[2px] flex flex-col relative '>
+            <div className='bg-black rounded-3xl h-3/4 pt-[3px] px-[2px] pb-[2px] flex flex-col relative '>
                 <div className='bg-white rounded-3xl h-full'>
-                    <p className='text-3xl font-semibold text-[#285c3b] px-5 pt-3'>Login!</p>
-                    <p className='text-xl font-semibold text-[#285c3b] pl-5'>Enter Your ERPNext Credentials</p>
+                    <p className='text-3xl font-semibold text-black px-5 pt-3'>Login!</p>
+                    <p className='text-lg font-semibold text-gray-600 pl-5'>Enter Your IONIC ERP Credentials</p>
 
                     {/* --------------------login form--------------- */}
                     <div>
@@ -66,7 +68,7 @@ const Login = () => {
                                 <div className="" onClick={() => document.getElementById('my_modal_2').showModal()} >
 
 
-                                    <button className='flex justify-center items-center'> <IoIosGlobe className='text-[#116630] text-xl mr-[2px]' /><span >{protocol}</span> <MdArrowDropDown /></button>
+                                    <button className='flex justify-center items-center'> <IoIosGlobe className='text-[#FF0000] text-xl mr-[2px]' /><span >{protocol}</span> <MdArrowDropDown /></button>
 
                                 </div>
                                 <dialog id="my_modal_2" className="modal">
@@ -97,17 +99,17 @@ const Login = () => {
                                 {/* {errors.username && <span className='text-red-500'>This field is required</span>} */}
                             </div>
                             <div className='flex  items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl' >
-                                <button className=''> <FaRegUser className='text-[#116630] text-lg' /></button>
+                                <button className=''> <FaRegUser className='text-[#FF0000] text-lg' /></button>
 
                                 <input
-                                    className='outline-none focus:ring-0 focus:border-[#116630]'
+                                    className='outline-none focus:ring-0 focus:border-[#FF0000]'
                                     placeholder='Username'
                                     {...register("username", { required: true })}
                                 />
                                 {/* {errors.username && <span className='text-red-500'>This field is required</span>} */}
                             </div>
                             <div className='flex  items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl' >
-                                <button className=''> <CiLock className='text-[#116630] text-xl' /></button>
+                                <button className=''> <CiLock className='text-[#FF0000] text-xl' /></button>
 
                                 <input
                                     className='outline-none focus:ring-0 focus:border-[#116630]'
@@ -120,18 +122,18 @@ const Login = () => {
 
                             <div className='flex justify-between items-center gap-2'>
                                 <p>Remember Me</p>
-                                <Switch onChange={setChecked} uncheckedIcon={false} checked={checked} />
+                                <Switch onColor={'#FF0000'} onChange={setChecked} uncheckedIcon={false} checked={checked} />
                             </div>
 
-                            <input type="submit" value="Login" className='bg-gradient-to-r from-[#116630] to-[#1bd861] text-white p-2 rounded-xl' />
+                            <input type="submit" value="Login" className='border-[1px] font-bold border-black bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl' />
 
-                            <button className=' border-[#116630] border-2 rounded-xl p-2 text-[#116630] shadow-xl '>Demo Account</button>
+                            <button className=' border-black border-[1px] rounded-xl p-2 text-black font-bold shadow-xl '>Sign Up</button>
 
                         </form>
                         <div className="fixed bottom-1 left-0 right-0 flex flex-col justify-center items-center">
                             <hr className="w-[70%]" />
-                            <p className="flex justify-center items-center gap-2 text-xs pt-1">
-                                <FaRegCopyright /> 2024 <span className="font-semibold">ERPNext</span>
+                            <p className="flex justify-center items-center gap-2 text-[10px] pt-1">
+                            Copyright <FaRegCopyright />2009-2023 IONIC Corporation. All Rights Reserved.
                             </p>
                         </div>
 

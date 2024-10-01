@@ -1,7 +1,10 @@
 import React from 'react';
 import { IoMdSettings } from 'react-icons/io';
 import expenses from '../assets/expense.png'
+import order from '../assets/order.png'
+import leave from '../assets/leave.png'
 import { Link } from 'react-router-dom';
+
 
 const LikeToDo = () => {
     return (
@@ -19,7 +22,7 @@ const LikeToDo = () => {
 
                 <Link to='/orders'>
                 <div className='bg-white flex justify-center items-center flex-col p-3 rounded-xl'>
-                    <img className='w-8 pb-1' src={expenses} alt="" />
+                    <img className='w-8 pb-1' src={order} alt="" />
                     <p>Orders</p>
 
                 </div>
@@ -30,7 +33,7 @@ const LikeToDo = () => {
 
                 </div>
                 <div className='bg-white flex justify-center items-center flex-col p-3 rounded-xl'>
-                    <img className='w-8 pb-1' src={expenses} alt="" />
+                    <img className='w-8 pb-1' src={leave} alt="" />
                     <p>Leave</p>
 
                 </div>
