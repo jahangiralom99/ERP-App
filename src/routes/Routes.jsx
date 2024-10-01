@@ -4,6 +4,8 @@ import Home from "../pages/Home";
 import Root from "./Root";
 import Login from "../pages/Login";
 import Orders from "../pages/Orders";
+import CreateOrder from "../pages/CreateOrder";
+import OdrerDetails from "../pages/OdrerDetails";
 
 export const router = createBrowserRouter([
     {
@@ -17,6 +19,14 @@ export const router = createBrowserRouter([
         {
             path: "/orders",
             element: <Orders/>
+        },
+        {
+            path: "/createorders",
+            element: <CreateOrder/>
+        },
+        {
+            path: "/orderdetails",
+            element: <OdrerDetails/>
         },
         {
             path: "/login",

@@ -13,7 +13,7 @@ const Request = () => {
                     <button className='text-red-600 border-[2px] rounded-lg p-[3px]'>Draft</button>
                   </div>
                     <div className='flex gap-1 pt-1 text-blue-600 font-semibold'>
-                    &#8377;<p>250.00</p>
+                    &#2547;<p>250.00</p>
                     </div>
                     <p className='font-semibold text-black'>23/09/2024</p>
                  </div>

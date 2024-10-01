@@ -1,4 +1,5 @@
 import { BsFilterLeft } from "react-icons/bs";
+import { FaPlus } from "react-icons/fa";
 import { IoMdArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -18,11 +19,24 @@ const Orders = () => {
             </div>
 
 
+
+            {/* plus button */}
+
+            <Link to='/createorders'>
+            <div className="border-[1px]  border-[#7579ff] p-3 w-12 bg-white rounded-lg font-medium text-sm text-[#7579ff] flex justify-center items-center fixed bottom-5 right-5">
+            <FaPlus className="text-lg " />
+            </div>
+            </Link>
+
+
+
+
             {/* orders */}
 
             <div className="px-5 pt-5 flex flex-col gap-3 ">
 
                 {/* order1 */}
+                <Link to='/orderdetails'>
                 <div className="bg-white p-3 rounded-xl  ">
 
                 <div className=" flex justify-between">
@@ -37,7 +51,7 @@ const Orders = () => {
                         </button>
                     </div>
                 </div>
-                <div className="pt-3 flex gap-2 justify-between " >
+                <div className="pt-3 flex gap-2 justify-between flex-wrap " >
                     <p>
                         <p className="text-xs text-zinc-500 text-center">Customer Name</p>
                         <p className="text-xs text-center">Tech Solution Inc.</p>
@@ -48,10 +62,18 @@ const Orders = () => {
                     </p>
                     <p>
                         <p className="text-xs text-zinc-500 text-center">Amount</p>
-                        <p className="text-xs text-center">&#8377; 2,25,000.00</p>
+                        <p className="text-xs text-center">&#2547; 2,25,000.00</p>
                     </p>
                 </div>
                 </div>
+                </Link>
+
+
+
+
+
+
+
 
                 {/* order1 */}
                 <div className="bg-white p-3 rounded-xl  ">
@@ -79,7 +101,7 @@ const Orders = () => {
                     </p>
                     <p>
                         <p className="text-xs text-zinc-500 text-center">Amount</p>
-                        <p className="text-xs text-center">&#8377; 2,25,000.00</p>
+                        <p className="text-xs text-center">&#2547; 2,25,000.00</p>
                     </p>
                 </div>
                 </div>
