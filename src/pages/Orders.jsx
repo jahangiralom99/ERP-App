@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import { BsFilterLeft } from "react-icons/bs";
 import { FaPlus, FaRegUser } from "react-icons/fa";
 import { IoMdArrowBack } from "react-icons/io";
-import { RiArrowDropRightLine } from "react-icons/ri";
+import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,14 +14,15 @@ const Orders = () => {
     const [open, setOpen] = useState(false)
     const [open2, setOpen2] = useState(false)
     const [open3, setOpen3] = useState(false)
+    const [open4, setOpen4] = useState(false)
     const [startDate, setStartDate] = useState(new Date());
 
     const handleCalendarClick = () => {
-        setOpen2((prev) => !prev);
+        setOpen4((prev) => !prev);
     };
 
     return (
-        <div className=" bg-[#e6f3e7] pb-12 ">
+        <div className=" bg-gray-200 pb-12 ">
             {/* header */}
             <div className='flex justify-between items-center h-14 w-full bg-white px-6 '>
                 <div className='flex items-center gap-4'>
@@ -31,9 +32,9 @@ const Orders = () => {
                     <p className=' font-medium'>Orders</p>
                 </div>
 
-                <BsFilterLeft onClick={() => setOpen(!open)} className="text-lg text-blue-600" />
+                <BsFilterLeft onClick={() => setOpen(!open)} className="text-2xl text-blue-600" />
                 {
-                    open && <div className="fixed bottom-2 left-0 right-0 bg-[#ebecf1]  rounded-xl z-10 flex justify-center items-center">
+                    open && <div className="fixed bottom-0 left-0 right-0 bg-gray-50  rounded-t-xl z-10 flex justify-center items-center">
 
                         <div>
 
@@ -48,6 +49,8 @@ const Orders = () => {
 
                           {/* input field */}
 
+               <div className="flex flex-col gap-3">
+                
                            {/* Select customer */}
 
                 <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
@@ -55,9 +58,9 @@ const Orders = () => {
                         Select Customer
                     </legend>
                     <div className=" flex justify-between gap-2 items-center w-full pl-4 pb-2">
-                    <FaRegUser  className="text-zinc-500 text-xl font-bold" />
-                    <p className=" text-start w-[100px] whitespace-nowrap font-medium">Tech Solution inc.</p>
-                        <input type="text" className=" bg-transparent w-[80px] text-black" placeholder="" disabled />
+                    <FaRegUser  className="text-[#E70006] text-xl font-bold" />
+                 
+                        <input type="text" className=" bg-transparent w-[80px] text-black" placeholder="customer" disabled />
 
                         <div onClick={() => setOpen3(!open3)}>
                             {open3 ? <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" /> : <RiArrowDropRightLine className="text-3xl ml-5 text-blue-600" />}
@@ -112,21 +115,22 @@ const Orders = () => {
                     Company<sup>*</sup>
                 </legend>
                 <div className="flex  gap-4 items-center w-full pl-4 pb-2">
-                    <SlCalender  onClick={handleCalendarClick} className="text-zinc-500 text-xl font-bold" />
-                    <DatePicker
+                <SlCalender  onClick={handleCalendarClick} className="text-[#E70006] text-xl font-bold" />
+                <DatePicker
                 className="bg-transparent text-black font-medium"
                 selected={startDate}
                 onChange={(date) => {
                     setStartDate(date);
-                    setOpen(false); // Close the date picker after selection
+                    setOpen4(false); // Close the date picker after selection
                 }}
-                onClickOutside={() => setOpen(false)} // Close when clicking outside
-                open={open} // Control the open state
+                onClickOutside={() => setOpen4(false)} // Close when clicking outside
+                open={open4} // Control the open state
                 onFocus={handleCalendarClick} // Open on focus
             
             />
                 </div>
             </fieldset>
+                </div>           
 
 
 
@@ -135,11 +139,12 @@ const Orders = () => {
 
 
 
-                            <div className="flex gap-3 px-5 justify-between pb-3">
+
+                            <div className="flex gap-3 px-5 justify-between py-3">
                                 
-                                    <button onClick={()=> setOpen(!open)} className="border-[1px] border-zinc-400 text-zinc-600 p-3 rounded-xl  w-[130px]">Close</button>
+                                    <button onClick={()=> setOpen(!open)} className="border-[1px] border-zinc-400 text-zinc-600 p-3 rounded-xl  w-[130px]">Clear Filters</button>
                                
-                                <button className="border-[1px]  p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl whitespace-nowrap text-medium  w-[130px]">Create Order</button>
+                                <button className="border-[1px]  p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl whitespace-nowrap text-medium  w-[130px]">Apply Filters</button>
                             </div>
                         </div>
 

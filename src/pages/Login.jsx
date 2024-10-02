@@ -1,5 +1,5 @@
 import { IoIosGlobe } from 'react-icons/io';
-import bgImg from '../assets/abstract-line-hexagon-geometric-texture_1035-17372.avif';
+// import bgImg from '../assets/abstract-line-hexagon-geometric-texture_1035-17372.avif';
 import erp from '../assets/IONIC-ERP-icon.png';
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";

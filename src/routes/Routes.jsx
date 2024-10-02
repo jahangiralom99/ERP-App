@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Orders from "../pages/Orders";
 import CreateOrder from "../pages/CreateOrder";
 import OdrerDetails from "../pages/OdrerDetails";
+import SelectItems from "../pages/SelectItems";
 
 export const router = createBrowserRouter([
     {
@@ -31,7 +32,11 @@ export const router = createBrowserRouter([
         {
             path: "/login",
             element: <Login/>
-        }
+        },
+        {
+            path: "/selectitems",
+            element: <SelectItems/>
+        },
       ]
     },
   ]);
