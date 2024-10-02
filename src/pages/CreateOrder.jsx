@@ -307,7 +307,11 @@ const CreateOrder = () => {
 
                          <hr />
 
-                         
+                         <div>
+                            <p>total </p>
+                         </div>
+
+
                     </div>
                 </div>
 
