@@ -132,8 +132,9 @@ const SelectItems = () => {
 
 
 
-
+            <Link to='/createorders'>
               <button className="fixed bottom-0  border-[1px] p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full">Create Order</button>
+            </Link>
 
 
         </div>

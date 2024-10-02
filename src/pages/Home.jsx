@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import logo from '../assets/ionic-erp-logo.png'
 import { FaRegBell } from "react-icons/fa";
 import CheckIn from "../components/CheckIn";
-import Task from "../components/Task";
+// import Task from "../components/Task";
 import LikeToDo from "../components/LikeToDo";
 import Request from "../components/Request";
 import LineProgress from "../components/LineProgress";
@@ -11,7 +11,7 @@ import LineProgress from "../components/LineProgress";
 
 const Home = () => {
     return (
-        <div className=" bg-[#e6f3e7] pb-12 ">
+        <div className=" bg-gray-200 pb-12 ">
 
 
 
@@ -24,16 +24,16 @@ const Home = () => {
                     <p className="font-bold">IONIC ERP</p>
                 </p>
                 <p>
-                    <div className="text-xl "><FaRegBell /></div>
+                    <div className="text-xl text-[#FF0000] "><FaRegBell /></div>
                 </p>
             </div>
 
             <CheckIn/>
-            <Task/>
+            {/* <Task/> */}
             <LikeToDo/>
-            <Request/>
+            {/* <Request/> */}
 
-            <LineProgress/>
+            {/* <LineProgress/> */}
 
 
 

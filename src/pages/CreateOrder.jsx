@@ -30,7 +30,7 @@ const CreateOrder = () => {
     };
 
     return (
-        <div className="bg-gray-100 pb-20  text-black">
+        <div className="bg-gray-200 pb-20  text-black">
             {/* heading */}
             <div className='flex justify-between items-center h-14 w-full bg-white px-6 '>
 
@@ -41,10 +41,10 @@ const CreateOrder = () => {
                     <p className=' font-medium'>Create Order</p>
                 </div>
                 <div onClick={() => setOpen4(!open4)} className="">
-                    <RiQrScan2Line  className="text-xl text-blue-600" />   
+                    <RiQrScan2Line className="text-xl text-blue-600" />
                 </div>
             </div>
-              
+
 
 
             {/* form */}
@@ -259,11 +259,11 @@ const CreateOrder = () => {
 
 
             {
-                            open4 && <div classNames=' w-20 bg-white'>
+                open4 && <div classNames=' w-20 bg-white'>
 
-                                <Scanner  onScan={(result) => console.log(result)} />
-                            </div>
-                }
+                    <Scanner onScan={(result) => console.log(result)} />
+                </div>
+            }
 
 
 
@@ -274,7 +274,30 @@ const CreateOrder = () => {
                     <Link to='/selectitems'>
                         <button className="w-full bg-blue-100 p-2 rounded-xl flex justify-center items-center gap-2 "> <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-xl" /> Add item Details</button>
                     </Link>
-                    <button className="w-full bg-stone-200 p-2 rounded-xl flex justify-center items-center gap-2 text-zinc-500 "><IoArrowUpCircleOutline className="text-2xl" /> Attachment</button>
+
+
+                    {/* input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+<label for="file-upload" class="custom-file-upload">
+        Custom Upload
+    </label>
+<input id="file-upload" type="file" /> */}
+{/* 
+                    <label>
+                        <input type="file" name="myImage" accept="image/png, image/gif, image/jpeg" />
+                    </label> */}
+                    <button className="w-full bg-stone-200 p-2 rounded-xl flex justify-center items-center gap-2 text-zinc-500 "><IoArrowUpCircleOutline className="text-2xl text-[#e94141]" /> Attachment</button>
+
+
+
                 </div>
 
 
@@ -305,51 +328,51 @@ const CreateOrder = () => {
 
 
                         <hr />
-                         
+
                         {/* button */}
                         <Link to='/selectitems'>
                             <div className="p-3 flex items-center gap-2">
-                            <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-lg" /> 
-                            <p className="">Add Another Item</p>
+                                <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-lg" />
+                                <p className="">Add Another Item</p>
                             </div>
                         </Link>
 
                         <hr />
 
                         {/* Taxes and Discount`` */}
-                         
-                         <p className="p-3">
+
+                        <p className="p-3">
                             Taxes & Discount
 
-                         </p>
+                        </p>
 
-                         <hr />
+                        <hr />
 
-                         <div className="p-3 ">
+                        <div className="p-3 ">
 
                             <div className="flex justify-between">
-                            <p className="text-zinc-500">Total Tax : </p>
-                            <p className="flex items-center gap-1"><FaBangladeshiTakaSign /> <span>0.00</span> </p>
-                            </div>
-                            
-                            <div className="flex justify-between">
-                            <p className="text-zinc-500">Sub total : </p>
-                            <p className="flex items-center gap-1"><FaBangladeshiTakaSign /> <span>90,000.00</span> </p>
+                                <p className="text-zinc-500">Total Tax : </p>
+                                <p className="flex items-center gap-1"><FaBangladeshiTakaSign /> <span>0.00</span> </p>
                             </div>
 
                             <div className="flex justify-between">
-                            <p className="text-zinc-500">Discount : </p>
-                            <p className="flex items-center gap-1"><FiMinus /><FaBangladeshiTakaSign /> <span>0.00</span> </p>
+                                <p className="text-zinc-500">Sub total : </p>
+                                <p className="flex items-center gap-1"><FaBangladeshiTakaSign /> <span>90,000.00</span> </p>
                             </div>
 
-                         </div>
+                            <div className="flex justify-between">
+                                <p className="text-zinc-500">Discount : </p>
+                                <p className="flex items-center gap-1"><FiMinus /><FaBangladeshiTakaSign /> <span>0.00</span> </p>
+                            </div>
 
-                         <hr />
+                        </div>
 
-                         <div className="flex justify-between p-3">
+                        <hr />
+
+                        <div className="flex justify-between p-3">
                             <p className=" text-black">Total : </p>
                             <p className="flex items-center gap-1 text-blue-600"><FaBangladeshiTakaSign /> <span >90,000.00</span> </p>
-                            </div>
+                        </div>
 
 
                     </div>
@@ -361,7 +384,7 @@ const CreateOrder = () => {
 
 
 
-                <div className="flex gap-3 px-5 bg-gray-100 fixed bottom-2 left-0 right-0 justify-center">
+                <div className="flex gap-3 px-5 bg-gray-100 fixed bottom-0 left-0 right-0 justify-center pb-2">
                     <Link className="w-full" to='/orders'>
                         <button className="border-[1px] border-zinc-400 text-zinc-600 p-3 rounded-xl w-full">Close</button>
                     </Link>

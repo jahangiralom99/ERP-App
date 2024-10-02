@@ -1,7 +1,8 @@
 import React from 'react';
-import avatar from '../assets/abstract-background-design-hd-light-beauty-green-color_851755-22320.avif'
+import avatar from '../assets/avater.jpg'
 import Time from "../components/Time";
 import { BsArrowDownRightCircle } from "react-icons/bs";
+import { Link } from 'react-router-dom';
 
 const CheckIn = () => {
     return (
@@ -11,8 +12,8 @@ const CheckIn = () => {
         {/* avater */}
         <div className="flex justify-between items-center ">
             <p>
-                <span className="text-xl font-semibold">Good Morning,</span> <br />
-                <span className="text-xl font-bold">John Doe!</span>
+                <span className=" font-semibold">Good Morning,</span> <br />
+                <span className=" font-bold">John Doe!</span>
             </p>
             <div className="avatar">
                 <div className="w-12 rounded-full">
@@ -23,9 +24,14 @@ const CheckIn = () => {
         </div>
 
 
-        <p className="text-zinc-500 font-medium">You are not Check-in yet Today</p>
+        <p className="text-zinc-500 text-sm font-medium">You are not Check-in yet Today</p>
+
         <Time/>
-        <button className="btn btn-outline btn-success w-full mt-2 text-xl"> <BsArrowDownRightCircle className="" /> Check In</button>
+
+        <Link to="/markattendence">
+        <button className="border-[1px] w-full font-bold border-black bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl flex items-center justify-center gap-2"> <BsArrowDownRightCircle className=" " /> Check In</button>
+        </Link>
+
 
 
 

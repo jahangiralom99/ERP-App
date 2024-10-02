@@ -10,7 +10,7 @@ const Time = () => {
 
     return (
         <div>
-            <p className="text-blue-600 font-bold">{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+            <p className="text-[#FF0000] text-center py-1 font-bold">{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
         </div>
     );
 };
