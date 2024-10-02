@@ -12,6 +12,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoArrowUpCircleOutline } from "react-icons/io5";
 import { FiMinus } from "react-icons/fi";
+import { Scanner } from "@yudiel/react-qr-scanner";
 
 
 const CreateOrder = () => {
@@ -20,6 +21,8 @@ const CreateOrder = () => {
     const [open2, setOpen2] = useState(false)
     const [open3, setOpen3] = useState(false)
     const [startDate, setStartDate] = useState(new Date());
+
+    const [open4, setOpen4] = useState(false)
 
 
     const handleCalendarClick = () => {
@@ -37,10 +40,11 @@ const CreateOrder = () => {
                     </Link>
                     <p className=' font-medium'>Create Order</p>
                 </div>
-                <div>
-                    <RiQrScan2Line className="text-xl text-blue-600" />
+                <div onClick={() => setOpen4(!open4)} className="">
+                    <RiQrScan2Line  className="text-xl text-blue-600" />   
                 </div>
             </div>
+              
 
 
             {/* form */}
@@ -246,6 +250,20 @@ const CreateOrder = () => {
 
 
             </div>
+
+
+
+
+            {/* qr scanner */}
+
+
+
+            {
+                            open4 && <div classNames=' w-20 bg-white'>
+
+                                <Scanner  onScan={(result) => console.log(result)} />
+                            </div>
+                }
 
 
 
