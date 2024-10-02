@@ -307,9 +307,31 @@ const CreateOrder = () => {
 
                          <hr />
 
-                         <div>
-                            <p>total </p>
+                         <div className="p-3 ">
+
+                            <div className="flex justify-between">
+                            <p className="text-zinc-500">Total Tax : </p>
+                            <p className="flex items-center gap-1"><FaBangladeshiTakaSign /> <span>0.00</span> </p>
+                            </div>
+                            
+                            <div className="flex justify-between">
+                            <p className="text-zinc-500">Sub total : </p>
+                            <p className="flex items-center gap-1"><FaBangladeshiTakaSign /> <span>90,000.00</span> </p>
+                            </div>
+
+                            <div className="flex justify-between">
+                            <p className="text-zinc-500">Discount : </p>
+                            <p className="flex items-center gap-1"><FiMinus /><FaBangladeshiTakaSign /> <span>0.00</span> </p>
+                            </div>
+
                          </div>
+
+                         <hr />
+
+                         <div className="flex justify-between p-3">
+                            <p className=" text-black">Total : </p>
+                            <p className="flex items-center gap-1 text-blue-600"><FaBangladeshiTakaSign /> <span >90,000.00</span> </p>
+                            </div>
 
 
                     </div>
