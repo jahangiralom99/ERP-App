@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IoMdArrowBack } from 'react-icons/io';
 import { TfiPencil } from 'react-icons/tfi';
 import { Link } from 'react-router-dom';
+import UpdateOrder from './UpdateOrder';
 
 const OdrerDetails = () => {
+
+    const [open5, setOpen5] = useState(false)
     return (
-        <div className=" bg-[#e6f3e7] pb-12  text-black h-screen">
+        <div className=" bg-gray-200 pb-32  text-black relative">
             {/* header */}
             <div>
                 <div className='flex justify-between items-center h-14 w-full bg-white px-6 '>
@@ -16,9 +19,16 @@ const OdrerDetails = () => {
                         </Link>
                         <p className=' font-medium'>Order Details</p>
                     </div>
-                    <div>
+                    <div onClick={() => setOpen5(!open5)}>
                         <TfiPencil className="text-lg text-blue-600" />
                     </div>
+                    {open5 && 
+                    <div className='absolute top-0 left-0 right-0'>
+
+                        <UpdateOrder setOpen5={setOpen5} />
+                    </div>
+                        }
+
                 </div>
 
             </div>

@@ -12,6 +12,7 @@
   "dependencies": {
     "@yudiel/react-qr-scanner": "^2.0.8",
     "google-map-react": "^2.2.1",
+    "google-maps-react": "^2.0.6",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "rc-progress": "^4.0.0",

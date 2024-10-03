@@ -8,6 +8,7 @@ import CreateOrder from "../pages/CreateOrder";
 import OdrerDetails from "../pages/OdrerDetails";
 import SelectItems from "../pages/SelectItems";
 import MarkAttendence from "../pages/MarkAttendence";
+import Profile from "../pages/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
         {
             path: "/login",
             element: <Login/>
+        },
+        {
+            path: "/profile",
+            element: <Profile/>
         },
         {
             path: "/selectitems",

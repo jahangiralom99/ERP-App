@@ -20,7 +20,7 @@ const Footer = () => {
             <div className="flex justify-evenly items-center w-full ">
 
             <RiNewsLine className="text-2xl"/>
-            <Link to='/login'>
+            <Link to='/profile'>
             <FaRegUser className="text-2xl"/>
             </Link>
             </div>

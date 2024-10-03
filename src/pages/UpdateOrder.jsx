@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from "react";
 import { CiUser } from "react-icons/ci";
 import { FaRegUser, FaUser } from "react-icons/fa";
@@ -14,8 +15,7 @@ import { IoArrowUpCircleOutline } from "react-icons/io5";
 import { FiMinus } from "react-icons/fi";
 import { Scanner } from "@yudiel/react-qr-scanner";
 
-
-const CreateOrder = () => {
+const UpdateOrder = ({setOpen5}) => {
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
     const [open2, setOpen2] = useState(false)
@@ -28,17 +28,16 @@ const CreateOrder = () => {
     const handleCalendarClick = () => {
         setOpen((prev) => !prev);
     };
-
     return (
-        <div className="bg-gray-200 pb-20  text-black">
+        <div  className="bg-gray-200 pb-20  text-black">
             {/* heading */}
             <div className='flex justify-between items-center h-14 w-full bg-white px-6 '>
 
                 <div className='flex items-center gap-4'>
-                    <Link to='/orders'>
+                    <Link onClick={()=>setOpen5(false)} >
                         <IoMdArrowBack className="text-lg text-blue-600" />
                     </Link>
-                    <p className=' font-medium'>Create Order</p>
+                    <p className=' font-medium'>Update Order</p>
                 </div>
                 <div onClick={() => setOpen4(!open4)} className="">
                     <RiQrScan2Line className="text-xl text-blue-600" />
@@ -271,9 +270,9 @@ const CreateOrder = () => {
 
             <div className="px-5 flex flex-col">
                 <div className="flex flex-col gap-3">
-                    <Link to='/selectitems'>
+                    {/* <Link to='/selectitems'>
                         <button className="w-full bg-gradient-to-r from-gray-800 to-gray-300 p-2 rounded-xl flex justify-center items-center gap-2 text-white"> <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-xl" /> Add item Details</button>
-                    </Link>
+                    </Link> */}
 
 
                     {/* input[type="file"] {
@@ -388,7 +387,7 @@ const CreateOrder = () => {
                     <Link className="w-full" to='/orders'>
                         <button className="border-[1px] border-zinc-400 text-zinc-600 p-3 rounded-xl w-full">Close</button>
                     </Link>
-                    <button className="border-[1px] p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full">Create Order</button>
+                    <button className="border-[1px] p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full">Update Order</button>
                 </div>
             </div>
 
@@ -396,4 +395,4 @@ const CreateOrder = () => {
     );
 };
 
-export default CreateOrder;
+export default UpdateOrder;
