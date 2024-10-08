@@ -4,9 +4,10 @@ import { FiMinus } from "react-icons/fi";
 import { IoIosSearch, IoMdArrowBack } from "react-icons/io";
 import { RiQrScan2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { getStoredCart } from "../utilities/function";
+import { addToProceed, getStoredCart } from "../utilities/function";
+import { toast } from "react-toastify";
 
-const SelectItems = ({ setItemOpen }) => {
+const SelectItems = ({ setItemOpen, itemOpen }) => {
   const [open, setOpen] = useState(false);
   const { url } = getStoredCart("login-info");
   const [activeCategory, setActiveCategory] = useState(null);
@@ -22,7 +23,7 @@ const SelectItems = ({ setItemOpen }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://post-request.onrender.com/getall?erp_url=${url}&doctype_name=Item Group`
+          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Item Group`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -41,7 +42,7 @@ const SelectItems = ({ setItemOpen }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://post-request.onrender.com/getall?erp_url=${url}&doctype_name=Item`
+          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Item`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -81,17 +82,41 @@ const SelectItems = ({ setItemOpen }) => {
   };
 
   const handleCreateOrder = () => {
-    console.log(quantities);
+    if (Object.keys(quantities).length === 0) {
+      toast.warn("please Select order", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      console.log(Object.values(quantities));
+      const l = Object.keys(quantities);
+      let sum = [];
+      for (let i in l) {
+        console.log(l[i]);
+        const filter = itemData?.data?.filter((item) => item?.name == l[i]);
+        console.log(filter);
+        filter[0]["qty"] = quantities[l[i]]
+        console.log(filter);
+        sum.push(filter[0]);
+      }
+      console.log(sum);
+      addToProceed(sum, "order-info");
+      // setItemOpen(!itemOpen);
+    }
   };
 
-  console.log(itemData1);
-
   return (
-    <div className="bg-gray-200 z-20 text-black ">
+    <div className="bg-gray-200 z-20 text-black">
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         <div className="flex items-center gap-4">
-          <div onClick={() => setItemOpen(false)}>
+          <div onClick={() => setItemOpen(!itemOpen)}>
             <IoMdArrowBack className="text-lg text-blue-600" />
           </div>
           <p className=" font-medium">Select Items</p>
@@ -124,8 +149,8 @@ const SelectItems = ({ setItemOpen }) => {
                 key={index}
                 onClick={() => handleCategoryClick(item?.name)}
                 className={`border-[1px] bg-white border-zinc-400 px-3 py-2 text-sm rounded-3xl ${
-                  activeCategory === item?.name ? "bg-blue-500 text-white" : " "
-                } focus:text-white font-semibold whitespace-nowrap`}
+                  activeCategory === item?.name ? "bg-blue-500" : " "
+                } focus:bg-blue-500 focus:text-white font-semibold whitespace-nowrap`}
               >
                 {item.name}
               </button>

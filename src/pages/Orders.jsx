@@ -30,7 +30,7 @@ const Orders = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://post-request.onrender.com/getall?erp_url=${url}&doctype_name=Sales Order`,
+          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Sales Order`,
           {
             method: "GET",
             headers: {
@@ -55,7 +55,6 @@ const Orders = () => {
 
     fetchData();
   }, [url]);
-
 
   const handleCalendarClick = () => {
     setOpen4((prev) => !prev);
@@ -223,12 +222,12 @@ const Orders = () => {
       </div>
 
       {/* plus button */}
-      <div
-        onClick={() => setPlus(!plus)}
+      <Link
+        to="/createorders"
         className="border-[1px]  border-[#7579ff] p-3 w-12 bg-white rounded-lg font-medium text-sm text-[#7579ff] flex justify-center items-center fixed bottom-5 right-5"
       >
         <FaPlus className="text-lg " />
-      </div>
+      </Link>
 
       {/* orders */}
       {/* card section  */}
@@ -236,10 +235,7 @@ const Orders = () => {
         {/* order1 */}
         {data?.data?.map((item, index) => {
           return (
-            <div
-              key={index}
-              className="bg-white p-3 rounded-xl  "
-            >
+            <div key={index} className="bg-white p-3 rounded-xl  ">
               <div className=" flex justify-between">
                 <div>
                   <p className="text-xs text-blue-600 font-semibold">
@@ -282,11 +278,11 @@ const Orders = () => {
         })}
       </div>
 
-      {plus && (
-        <div className="absolute top-0 left-0 w-full">
+      {/* {plus && (
+        <div className="absolute top-0 bottom-0 left-0 w-full h-full">
           <CreateOrder setPlus={setPlus} />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

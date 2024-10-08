@@ -40,7 +40,7 @@ const Login = () => {
         pwd: pass,
       },
     };
-    fetch("https://post-request.onrender.com/login", {
+    fetch("https://erp-backend-xkze.vercel.app/login", {
       method: "POST",
       headers: {
         Accept: "application/json",

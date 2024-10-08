@@ -15,22 +15,25 @@ import {
   RiQrScan2Line,
 } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { IoArrowUpCircleOutline } from "react-icons/io5";
 import { FiMinus } from "react-icons/fi";
 import { Scanner } from "@yudiel/react-qr-scanner";
-import { getStoredCart } from "../utilities/function";
+import { formatDate, getStoredCart } from "../utilities/function";
 import SelectItems from "./SelectItems";
+import { toast } from "react-toastify";
 
-const CreateOrder = ({ setPlus }) => {
+const CreateOrder = () => {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
+  const [formattedDate, setFormattedDate] = useState("");
+  const navigate = useNavigate();
 
   const [open4, setOpen4] = useState(false);
 
@@ -49,6 +52,8 @@ const CreateOrder = ({ setPlus }) => {
   const [customer, setCustomer] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const { url } = getStoredCart("login-info");
+  const data = getStoredCart("order-info");
+  const date = formatDate();
 
   const handleCalendarClick = () => {
     setOpen((prev) => !prev);
@@ -59,7 +64,7 @@ const CreateOrder = ({ setPlus }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://post-request.onrender.com/getall?erp_url=${url}&doctype_name=Company`
+          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Company`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -79,7 +84,7 @@ const CreateOrder = ({ setPlus }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://post-request.onrender.com/getall?erp_url=${url}&doctype_name=Cost Center`
+          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Cost Center`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -99,7 +104,7 @@ const CreateOrder = ({ setPlus }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://post-request.onrender.com/getall?erp_url=${url}&doctype_name=Customer`
+          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Customer`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -115,8 +120,24 @@ const CreateOrder = ({ setPlus }) => {
   }, []);
 
   const handleCreateOrder = () => {
-    const Quantity = 10;
-    const RatePerPiece = 100;
+    if (
+      selectedCompany == "" ||
+      selectedCostCenter == "" ||
+      selectedCustomer == ""
+    ) {
+      toast.warn("error ", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      console.log("cvxccx");
+    }
 
     // const info = {
     //   server: url,
@@ -138,6 +159,19 @@ const CreateOrder = ({ setPlus }) => {
     //   },
     //   };
 
+    const obd = data?.map((itm) => {
+      // console.log(itm);
+      const info = {
+        item_code: itm?.item_code,
+        item_name: itm?.item_name,
+        delivery_date: date,
+        qty: itm?.qty,
+      };
+      return info;
+    });
+
+    // console.log(obd);
+
     const info = {
       server: url,
       doctype: "Sales Order",
@@ -145,19 +179,14 @@ const CreateOrder = ({ setPlus }) => {
         customer: "hossan",
         transaction_date: "2024-09-05",
         custom_delivery_type: "",
-        items: [
-          {
-            item_code: "102",
-            item_name: "Deshi Peyaj (Local Onion)",
-            delivery_date: "2024-10-04",
-            qty: 2,
-          },
-        ],
+        items: obd || [],
       },
     };
 
+    // console.log(info);
+
     // Post order
-    fetch("https://post-request.onrender.com/post_dat", {
+    fetch("https://erp-backend-xkze.vercel.app/post_data", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -179,13 +208,17 @@ const CreateOrder = ({ setPlus }) => {
       });
   };
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="bg-gray-200 pb-20 text-black">
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         <div className="flex items-center gap-4">
-          <div onClick={() => setPlus(false)}>
-            <IoMdArrowBack className="text-lg text-blue-600" />
+          <div>
+            <IoMdArrowBack onClick={goBack} className="text-lg text-blue-600" />
           </div>
           <p className=" font-medium">Create Order</p>
         </div>
@@ -463,22 +496,33 @@ const CreateOrder = ({ setPlus }) => {
 
         <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
           <legend className="ml-3 px-[5px] text-xs text-gray-500">date</legend>
-          <div className="flex  gap-4 items-center w-full pl-4 pb-2">
+          <div className="flex gap-4 items-center w-full pl-4 pb-2">
             <SlCalender
               onClick={handleCalendarClick}
               className="text-[#FF0000] text-xl font-bold"
             />
             <DatePicker
-              className="bg-transparent text-black font-medium "
+              className="bg-transparent text-black font-medium"
               selected={startDate}
               onChange={(date) => {
-                setStartDate(date);
+                // Format the date as DD/MM/YYYY
+                const formattedDate = `${date
+                  .getDate()
+                  .toString()
+                  .padStart(2, "0")}/${(date.getMonth() + 1)
+                  .toString()
+                  .padStart(2, "0")}/${date.getFullYear()}`;
+
+                setStartDate(date); // Set the Date object
+                setFormattedDate(formattedDate); // Set the formatted string
                 setOpen(false); // Close the date picker after selection
               }}
               onClickOutside={() => setOpen(false)} // Close when clicking outside
               open={open} // Control the open state
               onFocus={handleCalendarClick} // Open on focus
             />
+            {/* Optionally display the formatted date somewhere */}
+            {/* <span>{formattedDate}</span> */}
           </div>
         </fieldset>
       </div>
@@ -505,11 +549,6 @@ const CreateOrder = ({ setPlus }) => {
               Add item Details
             </button>
           </div>
-          {itemOpen ? (
-            <div className="absolute top-0 left-0 w-full">
-              <SelectItems setItemOpen={setItemOpen} />
-            </div>
-          ) : null}
 
           {/* input[type="file"] {
   display: none;
@@ -545,21 +584,25 @@ const CreateOrder = ({ setPlus }) => {
 
           <div className="border-[1px] bg-white border-zinc-300 rounded-xl">
             {/* part-1 */}
-            <div className=" p-3 rounded-xl">
-              <div className="flex justify-between">
-                <div className="flex flex-col gap-2">
-                  <p className="font-medium text-sm">Dell Inspiron 15</p>
-                  <p className="flex items-center gap-1 text-xs text-zinc-600">
-                    <FaBangladeshiTakaSign /> 90,000.00*0.0
-                  </p>
-                </div>
-                <div className="flex flex-col justify-end items-center text-sm">
-                  <p>0.0</p>
-                  <div className="flex items-center gap-2 border-[2px] rounded-lg p-1 ">
-                    <FiMinus /> <p>0.0</p> <FaPlus />
+            <div className=" p-3 flex flex-col gap-1 rounded-xl ">
+              {data?.map((item) => {
+                return (
+                  <div className="flex justify-between border rounded p-2">
+                    <div className="flex flex-col gap-2">
+                      <p className="font-medium text-sm">Dell Inspiron 15</p>
+                      <p className="flex items-center gap-1 text-xs text-zinc-600">
+                        <FaBangladeshiTakaSign /> 90,000.00*0.0
+                      </p>
+                    </div>
+                    <div className="flex flex-col justify-end items-center text-sm">
+                      <p>0.0</p>
+                      <div className="flex items-center gap-2 border-[2px] rounded-lg p-1 ">
+                        <FiMinus /> <p>0.0</p> <FaPlus />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
 
             <hr />
@@ -629,6 +672,11 @@ const CreateOrder = ({ setPlus }) => {
           </button>
         </div>
       </div>
+      {itemOpen ? (
+        <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-slate-200 z-20">
+          <SelectItems itemOpen={itemOpen} setItemOpen={setItemOpen} />
+        </div>
+      ) : null}
     </div>
   );
 };

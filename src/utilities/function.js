@@ -1,4 +1,12 @@
+let formatDate = () => {
+  let date = new Date();
+  let year = date.getFullYear();
+  let month = String(date.getMonth() + 1).padStart(2, "0");
+  let day = String(date.getDate()).padStart(2, "0");
 
+  let formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+};
 
 const addToProceed = (newItem, store) => {
   localStorage.removeItem(`${window.location.hostname}-${store}`);
@@ -36,4 +44,4 @@ const getStoredCart = (store) => {
 //   }
 // };
 
-export { addToProceed, getStoredCart };
+export { addToProceed, getStoredCart, formatDate };
