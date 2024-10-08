@@ -94,20 +94,19 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
         theme: "dark",
       });
     } else {
-      console.log(Object.values(quantities));
-      const l = Object.keys(quantities);
+
+      const list = Object.keys(quantities);
       let sum = [];
-      for (let i in l) {
-        console.log(l[i]);
-        const filter = itemData?.data?.filter((item) => item?.name == l[i]);
+      for (let i in list) {
+        const filter = itemData?.data?.filter((item) => item?.name == list[i]);
         console.log(filter);
-        filter[0]["qty"] = quantities[l[i]]
+        filter[0]["qty"] = quantities[list[i]]
         console.log(filter);
         sum.push(filter[0]);
       }
       console.log(sum);
       addToProceed(sum, "order-info");
-      // setItemOpen(!itemOpen);
+      setItemOpen(!itemOpen);
     }
   };
 

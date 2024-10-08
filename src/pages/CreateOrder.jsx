@@ -119,11 +119,14 @@ const CreateOrder = () => {
     fetchData();
   }, []);
 
+  console.log(data);
+
   const handleCreateOrder = () => {
     if (
       selectedCompany == "" ||
       selectedCostCenter == "" ||
-      selectedCustomer == ""
+      selectedCustomer == "" ||
+      data.length == 0
     ) {
       toast.warn("error ", {
         position: "top-center",
