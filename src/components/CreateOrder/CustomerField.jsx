@@ -41,9 +41,7 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
 
   // search for customers
   const handleSearch = async () => {
-    const query = encodeURIComponent(
-      `[["name", "like", "%${searchQuery}%"]]`
-    );
+    const query = encodeURIComponent(`[["name", "like", "%${searchQuery}%"]]`);
     const url1 = `${fetchURL}/gets/Customer?erp_url=${url}&filters=${query}&fields=["*"]`;
 
     try {
@@ -56,7 +54,9 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
     }
   };
 
-  console.log(searchResult);
+  console.log(searchQuery);
+
+  // console.log(searchResult);
 
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
@@ -136,26 +136,47 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
             </label>
 
             <hr className="my-3" />
-            <div className="flex h-full flex-col gap-4 overflow-y-scroll">
-              {customer?.data?.map((item) => {
-                return (
-                  <div
-                    onChange={() => setSelectedCustomer(item.name)}
-                    className="flex gap-3 text-sm"
-                  >
-                    <input
-                      onClick={() => setOpen3(!open3)}
-                      type="radio"
-                      name="radio-1"
-                      className="radio w-5 h-5"
-                      checked={selectedCustomer === item.name}
-                      defaultChecked
-                    />
-                    <p>{item.name}</p>
-                  </div>
-                );
-              })}
-            </div>
+            {searchQuery == "" ? (
+              <div className="flex h-full flex-col gap-4 overflow-y-scroll">
+                {customer?.data?.map((item) => {
+                  return (
+                    <div
+                      onChange={() => setSelectedCustomer(item.name)}
+                      className="flex gap-3 text-sm"
+                    >
+                      <input
+                        onClick={() => setOpen3(!open3)}
+                        type="radio"
+                        name="radio-1"
+                        className="radio w-5 h-5"
+                        checked={selectedCustomer === item.name}
+                        defaultChecked
+                      />
+                      <p>{item.name}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : <div className="flex h-full flex-col gap-4 overflow-y-scroll">
+                {searchResult?.data?.map((item) => {
+                  return (
+                    <div
+                      onChange={() => setSelectedCustomer(item.name)}
+                      className="flex gap-3 text-sm"
+                    >
+                      <input
+                        onClick={() => setOpen3(!open3)}
+                        type="radio"
+                        name="radio-1"
+                        className="radio w-5 h-5"
+                        checked={selectedCustomer === item.name}
+                        defaultChecked
+                      />
+                      <p>{item.name}</p>
+                    </div>
+                  );
+                })}
+              </div>}
           </div>
         )}
       </div>

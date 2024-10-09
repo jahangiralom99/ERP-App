@@ -38,18 +38,14 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
 
   // /Company?filters=${query}&fields=["*"]
 
-//   console.log(searchQuery);
-    // handle Search btn
-    
+  //   console.log(searchQuery);
+  // handle Search btn
 
-    // https://erp-backend-xkze.vercel.app/getall?erp_url=https://ecommerce.ionicerp.xyz&doctype_name=Company&filters={"company_name":"IONIC Pharma"}
-
+  // https://erp-backend-xkze.vercel.app/getall?erp_url=https://ecommerce.ionicerp.xyz&doctype_name=Company&filters={"company_name":"IONIC Pharma"}
 
   const handleSearch = async () => {
-    const query = encodeURIComponent(
-      `{"company_name":"%${searchQuery}%"}`
-    );
-    const url1 = `${fetchURL}/getall?erp_url=${url}&doctype_name=Company&filters=${query}`;
+    const query = encodeURIComponent(`[["name", "like", "%${searchQuery}%"]]`);
+    const url1 = `${fetchURL}/gets/Company?erp_url=${url}&filters=${query}&fields=["*"]`;
 
     try {
       const groupsData = await fetch(url1);
@@ -61,7 +57,7 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
     }
   };
 
-//   console.log(searchResult);
+  //   console.log(searchResult);
 
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
@@ -141,27 +137,51 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
             </label>
 
             <hr className="my-3" />
-            <div className="flex flex-col gap-2 text-sm">
-              {company?.data?.map((item) => {
-                return (
-                  <div
-                    onChange={() => setSelectedCompany(item.company_name)}
-                    className="flex items-start gap-4"
-                  >
-                    <input
-                      onClick={() => setOpen1(!open1)}
-                      key={item.id}
-                      type="radio"
-                      name="radio-1"
-                      checked={selectedCompany === item.company_name}
-                      className="radio w-5 h-5"
-                      readOnly
-                    />
-                    <p>{item.company_name}</p>
-                  </div>
-                );
-              })}
-            </div>
+            {searchQuery == "" ? (
+              <div className="flex flex-col gap-2 text-sm">
+                {company?.data?.map((item) => {
+                  return (
+                    <div
+                      onChange={() => setSelectedCompany(item.company_name)}
+                      className="flex items-start gap-4"
+                    >
+                      <input
+                        onClick={() => setOpen1(!open1)}
+                        key={item.id}
+                        type="radio"
+                        name="radio-1"
+                        checked={selectedCompany === item.company_name}
+                        className="radio w-5 h-5"
+                        readOnly
+                      />
+                      <p>{item.company_name}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2 text-sm">
+                {searchResult?.data?.map((item) => {
+                  return (
+                    <div
+                      onChange={() => setSelectedCompany(item.company_name)}
+                      className="flex items-start gap-4"
+                    >
+                      <input
+                        onClick={() => setOpen1(!open1)}
+                        key={item.id}
+                        type="radio"
+                        name="radio-1"
+                        checked={selectedCompany === item.company_name}
+                        className="radio w-5 h-5"
+                        readOnly
+                      />
+                      <p>{item.company_name}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
       </div>
