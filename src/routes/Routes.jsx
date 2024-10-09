@@ -39,10 +39,10 @@ export const router = createBrowserRouter([
             path: "/profile",
             element: <Profile/>
         },
-        {
-            path: "/selectitems",
-            element: <SelectItems/>
-        },
+        // {
+        //     path: "/selectitems",
+        //     element: <SelectItems/>
+        // },
         {
             path: "/markattendence",
             element: <MarkAttendence/>

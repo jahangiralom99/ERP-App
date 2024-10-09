@@ -4,10 +4,14 @@ import { FiMinus } from "react-icons/fi";
 import { IoIosSearch, IoMdArrowBack } from "react-icons/io";
 import { RiQrScan2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { addToProceed, getStoredCart } from "../utilities/function";
+import { addToProceed, fetchURL, getStoredCart } from "../utilities/function";
 import { toast } from "react-toastify";
 
 const SelectItems = ({ setItemOpen, itemOpen }) => {
+  const data = getStoredCart("order-info");
+  let sum = [];
+  sum.push(...data)
+
   const [open, setOpen] = useState(false);
   const { url } = getStoredCart("login-info");
   const [activeCategory, setActiveCategory] = useState(null);
@@ -23,7 +27,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Item Group`
+          `${fetchURL}/getall?erp_url=${url}&doctype_name=Item Group`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -42,7 +46,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Item`
+          `${fetchURL}/getall?erp_url=${url}&doctype_name=Item`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -82,7 +86,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
   };
 
   const handleCreateOrder = () => {
-    if (Object.keys(quantities).length === 0) {
+    if (Object.keys(quantities).length == 0) {
       toast.warn("please Select order", {
         position: "top-center",
         autoClose: 5000,
@@ -94,13 +98,14 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
         theme: "dark",
       });
     } else {
-
       const list = Object.keys(quantities);
-      let sum = [];
+
+      console.log(list);
+
       for (let i in list) {
         const filter = itemData?.data?.filter((item) => item?.name == list[i]);
         console.log(filter);
-        filter[0]["qty"] = quantities[list[i]]
+        filter[0]["qty"] = quantities[list[i]];
         console.log(filter);
         sum.push(filter[0]);
       }
@@ -245,7 +250,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
 
       <div className="" onClick={handleCreateOrder}>
         <button className="fixed bottom-0 z-20 border-[1px] p-4 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full">
-          Create Order
+         Add Item
         </button>
       </div>
     </div>

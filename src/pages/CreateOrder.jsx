@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { CiUser } from "react-icons/ci";
 import { FaRegUser, FaUser } from "react-icons/fa";
 import {
   FaBangladeshiTakaSign,
@@ -25,110 +24,80 @@ import { Scanner } from "@yudiel/react-qr-scanner";
 import { formatDate, getStoredCart } from "../utilities/function";
 import SelectItems from "./SelectItems";
 import { toast } from "react-toastify";
+import CompanyField from "../components/CreateOrder/CompanyField";
+import CostCenter from "../components/CreateOrder/CostCenter";
+import CustomerField from "../components/CreateOrder/CustomerField";
+
+const calculateTotalPrice = (cartData, quantities) => {
+  return cartData?.reduce(
+    (total, item, idx) => total + item.standard_rate * quantities[idx],
+    0
+  );
+};
 
 const CreateOrder = () => {
   const [open, setOpen] = useState(false);
-  const [open1, setOpen1] = useState(false);
-  const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
-
+  const date = formatDate();
   const [open4, setOpen4] = useState(false);
+  const [total, setTotal] = useState(0);
+
+  // company state
+  const [selectedCompany, setSelectedCompany] = useState("");
+  // cost of center state
+  const [selectedCostCenter, setSelectedCostCenter] = useState("");
+  // customer state
+  const [selectedCustomer, setSelectedCustomer] = useState("");
 
   // Add Item Details popup state
   const [itemOpen, setItemOpen] = useState(false);
 
-  // Company Name api set
-  const [company, setCompany] = useState([]);
-  const [selectedCompany, setSelectedCompany] = useState("");
-
-  // Cost Center api set
-  const [costCenter, setCostCenter] = useState([]);
-  const [selectedCostCenter, setSelectedCostCenter] = useState("");
-
-  // get Select Customer api set
-  const [customer, setCustomer] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState("");
   const { url } = getStoredCart("login-info");
   const data = getStoredCart("order-info");
-  const date = formatDate();
 
   const handleCalendarClick = () => {
     setOpen((prev) => !prev);
   };
 
-  // get data for Company name
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Company`
-        );
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const result = await response.json();
-        setCompany(result);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-
-    fetchData();
-  }, [url]);
-
-  // get Cost Center
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Cost Center`
-        );
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const result = await response.json();
-        setCostCenter(result);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-
-    fetchData();
-  }, [url]);
-
-  // get Select Customer
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Customer`
-        );
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const result = await response.json();
-        setCustomer(result);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  console.log(data);
-
   const handleCreateOrder = () => {
-    if (
-      selectedCompany == "" ||
-      selectedCostCenter == "" ||
-      selectedCustomer == "" ||
-      data.length == 0
-    ) {
-      toast.warn("error ", {
+    if (selectedCompany == "") {
+      toast.warn("Please Selected Company Name", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (selectedCostCenter == "") {
+      toast.warn("Please Selected CostCenter ", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (selectedCustomer == "") {
+      toast.warn("Please Selected Customer Name", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (data.length == 0) {
+      toast.warn("Please Selected Order Items", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -139,7 +108,7 @@ const CreateOrder = () => {
         theme: "dark",
       });
     } else {
-      console.log("cvxccx");
+      console.log("success");
     }
 
     // const info = {
@@ -186,10 +155,8 @@ const CreateOrder = () => {
       },
     };
 
-    // console.log(info);
-
     // Post order
-    fetch("https://erp-backend-xkze.vercel.app/post_data", {
+    fetch("https://erp-backend-xkze.vercel.app/post_dataf", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -227,6 +194,13 @@ const CreateOrder = () => {
     navigate(-1);
   };
 
+  const totalSum = data.reduce((acc, item) => {
+    return acc + item.standard_rate * item.qty;
+  }, 0);
+
+  console.log(totalSum);
+  // clear all selected items
+
   return (
     <div className="bg-gray-200 pb-20 text-black">
       {/* heading */}
@@ -246,269 +220,23 @@ const CreateOrder = () => {
 
       <div className="p-5 flex flex-col gap-2">
         {/* company */}
+        <CompanyField
+          selectedCompany={selectedCompany}
+          setSelectedCompany={setSelectedCompany}
+        />
 
-        <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
-          <legend className="ml-3 px-[5px] text-xs text-gray-500">
-            Company<sup>*</sup>
-          </legend>
-          <div className=" flex justify-between gap-2 items-center w-full pl-4 pb-2">
-            <LuBuilding2 className="text-[#FF0000]" />
-            <p className=" text-start w-[100px] whitespace-nowrap font-medium">
-              {selectedCompany || "Select a Company"}
-            </p>
-            <input
-              type="text"
-              className=" bg-transparent w-[80px] text-black"
-              placeholder=""
-              disabled
-            />
-
-            <div className="cursor-pointer" onClick={() => setOpen1(!open1)}>
-              {open1 ? (
-                <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" />
-              ) : (
-                <RiArrowDropRightLine className="text-3xl ml-5 text-blue-600" />
-              )}
-            </div>
-
-            {open1 && (
-              <div className=" fixed bottom-2 px-3  bg-white rounded-box z-[1] w-[300px] p-2 shadow">
-                <div>
-                  <div className="flex justify-between">
-                    <p className=" text-[12px] text-[#ff3232] font-bold">
-                      clear
-                    </p>
-                    <p className=" text-[12px] text- font-bold">
-                      Select Company{" "}
-                    </p>
-                    <p
-                      onClick={() => setOpen1(!open1)}
-                      className=" text-[12px] text-blue-600 font-bold"
-                    >
-                      close
-                    </p>
-                  </div>
-                </div>
-
-                {/* search */}
-
-                <label className="input input-bordered h-10 mt-3 flex items-center gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    className="h-4 w-4 opacity-70"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <input type="text" className="grow" placeholder="Search" />
-                </label>
-
-                <hr className="my-3" />
-                <div className="flex flex-col gap-2 text-sm">
-                  {company?.data?.map((item) => {
-                    return (
-                      <div
-                        onChange={() => setSelectedCompany(item.company_name)}
-                        className="flex items-start gap-4"
-                      >
-                        <input
-                          key={item.id}
-                          type="radio"
-                          name="radio-1"
-                          checked={selectedCompany === item.company_name}
-                          className="radio w-5 h-5"
-                          readOnly
-                        />
-                        <p>{item.company_name}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        </fieldset>
         {/* cost center */}
-
-        <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
-          <legend className="ml-3 px-[5px] text-xs text-gray-500">
-            Cost Center
-          </legend>
-          <div className=" flex justify-between gap-2 items-center w-full pl-4 pb-2">
-            <FaBuildingColumns className="text-[#FF0000]" />
-            <p className=" text-start w-[100px] whitespace-nowrap font-medium">
-              {selectedCostCenter || "select a cost of center"}
-            </p>
-            <input
-              type="text"
-              className=" bg-transparent w-[80px] text-black"
-              placeholder=""
-              disabled
-            />
-
-            <div onClick={() => setOpen2(!open2)}>
-              {open2 ? (
-                <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" />
-              ) : (
-                <RiArrowDropRightLine className="text-3xl ml-5 text-blue-600" />
-              )}
-            </div>
-
-            {open2 && (
-              <div className=" fixed bottom-2 px-3  bg-white rounded-box z-[1] w-[300px] p-2 shadow">
-                <div>
-                  <div className="flex justify-between">
-                    <p className=" text-[12px] text-[#ff3232] font-bold">
-                      clear
-                    </p>
-                    <p className=" text-[12px] text- font-bold">
-                      Select Company{" "}
-                    </p>
-                    <p
-                      onClick={() => setOpen2(!open2)}
-                      className=" text-[12px] text-blue-600 font-bold"
-                    >
-                      close
-                    </p>
-                  </div>
-                </div>
-
-                {/* search */}
-
-                <label className="input input-bordered h-10 mt-3 flex items-center gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    className="h-4 w-4 opacity-70"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <input type="text" className="grow" placeholder="Search" />
-                </label>
-
-                <hr className="my-3" />
-                <div className="flex flex-col gap-2 text-sm">
-                  {costCenter?.data?.map((item) => {
-                    return (
-                      <div
-                        onChange={() => setSelectedCostCenter(item.name)}
-                        className="flex gap-2 text-sm"
-                      >
-                        <input
-                          type="radio"
-                          name="radio-1"
-                          className="radio w-5 h-5"
-                          checked={selectedCostCenter === item.name}
-                          readOnly
-                        />
-                        <p>{item?.name}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        </fieldset>
+        <CostCenter
+          selectedCostCenter={selectedCostCenter}
+          setSelectedCostCenter={setSelectedCostCenter}
+        />
         {/* Select customer */}
+        <CustomerField
+          selectedCustomer={selectedCustomer}
+          setSelectedCustomer={setSelectedCustomer}
+        />
 
-        <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
-          <legend className="ml-3 px-[5px] text-xs text-gray-500">
-            Select Customer
-          </legend>
-          <div className=" flex justify-between gap-2 items-center w-full pl-4 pb-2">
-            <FaRegUser className="text-[#FF0000] text-xl font-bold" />
-            <p className=" text-start w-[100px] whitespace-nowrap font-medium">
-              {selectedCustomer || "select a customer"}
-            </p>
-            <input
-              type="text"
-              className=" bg-transparent w-[80px] text-black"
-              placeholder=""
-              disabled
-            />
-
-            <div onClick={() => setOpen3(!open3)}>
-              {open3 ? (
-                <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" />
-              ) : (
-                <RiArrowDropRightLine className="text-3xl ml-5 text-blue-600" />
-              )}
-            </div>
-
-            {open3 && (
-              <div className=" fixed top-56  bottom-2 px-3  bg-white rounded-box z-[1] w-[300px] p-2 shadow">
-                <div>
-                  <div className="flex justify-between">
-                    <p className=" text-[12px] text-[#ff3232] font-bold">
-                      clear
-                    </p>
-                    <p className=" text-[12px] text- font-bold">
-                      Select Company{" "}
-                    </p>
-                    <p
-                      onClick={() => setOpen3(!open3)}
-                      className=" text-[12px] text-blue-600 font-bold"
-                    >
-                      close
-                    </p>
-                  </div>
-                </div>
-
-                {/* search */}
-
-                <label className="input input-bordered h-10 mt-3 flex items-center gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    className="h-4 w-4 opacity-70"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <input type="text" className="grow" placeholder="Search" />
-                </label>
-
-                <hr className="my-3" />
-                <div className="flex h-full flex-col gap-4 overflow-y-scroll">
-                  {customer?.data?.map((item) => {
-                    return (
-                      <div
-                        onChange={() => setSelectedCustomer(item.name)}
-                        className="flex gap-3 text-sm"
-                      >
-                        <input
-                          type="radio"
-                          name="radio-1"
-                          className="radio w-5 h-5"
-                          checked={selectedCustomer === item.name}
-                          defaultChecked
-                        />
-                        <p>{item.name}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        </fieldset>
         {/* date */}
-
         <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
           <legend className="ml-3 px-[5px] text-xs text-gray-500">date</legend>
           <div className="flex gap-4 items-center w-full pl-4 pb-2">
@@ -604,15 +332,15 @@ const CreateOrder = () => {
                 return (
                   <div className="flex justify-between border rounded p-2">
                     <div className="flex flex-col gap-2">
-                      <p className="font-medium text-sm">Dell Inspiron 15</p>
+                      <p className="font-medium text-sm">{item.item_name}</p>
                       <p className="flex items-center gap-1 text-xs text-zinc-600">
-                        <FaBangladeshiTakaSign /> 90,000.00*0.0
+                        <FaBangladeshiTakaSign /> {item.standard_rate}
                       </p>
                     </div>
                     <div className="flex flex-col justify-end items-center text-sm">
-                      <p>0.0</p>
+                      <p>{item.standard_rate * item.qty}</p>
                       <div className="flex items-center gap-2 border-[2px] rounded-lg p-1 ">
-                        <FiMinus /> <p>0.0</p> <FaPlus />
+                        <FiMinus /> <p>{item.qty}</p> <FaPlus />
                       </div>
                     </div>
                   </div>
@@ -623,12 +351,15 @@ const CreateOrder = () => {
             <hr />
 
             {/* button */}
-            <Link to="/selectitems">
-              <div className="p-3 flex items-center gap-2">
+            <div>
+              <div
+                onClick={() => setItemOpen(!itemOpen)}
+                className="p-3 flex items-center gap-2 cursor-pointer"
+              >
                 <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-lg" />
                 <p className="">Add Another Item</p>
               </div>
-            </Link>
+            </div>
 
             <hr />
 
@@ -649,7 +380,7 @@ const CreateOrder = () => {
               <div className="flex justify-between">
                 <p className="text-zinc-500">Sub total : </p>
                 <p className="flex items-center gap-1">
-                  <FaBangladeshiTakaSign /> <span>90,000.00</span>{" "}
+                  <FaBangladeshiTakaSign /> <span>{totalSum}</span>{" "}
                 </p>
               </div>
 
@@ -667,7 +398,7 @@ const CreateOrder = () => {
             <div className="flex justify-between p-3">
               <p className=" text-black">Total : </p>
               <p className="flex items-center gap-1 text-blue-600">
-                <FaBangladeshiTakaSign /> <span>90,000.00</span>{" "}
+                <FaBangladeshiTakaSign /> <span>{totalSum}</span>{" "}
               </p>
             </div>
           </div>

@@ -1,3 +1,5 @@
+const fetchURL = "https://erp-backend-xkze.vercel.app";
+
 let formatDate = () => {
   let date = new Date();
   let year = date.getFullYear();
@@ -9,7 +11,7 @@ let formatDate = () => {
 };
 
 const addToProceed = (newItem, store) => {
-  localStorage.removeItem(`${window.location.hostname}-${store}`);
+  // localStorage.removeItem(`${window.location.hostname}-${store}`);
   localStorage.setItem(
     `${window.location.hostname}-${store}`,
     JSON.stringify(newItem)
@@ -28,6 +30,29 @@ const getStoredCart = (store) => {
   return strCart;
 };
 
+const addToCart = (newItem) => {
+  const currentCart =
+    JSON.parse(localStorage.getItem(`${window.location.hostname}-cart`)) || [];
+  const existing = currentCart.findIndex(
+    (item) => item.item_code === newItem.item_code
+  );
+  if (existing !== -1) {
+    currentCart[existing].qty += 1;
+    localStorage.setItem(
+      `${window.location.hostname}-cart`,
+      JSON.stringify(currentCart)
+    );
+    return false;
+  } else {
+    currentCart.push(newItem);
+    localStorage.setItem(
+      `${window.location.hostname}-cart`,
+      JSON.stringify(currentCart)
+    );
+    return true;
+  }
+};
+
 // const getData = async (docName) => {
 //   try {
 //     const response = await fetch(
@@ -44,4 +69,4 @@ const getStoredCart = (store) => {
 //   }
 // };
 
-export { addToProceed, getStoredCart, formatDate };
+export { addToProceed, getStoredCart, formatDate, fetchURL, addToCart };
