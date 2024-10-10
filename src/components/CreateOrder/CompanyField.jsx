@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchURL, getStoredCart } from "../../utilities/function";
 import { LuBuilding2 } from "react-icons/lu";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
@@ -7,6 +7,7 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
   const { url } = getStoredCart("login-info");
   // Company Name api set
   const [company, setCompany] = useState([]);
+  // search for company
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
@@ -36,13 +37,6 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
     setSelectedCompany("");
   };
 
-  // /Company?filters=${query}&fields=["*"]
-
-  //   console.log(searchQuery);
-  // handle Search btn
-
-  // https://erp-backend-xkze.vercel.app/getall?erp_url=https://ecommerce.ionicerp.xyz&doctype_name=Company&filters={"company_name":"IONIC Pharma"}
-
   const handleSearch = async () => {
     const query = encodeURIComponent(`[["name", "like", "%${searchQuery}%"]]`);
     const url1 = `${fetchURL}/gets/Company?erp_url=${url}&filters=${query}&fields=["*"]`;
@@ -50,14 +44,11 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
     try {
       const groupsData = await fetch(url1);
       const data = await groupsData.json();
-      console.log(data);
       setSearchResult(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
-  //   console.log(searchResult);
 
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
@@ -66,18 +57,14 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
       </legend>
       <div
         onClick={() => setOpen1(!open1)}
-        className="flex justify-between gap-2 items-center w-full pl-4 pb-2"
+        className="flex gap-4 items-center justify-between w-full pl-4 pb-2"
       >
-        <LuBuilding2 className="text-[#FF0000]" />
-        <p className="cursor-pointer text-start w-[100px] whitespace-nowrap font-medium">
-          {selectedCompany || "Select a Company"}
-        </p>
-        <input
-          type="text"
-          className=" bg-transparent w-[80px] text-black cursor-pointer"
-          placeholder=""
-          disabled
-        />
+        <div className="flex items-center gap-4">
+          <LuBuilding2 className="text-[#FF0000]" />
+          <p className="cursor-pointer text-start w-[100px] whitespace-nowrap font-medium">
+            {selectedCompany || "Select a Company"}
+          </p>
+        </div>
 
         <div className="cursor-pointer">
           {open1 ? (
@@ -98,14 +85,14 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
                   onClick={clear}
                   className="cursor-pointer text-[12px] text-[#ff3232] font-bold"
                 >
-                  clear
+                  Clear
                 </p>
                 <p className=" text-[12px] text- font-bold">Select Company </p>
                 <p
                   onClick={() => setOpen1(!open1)}
                   className="cursor-pointer text-[12px] text-blue-600 font-bold"
                 >
-                  close
+                  Close
                 </p>
               </div>
             </div>
@@ -138,21 +125,23 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
 
             <hr className="my-3" />
             {searchQuery == "" ? (
-              <div className="flex flex-col gap-2 text-sm">
+              <div className="flex flex-col gap-3 text-sm">
                 {company?.data?.map((item) => {
                   return (
                     <div
-                      onChange={() => setSelectedCompany(item.company_name)}
-                      className="flex items-start gap-4"
+                      onClick={() => {
+                        setSelectedCompany(item.company_name);
+                        setOpen1(!open1);
+                      }}
+                      className="flex items-start gap-4 cursor-pointer"
                     >
                       <input
-                        onClick={() => setOpen1(!open1)}
                         key={item.id}
                         type="radio"
                         name="radio-1"
                         checked={selectedCompany === item.company_name}
                         className="radio w-5 h-5"
-                        readOnly
+                        value={item.company_name}
                       />
                       <p>{item.company_name}</p>
                     </div>
@@ -160,26 +149,36 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
                 })}
               </div>
             ) : (
-              <div className="flex flex-col gap-2 text-sm">
-                {searchResult?.data?.map((item) => {
-                  return (
-                    <div
-                      onChange={() => setSelectedCompany(item.company_name)}
-                      className="flex items-start gap-4"
-                    >
-                      <input
-                        onClick={() => setOpen1(!open1)}
-                        key={item.id}
-                        type="radio"
-                        name="radio-1"
-                        checked={selectedCompany === item.company_name}
-                        className="radio w-5 h-5"
-                        readOnly
-                      />
-                      <p>{item.company_name}</p>
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col gap-3 text-sm">
+                {/* validation for search result   */}
+                {!searchResult?.data?.length == 0 ? (
+                  <div>
+                    {searchResult?.data?.map((item) => {
+                      return (
+                        <div
+                          onClick={() => {
+                            setSelectedCompany(item.company_name);
+                            setOpen1(!open1);
+                          }}
+                          className="flex items-start gap-4"
+                        >
+                          <input
+                            key={item.id}
+                            type="radio"
+                            name="radio-1"
+                            checked={selectedCompany === item.company_name}
+                            className="radio w-5 h-5"
+                          />
+                          <p>{item.company_name}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center ">
+                    <p>Nothing</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

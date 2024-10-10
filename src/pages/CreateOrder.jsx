@@ -21,7 +21,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import { IoArrowUpCircleOutline } from "react-icons/io5";
 import { FiMinus } from "react-icons/fi";
 import { Scanner } from "@yudiel/react-qr-scanner";
-import { formatDate, getStoredCart } from "../utilities/function";
+import {
+  addToProceed,
+  fetchURL,
+  formatDate,
+  getStoredCart,
+} from "../utilities/function";
 import SelectItems from "./SelectItems";
 import { toast } from "react-toastify";
 import CompanyField from "../components/CreateOrder/CompanyField";
@@ -63,6 +68,66 @@ const CreateOrder = () => {
   };
 
   const handleCreateOrder = () => {
+    const info1 = {
+      erp_url: url,
+      doctype_name: "Sales Order",
+      document_name: "2024-00159",
+      data: {
+        customer: "hossan",
+        transaction_date: "2024-09-05",
+        custom_delivery_type: "",
+        items: [
+          {
+            item_code: "101",
+            delivery_date: "2024-09-05",
+            qty: 8,
+            rate: 20,
+          },
+        ],
+      },
+    };
+
+    // deleted items from delivery
+    const info = {
+      erp_url: url,
+      doctype_name: "Sales Order",
+      document_name: "2024-00159",
+    };
+
+    // Post order
+    fetch(`${fetchURL}/delete_data`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("success", data);
+        if (data) {
+          toast.success("Order Create", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
     if (selectedCompany == "") {
       toast.warn("Please Selected Company Name", {
         position: "top-center",
@@ -144,51 +209,79 @@ const CreateOrder = () => {
 
     // console.log(obd);
 
-    const info = {
-      server: url,
-      doctype: "Sales Order",
-      data: {
-        customer: "hossan",
-        transaction_date: "2024-09-05",
-        custom_delivery_type: "",
-        items: obd || [],
-      },
-    };
+    // const info = {
+    //   server: url,
+    //   doctype: "Sales Order",
+    //   data: {
+    //     customer: "hossan",
+    //     transaction_date: "2024-09-05",
+    //     custom_delivery_type: "",
+    //     items: obd || [],
+    //   },
+    // };
 
-    // Post order
-    fetch("https://erp-backend-xkze.vercel.app/post_dataf", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(info),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("success", data);
-        if (data) {
-          toast.success("Order Create", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    // // Post order
+    // fetch("https://erp-backend-xkze.vercel.app/post_dataf", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(info),
+    // })
+    //   .then((res) => {
+    //     if (!res.ok) {
+    //       throw new Error("Network response was not ok");
+    //     }
+    //     return res.json();
+    //   })
+    //   .then((data) => {
+    //     console.log("success", data);
+    //     if (data) {
+    //       toast.success("Order Create", {
+    //         position: "top-center",
+    //         autoClose: 5000,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //         draggable: true,
+    //         progress: undefined,
+    //         theme: "dark",
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
   };
+
+  // item data for Company name
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${fetchURL}/getall?erp_url=${url}&doctype_name=Item`
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const result = await response.json();
+        const tem = result?.data;
+        // console.log(tem);
+        const l = {};
+        for (let i = 0; i < tem.length; i++) {
+          tem[i]["qty"] = 0;
+          l[tem[i].name] = tem[i];
+          // console.log(tem[i]);
+        }
+        addToProceed(l, "item-all-data");
+        // setItemData(result);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+    fetchData();
+  }, []);
 
   const goBack = () => {
     navigate(-1);
@@ -242,7 +335,7 @@ const CreateOrder = () => {
           <div className="flex gap-4 items-center w-full pl-4 pb-2">
             <SlCalender
               onClick={handleCalendarClick}
-              className="text-[#FF0000] text-xl font-bold"
+              className="text-[#FF0000] text-[17px] font-bold"
             />
             <DatePicker
               className="bg-transparent text-black font-medium"

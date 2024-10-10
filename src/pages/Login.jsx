@@ -2,7 +2,7 @@ import { IoIosGlobe } from "react-icons/io";
 // import bgImg from '../assets/abstract-line-hexagon-geometric-texture_1035-17372.avif';
 import erp from "../assets/IONIC-ERP-icon.png";
 import { useForm } from "react-hook-form";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Switch from "react-switch";
 import { FaRegCopyright, FaRegUser } from "react-icons/fa";
 import { CiLock } from "react-icons/ci";
@@ -10,11 +10,20 @@ import { MdArrowDropDown } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { SiNba } from "react-icons/si";
 import { addToProceed, getStoredCart } from "../utilities/function";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [checked, setChecked] = useState(false);
   const [protocol, setProtocol] = useState("https");
   const navigate = useNavigate();
+  const { url } = getStoredCart("login-info")
+
+  useEffect(() => {
+    if (url) {
+      navigate("/")
+    }
+  }, [url])
+
 
   const {
     register,
@@ -26,8 +35,7 @@ const Login = () => {
   //       pwd: "Ionic0825",
 
   const onSubmit = (data) => {
-    console.log(protocol);
-    // console.log(protocol);
+  
     const url = `${protocol}://${data.url}`;
     const pass = data.password;
     const user = data.username;
@@ -57,6 +65,16 @@ const Login = () => {
           };
           addToProceed(info, "login-info");
           navigate("/");
+          toast.success('Login Susses', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
         }
       })
       .then((e) => console.log(e));
@@ -118,7 +136,7 @@ const Login = () => {
                   </button>
                 </div>
                 <dialog id="my_modal_2" className="modal">
-                  <div className="h-40 w-80 mx-10 bg-white rounded-xl  absolute bottom-5 px-5 pt-3">
+                  <div className="h-40  w-80 mx-10 bg-white rounded-xl absolute top-[290px] px-5 pt-3">
                     <h3 className="font-semibold text-black text-lg py-2">
                       Select Protocol
                     </h3>
@@ -126,14 +144,14 @@ const Login = () => {
                     <div className="flex flex-col gap-3 py-2">
                       <p
                         onClick={() => setProtocol("https")}
-                        className="flex justify-start gap-3 text-black items-center"
+                        className="flex justify-start gap-3 text-black items-center cursor-pointer"
                       >
                         {" "}
                         <IoIosGlobe className="text-[#116630] text-xl" /> https
                       </p>
                       <p
                         onClick={() => setProtocol("http")}
-                        className="flex justify-start gap-3 text-black items-center"
+                        className="flex justify-start gap-3 text-black items-center "
                       >
                         {" "}
                         <IoIosGlobe className="text-[#116630] text-xl" /> http
@@ -146,7 +164,7 @@ const Login = () => {
                 </dialog>
 
                 <input
-                  className="outline-none focus:ring-0 focus:border-[#116630]"
+                  className="outline-none w-full focus:ring-0 focus:border-[#116630]"
                   placeholder="URL"
                   {...register("url", { required: true })}
                 />
@@ -159,20 +177,20 @@ const Login = () => {
                 </button>
 
                 <input
-                  className="outline-none focus:ring-0 focus:border-[#FF0000]"
+                  className="outline-none w-full focus:ring-0 focus:border-[#FF0000]"
                   placeholder="Username"
                   {...register("username", { required: true })}
                 />
                 {/* {errors.username && <span className='text-red-500'>This field is required</span>} */}
               </div>
-              <div className="flex  items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
+              <div className="flex items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
                 <button className="">
                   {" "}
                   <CiLock className="text-[#FF0000] text-xl" />
                 </button>
 
                 <input
-                  className="outline-none focus:ring-0 focus:border-[#116630]"
+                  className="outline-none w-full focus:ring-0 focus:border-[#116630]"
                   type="password"
                   placeholder="Password"
                   {...register("password", { required: true })}

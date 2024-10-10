@@ -4,13 +4,27 @@ import { FiMinus } from "react-icons/fi";
 import { IoIosSearch, IoMdArrowBack } from "react-icons/io";
 import { RiQrScan2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { addToProceed, fetchURL, getStoredCart } from "../utilities/function";
+import {
+  addToProceed,
+  fetchURL,
+  getStoredCart,
+  updateData,
+} from "../utilities/function";
 import { toast } from "react-toastify";
 
 const SelectItems = ({ setItemOpen, itemOpen }) => {
   const data = getStoredCart("order-info");
+  const AllData = getStoredCart("item-all-data");
+  const AllData1 = getStoredCart("item-all-data");
+  // const [AllData2, setAllData2] = useState(getStoredCart("item-all-data"))
+  // AllData1?.data?.map((itm) => (itm["qty"] = 0));
+
   let sum = [];
-  sum.push(...data)
+  sum.push(...data);
+
+  // console.log(AllData2);
+
+  // console.log(AllData1);
 
   const [open, setOpen] = useState(false);
   const { url } = getStoredCart("login-info");
@@ -18,9 +32,11 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
   // set grp item state
   const [grpItem, setGrpItem] = useState([]);
   const [itemData1, setItemData1] = useState([]);
+  const [loader, setLoader] = useState(true);
   // item data state
   const [itemData, setItemData] = useState([]);
   const [quantities, setQuantities] = useState({});
+  const [count, setCount] = useState(0);
 
   // get data for Company name
   useEffect(() => {
@@ -60,10 +76,21 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
     fetchData();
   }, []);
 
+  // useEffect(() => {
+
+  // }, [itemName])
+
+  const handlePlus1 = (itemName, e) => {
+    console.log(AllData1[itemName]);
+    AllData1[itemName]["qty"]++;
+    updateData(itemName, AllData1[itemName]["qty"]);
+    console.log(AllData1[itemName]["qty"]);
+  };
+
   // handle Category Click button
   const handleCategoryClick = (name) => {
     setActiveCategory(name);
-    const filterData = itemData?.data?.filter(
+    const filterData = Object.values(AllData1)?.filter(
       (data) => data.item_group == name
     );
     setItemData1(filterData);
@@ -71,11 +98,17 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
 
   // handle plus btn
   const handlePlus = (itemName) => {
+    // console.log(i);
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
       [itemName]: (prevQuantities[itemName] || 0) + 1,
     }));
+    console.log(quantities[itemName], itemName);
+    AllData1[itemName]["qty"]++;
+    updateData(itemName, AllData1[itemName]["qty"]);
   };
+
+  // handle plus btn
 
   // handle minus btn
   const handleMinus = (itemName) => {
@@ -99,9 +132,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
       });
     } else {
       const list = Object.keys(quantities);
-
       console.log(list);
-
       for (let i in list) {
         const filter = itemData?.data?.filter((item) => item?.name == list[i]);
         console.log(filter);
@@ -166,7 +197,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
       <div className="flex flex-col gap-[2px]">
         {itemData1.length == 0 ? (
           <div>
-            {itemData?.data?.map((item, idx) => {
+            {Object.values(AllData1).map((item, idx) => {
               return (
                 <div key={idx} className="bg-white p-3">
                   <div className="flex justify-between">
@@ -182,7 +213,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
                         <div onClick={() => handleMinus(item?.name)}>
                           <FiMinus className="cursor-pointer" />{" "}
                         </div>
-                        <p>{quantities[item?.name]?.toFixed(2) || 0.0}</p>{" "}
+                        <p>{item?.qty}</p>{" "}
                         <FaPlus
                           className="cursor-pointer"
                           onClick={() => handlePlus(item?.name)}
@@ -212,10 +243,10 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
                         <div onClick={() => handleMinus(item?.name)}>
                           <FiMinus className="cursor-pointer" />{" "}
                         </div>
-                        <p>{quantities[item?.name]?.toFixed(2) || 0.0}</p>{" "}
+                        <p>{quantities[item?.name] || 0}</p>{" "}
                         <FaPlus
                           className="cursor-pointer"
-                          onClick={() => handlePlus(item?.name)}
+                          onClick={(e) => handlePlus(item?.name, e)}
                         />
                       </div>
                     </div>
@@ -250,7 +281,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
 
       <div className="" onClick={handleCreateOrder}>
         <button className="fixed bottom-0 z-20 border-[1px] p-4 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full">
-         Add Item
+          Add Item
         </button>
       </div>
     </div>

@@ -47,14 +47,13 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
     try {
       const groupsData = await fetch(url1);
       const data = await groupsData.json();
-      console.log(data);
       setSearchResult(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  console.log(searchQuery);
+  // console.log(searchQuery);
 
   // console.log(searchResult);
 
@@ -65,18 +64,14 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
       </legend>
       <div
         onClick={() => setOpen3(!open3)}
-        className=" flex justify-between gap-2 items-center w-full pl-4 pb-2"
+        className=" flex  gap-4 items-center justify-between w-full pl-4 pb-2"
       >
-        <FaRegUser className="text-[#FF0000] text-xl font-bold" />
-        <p className=" text-start w-[100px] whitespace-nowrap font-medium cursor-pointer">
-          {selectedCustomer || "select a customer"}
-        </p>
-        <input
-          type="text"
-          className=" bg-transparent w-[80px] text-black"
-          placeholder=""
-          disabled
-        />
+        <div className="flex items-center gap-4">
+          <FaRegUser className="text-[#FF0000] text-[18px] font-bold" />
+          <p className=" text-start w-[100px] whitespace-nowrap font-medium cursor-pointer">
+            {selectedCustomer || "select a customer"}
+          </p>
+        </div>
 
         <div className="cursor-pointer">
           {open3 ? (
@@ -97,14 +92,14 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
                   onClick={clear2}
                   className="cursor-pointer text-[12px] text-[#ff3232] font-bold"
                 >
-                  clear
+                  Clear
                 </p>
                 <p className=" text-[12px] text- font-bold">Select Customer </p>
                 <p
                   onClick={() => setOpen3(!open3)}
                   className="cursor-pointer text-[12px] text-blue-600 font-bold"
                 >
-                  close
+                  Close
                 </p>
               </div>
             </div>
@@ -136,16 +131,19 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
             </label>
 
             <hr className="my-3" />
+            {/* All Customer show  */}
             {searchQuery == "" ? (
               <div className="flex h-full flex-col gap-4 overflow-y-scroll">
                 {customer?.data?.map((item) => {
                   return (
                     <div
-                      onChange={() => setSelectedCustomer(item.name)}
+                      onClick={() => {
+                        setSelectedCustomer(item.name);
+                        setOpen3(!open3);
+                      }}
                       className="flex gap-3 text-sm"
                     >
                       <input
-                        onClick={() => setOpen3(!open3)}
                         type="radio"
                         name="radio-1"
                         className="radio w-5 h-5"
@@ -157,26 +155,40 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
                   );
                 })}
               </div>
-            ) : <div className="flex h-full flex-col gap-4 overflow-y-scroll">
-                {searchResult?.data?.map((item) => {
-                  return (
-                    <div
-                      onChange={() => setSelectedCustomer(item.name)}
-                      className="flex gap-3 text-sm"
-                    >
-                      <input
-                        onClick={() => setOpen3(!open3)}
-                        type="radio"
-                        name="radio-1"
-                        className="radio w-5 h-5"
-                        checked={selectedCustomer === item.name}
-                        defaultChecked
-                      />
-                      <p>{item.name}</p>
-                    </div>
-                  );
-                })}
-              </div>}
+            ) : (
+              // search query show
+              <div className="flex h-full flex-col gap-4 overflow-y-scroll">
+                {!searchResult?.data?.length == 0 ? (
+                  <div>
+                    {searchResult?.data?.map((item) => {
+                      return (
+                        <div
+                          onClick={() => {
+                            setSelectedCustomer(item.name);
+                            setOpen3(!open3);
+                          }}
+                          className="flex gap-3 text-sm"
+                        >
+                          <input
+                            type="radio"
+                            name="radio-1"
+                            className="radio w-5 h-5"
+                            checked={selectedCustomer === item.name}
+                            defaultChecked
+                          />
+                          <p>{item.name}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  // no data found
+                  <div className="flex items-center justify-center ">
+                    <p>Nothing</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>

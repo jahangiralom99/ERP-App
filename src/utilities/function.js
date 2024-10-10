@@ -1,3 +1,4 @@
+
 const fetchURL = "https://erp-backend-xkze.vercel.app";
 
 let formatDate = () => {
@@ -30,23 +31,38 @@ const getStoredCart = (store) => {
   return strCart;
 };
 
+const removeItemFromCart = (store, itemId) => {
+  let cart = getStoredCart(store);
+
+  // Remove the item with the specific itemId
+  const updatedCart = cart.filter((item) => item.id !== itemId);
+
+  // Save the updated cart back to localStorage
+  localStorage.setItem(
+    `${window.location.hostname}-${store}`,
+    JSON.stringify(updatedCart)
+  );
+};
+
 const addToCart = (newItem) => {
   const currentCart =
-    JSON.parse(localStorage.getItem(`${window.location.hostname}-cart`)) || [];
+    JSON.parse(
+      localStorage.getItem(`${window.location.hostname}-order-info`)
+    ) || [];
   const existing = currentCart.findIndex(
     (item) => item.item_code === newItem.item_code
   );
   if (existing !== -1) {
     currentCart[existing].qty += 1;
     localStorage.setItem(
-      `${window.location.hostname}-cart`,
+      `${window.location.hostname}-order-info`,
       JSON.stringify(currentCart)
     );
     return false;
   } else {
     currentCart.push(newItem);
     localStorage.setItem(
-      `${window.location.hostname}-cart`,
+      `${window.location.hostname}-order-info`,
       JSON.stringify(currentCart)
     );
     return true;
@@ -69,4 +85,38 @@ const addToCart = (newItem) => {
 //   }
 // };
 
-export { addToProceed, getStoredCart, formatDate, fetchURL, addToCart };
+// Function to update data
+function updateData(key, newName) {
+  // Retrieve and parse the object from local storage
+  const storedSum = getStoredCart("item-all-data");
+  // console.log(storedSum);
+  if (storedSum) {
+    // Update the specified key with the new name
+    if (storedSum[key]) {
+      storedSum[key]["qty"] = newName;
+
+      // Store the updated object back in local storage
+      // localStorage.setItem('sum', JSON.stringify(storedSum));
+      addToProceed(storedSum, "item-all-data");
+
+      // console.log(`Updated key ${key} with name ${newName}`);
+    } else {
+      console.log(`Key ${key} does not exist.`);
+    }
+  } else {
+    console.log("No data found in localStorage for key: sum");
+  }
+}
+
+// Example of updating the name for key '10'
+// updateData('10', 'newName');
+
+export {
+  addToProceed,
+  getStoredCart,
+  formatDate,
+  fetchURL,
+  addToCart,
+  removeItemFromCart,
+  updateData,
+};
