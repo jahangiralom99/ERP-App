@@ -68,161 +68,16 @@ const CreateOrder = () => {
   };
 
   const handleCreateOrder = () => {
-    const info1 = {
-      erp_url: url,
-      doctype_name: "Sales Order",
-      document_name: "2024-00159",
-      data: {
-        customer: "hossan",
-        transaction_date: "2024-09-05",
-        custom_delivery_type: "",
-        items: [
-          {
-            item_code: "101",
-            delivery_date: "2024-09-05",
-            qty: 8,
-            rate: 20,
-          },
-        ],
-      },
-    };
-
     // deleted items from delivery
-    const info = {
-      erp_url: url,
-      doctype_name: "Sales Order",
-      document_name: "2024-00159",
-    };
-
-    // Post order
-    fetch(`${fetchURL}/delete_data`, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(info),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("success", data);
-        if (data) {
-          toast.success("Order Create", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-
-    if (selectedCompany == "") {
-      toast.warn("Please Selected Company Name", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    } else if (selectedCostCenter == "") {
-      toast.warn("Please Selected CostCenter ", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    } else if (selectedCustomer == "") {
-      toast.warn("Please Selected Customer Name", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    } else if (data.length == 0) {
-      toast.warn("Please Selected Order Items", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    } else {
-      console.log("success");
-    }
-
     // const info = {
-    //   server: url,
-    //   doctype: "Sales Order",
-    //   data: {
-    //     customer: "nizum2",
-    //     transaction_date: "2024-10-06",
-    //     custom_delivery_type: "",
-    //     items: [
-    //       {
-    //         item_code: "334",
-    //         item_name: "Nestlé Lactogen 4 Infant Formula Milk Powder (2-5 Y)",
-    //         delivery_date: "2024-10-2",
-    //         qty: Quantity,
-    //         rate: RatePerPiece,
-    //         amount: Quantity * RatePerPiece,
-    //       },
-    //     ],
-    //   },
-    //   };
-
-    const obd = data?.map((itm) => {
-      // console.log(itm);
-      const info = {
-        item_code: itm?.item_code,
-        item_name: itm?.item_name,
-        delivery_date: date,
-        qty: itm?.qty,
-      };
-      return info;
-    });
-
-    // console.log(obd);
-
-    // const info = {
-    //   server: url,
-    //   doctype: "Sales Order",
-    //   data: {
-    //     customer: "hossan",
-    //     transaction_date: "2024-09-05",
-    //     custom_delivery_type: "",
-    //     items: obd || [],
-    //   },
+    //   erp_url: url,
+    //   doctype_name: "Sales Order",
+    //   document_name: "2024-00159",
     // };
 
-    // // Post order
-    // fetch("https://erp-backend-xkze.vercel.app/post_dataf", {
-    //   method: "POST",
+    // Post order
+    // fetch(`${fetchURL}/delete_data`, {
+    //   method: "DELETE",
     //   headers: {
     //     Accept: "application/json",
     //     "Content-Type": "application/json",
@@ -253,6 +108,170 @@ const CreateOrder = () => {
     //   .catch((error) => {
     //     console.error("Error:", error);
     //   });
+
+    // if (selectedCompany == "") {
+    //   toast.warn("Please Selected Company Name", {
+    //     position: "top-center",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "dark",
+    //   });
+    // } else if (selectedCostCenter == "") {
+    //   toast.warn("Please Selected CostCenter ", {
+    //     position: "top-center",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "dark",
+    //   });
+    // } else if (selectedCustomer == "") {
+    //   toast.warn("Please Selected Customer Name", {
+    //     position: "top-center",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "dark",
+    //   });
+    // } else if (data.length == 0) {
+    //   toast.warn("Please Selected Order Items", {
+    //     position: "top-center",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "dark",
+    //   });
+    // } else {
+    //   console.log("success");
+    // }
+
+    // const info = {
+    //   server: url,
+    //   doctype: "Sales Order",
+    //   data: {
+    //     customer: "nizum2",
+    //     transaction_date: "2024-10-06",
+    //     custom_delivery_type: "",
+    //     items: [
+    //       {
+    //         item_code: "334",
+    //         item_name: "Nestlé Lactogen 4 Infant Formula Milk Powder (2-5 Y)",
+    //         delivery_date: "2024-10-2",
+    //         qty: Quantity,
+    //         rate: RatePerPiece,
+    //         amount: Quantity * RatePerPiece,
+    //       },
+    //     ],
+    //   },
+    //   };
+
+    // const obd = data?.map((itm) => {
+    //   // console.log(itm);
+    //   const info = {
+    //     item_code: itm?.item_code,
+    //     item_name: itm?.item_name,
+    //     delivery_date: date,
+    //     qty: itm?.qty,
+    //   };
+    //   return info;
+    // });
+
+    // console.log(obd);
+
+    // const info = {
+    //   server: url,
+    //   doctype: "Sales Order",
+    //   data: {
+    //     customer: "hossan",
+    //     transaction_date: "2024-09-05",
+    //     custom_delivery_type: "",
+    //     items: obd || [],
+    //   },
+    // };
+
+    // post body new
+    let m = {
+      server: "https://ecommerce.ionicerp.xyz",
+      doctype: "Sales Order",
+      data: {
+        customer: "hossan",
+        transaction_date: "2024-09-05",
+        custom_delivery_type: "",
+        items: [
+          {
+            item_code: "102",
+            item_name: "Deshi Peyaj (Local Onion)",
+            delivery_date: "2024-10-04",
+            qty: 2,
+          },
+        ],
+      },
+    };
+
+    const info1 = {
+      erp_url: url,
+      doctype_name: "Sales Order",
+      // document_name: "2024-00159",
+      data: {
+        customer: "hossan",
+        transaction_date: "2024-09-05",
+        custom_delivery_type: "",
+        items: [
+          {
+            item_code: "101",
+            delivery_date: "2024-09-05",
+            qty: 8,
+            rate: 20,
+          },
+        ],
+      },
+    };
+
+    // // Post order
+    fetch("https://erp-backend-black.vercel.app/post_data", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(m),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("success", data);
+        if (data) {
+          toast.success("Order Create", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   // item data for Company name

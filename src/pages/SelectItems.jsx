@@ -5,6 +5,7 @@ import { IoIosSearch, IoMdArrowBack } from "react-icons/io";
 import { RiQrScan2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import {
+  addToCart,
   addToProceed,
   fetchURL,
   getStoredCart,
@@ -116,6 +117,8 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
       ...prevQuantities,
       [itemName]: Math.max((prevQuantities[itemName] || 0) - 1, 0),
     }));
+    AllData1[itemName]["qty"]--;
+    updateData(itemName, AllData1[itemName]["qty"]);
   };
 
   const handleCreateOrder = () => {
@@ -142,6 +145,8 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
       }
       console.log(sum);
       addToProceed(sum, "order-info");
+
+      // addToProceed(sum, "order-info");
       setItemOpen(!itemOpen);
     }
   };

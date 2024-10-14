@@ -1,4 +1,3 @@
-
 const fetchURL = "https://erp-backend-xkze.vercel.app";
 
 let formatDate = () => {
@@ -19,6 +18,22 @@ const addToProceed = (newItem, store) => {
   );
   return true;
 };
+
+
+// const addToProceed = (newItem, store) => {
+//   const storageKey = `${window.location.hostname}-${store}`;
+
+//   // Retrieve the current object from localStorage, or initialize an empty object if none exists
+//   let existingData = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+//   // Merge the new item into the existing data (assuming newItem contains key-value pairs)
+//   const updatedData = { ...existingData, ...newItem };
+
+//   // Save the updated object back to localStorage
+//   localStorage.setItem(storageKey, JSON.stringify(updatedData));
+
+//   return true;
+// };
 
 const getStoredCart = (store) => {
   let strCart = [];
@@ -48,7 +63,7 @@ const addToCart = (newItem) => {
   const currentCart =
     JSON.parse(
       localStorage.getItem(`${window.location.hostname}-order-info`)
-    ) || [];
+    );
   const existing = currentCart.findIndex(
     (item) => item.item_code === newItem.item_code
   );
@@ -94,10 +109,29 @@ function updateData(key, newName) {
     // Update the specified key with the new name
     if (storedSum[key]) {
       storedSum[key]["qty"] = newName;
-
       // Store the updated object back in local storage
       // localStorage.setItem('sum', JSON.stringify(storedSum));
       addToProceed(storedSum, "item-all-data");
+
+      // console.log(`Updated key ${key} with name ${newName}`);
+    } else {
+      console.log(`Key ${key} does not exist.`);
+    }
+  } else {
+    console.log("No data found in localStorage for key: sum");
+  }
+}
+function updateOrder(key, newName) {
+  // Retrieve and parse the object from local storage
+  const storedSum = getStoredCart("order-info");
+  // console.log(storedSum);
+  if (storedSum) {
+    // Update the specified key with the new name
+    if (storedSum[key]) {
+      storedSum[key]["qty"] = newName;
+      // Store the updated object back in local storage
+      // localStorage.setItem('sum', JSON.stringify(storedSum));
+      addToProceed(storedSum, "order-info");
 
       // console.log(`Updated key ${key} with name ${newName}`);
     } else {
@@ -119,4 +153,5 @@ export {
   addToCart,
   removeItemFromCart,
   updateData,
+  updateOrder
 };
