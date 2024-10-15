@@ -13,10 +13,17 @@ import {
 } from "../utilities/function";
 import { toast } from "react-toastify";
 
-const SelectItems = ({ setItemOpen, itemOpen, handlePlus, handleMinus,AllData1, quantities }) => {
+const SelectItems = ({
+  setItemOpen,
+  itemOpen,
+  handlePlus,
+  handleMinus,
+  AllData1,
+  quantities,
+  setMf
+}) => {
   const data = getStoredCart("order-info");
   const AllData = getStoredCart("item-all-data");
- 
 
   // const [AllData2, setAllData2] = useState(getStoredCart("item-all-data"))
   // AllData1?.data?.map((itm) => (itm["qty"] = 0));
@@ -37,10 +44,8 @@ const SelectItems = ({ setItemOpen, itemOpen, handlePlus, handleMinus,AllData1, 
   const [loader, setLoader] = useState(true);
   // item data state
   const [itemData, setItemData] = useState([]);
-  
-  const [count, setCount] = useState(0);
 
- 
+  const [count, setCount] = useState(0);
 
   // get data for Company name
   useEffect(() => {
@@ -137,38 +142,36 @@ const SelectItems = ({ setItemOpen, itemOpen, handlePlus, handleMinus,AllData1, 
         theme: "dark",
       });
     } else {
-
       const list = Object.values(AllData1);
-
-      console.log("list",list);
+      console.log("list", list);
       for (let i of list) {
         let tem = 0;
         if (i.qty > 0) {
-            for (let j of sum) {
-                if (i.name === j.name) {
-                    j.qty = i.qty;
-                    tem = 1;
-                    break;
-                }
+          for (let j of sum) {
+            if (i.name === j.name) {
+              j.qty = i.qty;
+              tem = 1;
+              break;
             }
-            if (tem === 0) {
-              sum.push(i);
-            }
+          }
+          if (tem === 0) {
+            sum.push(i);
+          }
         }
       }
-      
+
       console.log(sum);
-    
 
       // console.log(list);
       // for (let i in list) {
       //   const filter = itemData?.data?.filter((item) => item?.name !== list[i]);
-        
+
       //   filter[0]["qty"] = quantities[list[i]];
       //   console.log(filter);
       //   sum.push(filter[0]);
       // }
       console.log(sum);
+      setMf(sum)
       addToProceed(sum, "order-info");
 
       // addToProceed(sum, "order-info");
@@ -257,7 +260,7 @@ const SelectItems = ({ setItemOpen, itemOpen, handlePlus, handleMinus,AllData1, 
           </div>
         ) : (
           <div>
-            {Object.values(AllData1).map((item, idx) => {
+            {itemData1?.map((item, idx) => {
               return (
                 <div key={idx} className="bg-white p-3">
                   <div className="flex justify-between">

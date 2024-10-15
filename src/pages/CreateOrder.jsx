@@ -27,6 +27,7 @@ import {
   formatDate,
   getStoredCart,
   updateData,
+  updateDataOrder,
 } from "../utilities/function";
 import SelectItems from "./SelectItems";
 import { toast } from "react-toastify";
@@ -68,15 +69,27 @@ const CreateOrder = () => {
   const [itemOpen, setItemOpen] = useState(false);
   // qty set
   const [quantities, setQuantities] = useState({});
+  // const [data, setData] = useState([]);
+  const [count, setCount] = useState(10);
+  // fg
+  const data = getStoredCart("order-info");
+  const [items, setItems] = useState(data);
+  // const [loader, setLoader] = useState(true);
+
+  const [mf, setMf] = useState([]);
+
+  console.log("sdfkndfjgdhgdf", mf);
 
   useEffect(() => {
     const AllData1 = getStoredCart("item-all-data");
     setAllData(AllData1);
   }, []);
 
+  const m = getStoredCart("item-all-data");
+  const filter = Object.values(m).filter((item) => item["qty"] > 0);
+  console.log("filter", filter);
 
   const { url } = getStoredCart("login-info");
-  const data = getStoredCart("order-info");
 
   const handleCalendarClick = () => {
     setOpen((prev) => !prev);
@@ -321,11 +334,11 @@ const CreateOrder = () => {
     navigate(-1);
   };
 
-  const totalSum = data.reduce((acc, item) => {
+  const totalSum = items.reduce((acc, item) => {
     return acc + item.standard_rate * item.qty;
   }, 0);
 
-  // handle plus btn
+  // handle plus btn for modal
   const handlePlus = (itemName) => {
     // console.log(i);
     setQuantities((prevQuantities) => ({
@@ -337,7 +350,7 @@ const CreateOrder = () => {
     updateData(itemName, AllData1[itemName]["qty"]);
   };
 
-  // handle minus btn
+  // handle minus btn for modal
   const handleMinus = (itemName) => {
     setQuantities((prevQuantities) => {
       const newQty = Math.max((prevQuantities[itemName] || 0) - 1, 0);
@@ -358,8 +371,73 @@ const CreateOrder = () => {
     });
   };
 
-  console.log(totalSum);
+  // handle minus btn for order info
+  // const handlePlusOrder = (itemName) => {
+  //   setCount()
+  //   // console.log(itemName);
+  //   // setQuantities((prevQuantities) => ({
+  //   //   ...prevQuantities,
+  //   //   [itemName]: (prevQuantities[itemName] || 0) + 1,
+  //   // }));
+  //   // console.log(data);
+  //   // for (let i of data) {
+  //   //   // console.log(i);
+  //   //   if (i.item_code === itemName) {
+  //   //     // console.log(i);
+  //   //     i.qty += 1;
+  //   //     updateDataOrder(itemName, i.qty);
+  //   //   }
+  //   // }
+  // };
+
+  // Handle increasing quantity
+  const handlePlusOrder = (name) => {
+    setData((prevItems) =>
+      data.map((item) =>
+        item.name === name
+          ? {
+              ...item,
+              qty: item.qty + 1, // Increment quantity
+              totalPrice: item.price * (item.qty + 1), // Update total price
+            }
+          : item
+      )
+    );
+  };
+
+  // // Handle decreasing quantity for order
+  const handleMinusOrder = (name) => {
+    console.log(name);
+
+    // setData((prevItems) =>
+    //   prevItems.map((item) =>
+    //     item.name === name
+    //       ? {
+    //           ...item,
+    //           qty: Math.max(item.qty - 1, 0), // Decrement quantity but not below 0
+    //           totalPrice: item.price * Math.max(item.qty - 1, 0), // Update total price
+    //         }
+    //       : item
+    //   )
+    // );
+  };
+
+  // console.log(totalSum);
   // clear all selected items
+
+  // const increaseQty = (index) => {
+  //   const updatedItems = data.map((item, idx) =>
+  //     idx === index ? { ...item, qty: item.qty + 1 } : item
+  //   );
+  //   setItems(updatedItems);
+  // };
+
+  // const decreaseQty = (index) => {
+  //   const updatedItems = data.map((item, idx) =>
+  //     idx === index && item.qty > 0 ? { ...item, qty: item.qty - 1 } : item
+  //   );
+  //   setItems(updatedItems);
+  // };
 
   return (
     <div className="bg-gray-200 pb-20 text-black">
@@ -488,7 +566,7 @@ const CreateOrder = () => {
           <div className="border-[1px] bg-white border-zinc-300 rounded-xl">
             {/* part-1 */}
             <div className=" p-3 flex flex-col gap-1 rounded-xl ">
-              {data?.map((item) => {
+              {filter?.map((item, idx) => {
                 return (
                   <div className="flex justify-between border rounded p-2">
                     <div className="flex flex-col gap-2">
@@ -500,11 +578,11 @@ const CreateOrder = () => {
                     <div className="flex flex-col justify-end items-center text-sm">
                       <p>{item.standard_rate * item.qty}</p>
                       <div className="flex items-center gap-2 border-[2px] rounded-lg p-1 ">
-                        <FiMinus onClick={() => handleMinus(item?.name)} />{" "}
-                        <p>{item.qty}</p>{" "}
+                        <FiMinus onClick={() => handleMinus(item.name)} />{" "}
+                        {<p>{item.qty}</p>}
                         <FaPlus
                           className="cursor-pointer"
-                          onClick={() => handlePlus(item?.name)}
+                          onClick={() => handlePlus(item.name)}
                         />
                       </div>
                     </div>
@@ -591,6 +669,7 @@ const CreateOrder = () => {
             itemOpen={itemOpen}
             AllData1={AllData1}
             quantities={quantities}
+            setMf={setMf}
             setItemOpen={setItemOpen}
           />
         </div>

@@ -124,15 +124,16 @@ function updateData(key, newName) {
 
 
 function updateDataOrder(key, newName) {
+  console.log(key, newName);
   // Retrieve and parse the object from local storage
   const storedSum = getStoredCart("order-info");
-  console.log(storedSum);
+  console.log("function ",storedSum);
   if (storedSum) {
     // Update the specified key with the new name
-    for (let i in storedSum) {
+    for (let i of storedSum) {
       if (i.item_code === key) {
         i.qty = newName
-        updateData(storedSum, "order-info");
+        addToProceed(storedSum, "order-info");
         break;
       }
     }
