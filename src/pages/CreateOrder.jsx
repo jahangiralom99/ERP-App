@@ -334,7 +334,7 @@ const CreateOrder = () => {
     navigate(-1);
   };
 
-  const totalSum = items.reduce((acc, item) => {
+  const totalSum = filter.reduce((acc, item) => {
     return acc + item.standard_rate * item.qty;
   }, 0);
 
