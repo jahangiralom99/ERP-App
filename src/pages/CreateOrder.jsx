@@ -26,6 +26,7 @@ import {
   fetchURL,
   formatDate,
   getStoredCart,
+  updateData,
 } from "../utilities/function";
 import SelectItems from "./SelectItems";
 import { toast } from "react-toastify";
@@ -49,6 +50,12 @@ const CreateOrder = () => {
   const date = formatDate();
   const [open4, setOpen4] = useState(false);
   const [total, setTotal] = useState(0);
+  // dfd
+  // const [AllData2, setAllData2] = useState({});
+  // data
+  const [AllData1, setAllData] = useState({});
+  // show data
+  const [showData, setShowData] = useState([]);
 
   // company state
   const [selectedCompany, setSelectedCompany] = useState("");
@@ -59,6 +66,14 @@ const CreateOrder = () => {
 
   // Add Item Details popup state
   const [itemOpen, setItemOpen] = useState(false);
+  // qty set
+  const [quantities, setQuantities] = useState({});
+
+  useEffect(() => {
+    const AllData1 = getStoredCart("item-all-data");
+    setAllData(AllData1);
+  }, []);
+
 
   const { url } = getStoredCart("login-info");
   const data = getStoredCart("order-info");
@@ -310,6 +325,39 @@ const CreateOrder = () => {
     return acc + item.standard_rate * item.qty;
   }, 0);
 
+  // handle plus btn
+  const handlePlus = (itemName) => {
+    // console.log(i);
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [itemName]: (prevQuantities[itemName] || 0) + 1,
+    }));
+    console.log(quantities[itemName], itemName);
+    AllData1[itemName]["qty"]++;
+    updateData(itemName, AllData1[itemName]["qty"]);
+  };
+
+  // handle minus btn
+  const handleMinus = (itemName) => {
+    setQuantities((prevQuantities) => {
+      const newQty = Math.max((prevQuantities[itemName] || 0) - 1, 0);
+
+      // Update qty in AllData1 immutably
+      AllData1[itemName] = {
+        ...AllData1[itemName],
+        qty: newQty, // Set the new qty
+      };
+
+      // Optionally call updateData if needed to handle external syncs
+      updateData(itemName, newQty);
+
+      return {
+        ...prevQuantities,
+        [itemName]: newQty,
+      };
+    });
+  };
+
   console.log(totalSum);
   // clear all selected items
 
@@ -452,7 +500,12 @@ const CreateOrder = () => {
                     <div className="flex flex-col justify-end items-center text-sm">
                       <p>{item.standard_rate * item.qty}</p>
                       <div className="flex items-center gap-2 border-[2px] rounded-lg p-1 ">
-                        <FiMinus /> <p>{item.qty}</p> <FaPlus />
+                        <FiMinus onClick={() => handleMinus(item?.name)} />{" "}
+                        <p>{item.qty}</p>{" "}
+                        <FaPlus
+                          className="cursor-pointer"
+                          onClick={() => handlePlus(item?.name)}
+                        />
                       </div>
                     </div>
                   </div>
@@ -532,7 +585,14 @@ const CreateOrder = () => {
       </div>
       {itemOpen ? (
         <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-slate-200 z-20">
-          <SelectItems itemOpen={itemOpen} setItemOpen={setItemOpen} />
+          <SelectItems
+            handlePlus={handlePlus}
+            handleMinus={handleMinus}
+            itemOpen={itemOpen}
+            AllData1={AllData1}
+            quantities={quantities}
+            setItemOpen={setItemOpen}
+          />
         </div>
       ) : null}
     </div>

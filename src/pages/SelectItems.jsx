@@ -13,10 +13,11 @@ import {
 } from "../utilities/function";
 import { toast } from "react-toastify";
 
-const SelectItems = ({ setItemOpen, itemOpen }) => {
+const SelectItems = ({ setItemOpen, itemOpen, handlePlus, handleMinus,AllData1, quantities }) => {
   const data = getStoredCart("order-info");
   const AllData = getStoredCart("item-all-data");
-  const AllData1 = getStoredCart("item-all-data");
+ 
+
   // const [AllData2, setAllData2] = useState(getStoredCart("item-all-data"))
   // AllData1?.data?.map((itm) => (itm["qty"] = 0));
 
@@ -36,8 +37,10 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
   const [loader, setLoader] = useState(true);
   // item data state
   const [itemData, setItemData] = useState([]);
-  const [quantities, setQuantities] = useState({});
+  
   const [count, setCount] = useState(0);
+
+ 
 
   // get data for Company name
   useEffect(() => {
@@ -98,31 +101,31 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
   };
 
   // handle plus btn
-  const handlePlus = (itemName) => {
-    // console.log(i);
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [itemName]: (prevQuantities[itemName] || 0) + 1,
-    }));
-    console.log(quantities[itemName], itemName);
-    AllData1[itemName]["qty"]++;
-    updateData(itemName, AllData1[itemName]["qty"]);
-  };
+  // const handlePlus = (itemName) => {
+  //   // console.log(i);
+  //   setQuantities((prevQuantities) => ({
+  //     ...prevQuantities,
+  //     [itemName]: (prevQuantities[itemName] || 0) + 1,
+  //   }));
+  //   console.log(quantities[itemName], itemName);
+  //   AllData1[itemName]["qty"]++;
+  //   updateData(itemName, AllData1[itemName]["qty"]);
+  // };
 
   // handle plus btn
 
   // handle minus btn
-  const handleMinus = (itemName) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [itemName]: Math.max((prevQuantities[itemName] || 0) - 1, 0),
-    }));
-    AllData1[itemName]["qty"]--;
-    updateData(itemName, AllData1[itemName]["qty"]);
-  };
+  // const handleMinus = (itemName) => {
+  //   setQuantities((prevQuantities) => ({
+  //     ...prevQuantities,
+  //     [itemName]: Math.max((prevQuantities[itemName] || 0) - 1, 0),
+  //   }));
+  //   AllData1[itemName]["qty"]--;
+  //   updateData(itemName, AllData1[itemName]["qty"]);
+  // };
 
   const handleCreateOrder = () => {
-    if (Object.keys(quantities).length == 0) {
+    if (Object.keys(AllData1).length === 0) {
       toast.warn("please Select order", {
         position: "top-center",
         autoClose: 5000,
@@ -134,15 +137,37 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
         theme: "dark",
       });
     } else {
-      const list = Object.keys(quantities);
-      console.log(list);
-      for (let i in list) {
-        const filter = itemData?.data?.filter((item) => item?.name == list[i]);
-        console.log(filter);
-        filter[0]["qty"] = quantities[list[i]];
-        console.log(filter);
-        sum.push(filter[0]);
+
+      const list = Object.values(AllData1);
+
+      console.log("list",list);
+      for (let i of list) {
+        let tem = 0;
+        if (i.qty > 0) {
+            for (let j of sum) {
+                if (i.name === j.name) {
+                    j.qty = i.qty;
+                    tem = 1;
+                    break;
+                }
+            }
+            if (tem === 0) {
+              sum.push(i);
+            }
+        }
       }
+      
+      console.log(sum);
+    
+
+      // console.log(list);
+      // for (let i in list) {
+      //   const filter = itemData?.data?.filter((item) => item?.name !== list[i]);
+        
+      //   filter[0]["qty"] = quantities[list[i]];
+      //   console.log(filter);
+      //   sum.push(filter[0]);
+      // }
       console.log(sum);
       addToProceed(sum, "order-info");
 
@@ -213,7 +238,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
                       </p>
                     </div>
                     <div className="flex flex-col justify-end items-center text-sm">
-                      {(quantities[item?.name] || 0) * item?.valuation_rate}
+                      {item?.qty * item?.valuation_rate}
                       <div className="flex items-center gap-2 border-[2px] rounded-lg p-1">
                         <div onClick={() => handleMinus(item?.name)}>
                           <FiMinus className="cursor-pointer" />{" "}
@@ -232,7 +257,7 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
           </div>
         ) : (
           <div>
-            {itemData1?.map((item, idx) => {
+            {Object.values(AllData1).map((item, idx) => {
               return (
                 <div key={idx} className="bg-white p-3">
                   <div className="flex justify-between">
@@ -243,12 +268,12 @@ const SelectItems = ({ setItemOpen, itemOpen }) => {
                       </p>
                     </div>
                     <div className="flex flex-col justify-end items-center text-sm">
-                      {(quantities[item?.name] || 0) * item?.valuation_rate}
+                      {item?.qty * item?.valuation_rate}
                       <div className="flex items-center gap-2 border-[2px] rounded-lg p-1">
                         <div onClick={() => handleMinus(item?.name)}>
                           <FiMinus className="cursor-pointer" />{" "}
                         </div>
-                        <p>{quantities[item?.name] || 0}</p>{" "}
+                        <p>{item?.qty}</p>{" "}
                         <FaPlus
                           className="cursor-pointer"
                           onClick={(e) => handlePlus(item?.name, e)}

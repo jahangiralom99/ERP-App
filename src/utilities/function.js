@@ -121,6 +121,53 @@ function updateData(key, newName) {
     console.log("No data found in localStorage for key: sum");
   }
 }
+
+
+function updateDataOrder(key, newName) {
+  // Retrieve and parse the object from local storage
+  const storedSum = getStoredCart("order-info");
+  console.log(storedSum);
+  if (storedSum) {
+    // Update the specified key with the new name
+    for (let i in storedSum) {
+      if (i.item_code === key) {
+        i.qty = newName
+        updateData(storedSum, "order-info");
+        break;
+      }
+    }
+    // if (storedSum[key]) {
+    //   storedSum[key]["qty"] = newName;
+    //   // Store the updated object back in local storage
+    //   // localStorage.setItem('sum', JSON.stringify(storedSum));
+    //   addToProceed(storedSum, );
+
+    //   // console.log(`Updated key ${key} with name ${newName}`);
+    // } else {
+    //   console.log(`Key ${key} does not exist.`);
+    // }
+  } else {
+    console.log("No data found in localStorage for key: sum");
+  }
+}
+
+// updateDataOrder()
+
+// const handlePlus = (itemName) => {
+//   console.log(itemName);
+//   setQuantities((prevQuantities) => ({
+//     ...prevQuantities,
+//     [itemName]: (prevQuantities[itemName] || 0) + 1,
+//   }));
+//   for (let i in data) {
+//     if (i.item_code === itemName) {
+//       i.qty +=1 
+//       updateDataOrder(itemName, i.qty );
+//     }
+//   }
+ 
+// };
+
 function updateOrder(key, newName) {
   // Retrieve and parse the object from local storage
   const storedSum = getStoredCart("order-info");
@@ -153,5 +200,6 @@ export {
   addToCart,
   removeItemFromCart,
   updateData,
-  updateOrder
+  updateOrder,
+  updateDataOrder
 };
