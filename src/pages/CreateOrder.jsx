@@ -77,6 +77,8 @@ const CreateOrder = () => {
   const [items, setItems] = useState(data);
   // const [loader, setLoader] = useState(true);
   const [filterData, setFilterData] = useState([]);
+  // color change for deleted items state
+  const [change, setChange] = useState("")
 
   const [mf, setMf] = useState([]);
 
@@ -88,8 +90,9 @@ const CreateOrder = () => {
   const m = getStoredCart("item-all-data");
   const filter = Object.values(m).filter((item) => item["qty"] > 0);
 
-  console.log("filterData", filter);
+  // console.log("filterData", filter);
   const handleDeleted = () => {
+    setChange("filterData")
     console.log("fdgfdgfd");
     // const keyList = Object.keys(AllData1);
     // for (let i of keyList) {
@@ -226,7 +229,7 @@ const CreateOrder = () => {
           console.error("Error:", error);
         });
 
-      console.log("success");
+      // console.log("success");
     }
   };
 
@@ -273,7 +276,7 @@ const CreateOrder = () => {
       ...prevQuantities,
       [itemName]: (prevQuantities[itemName] || 0) + 1,
     }));
-    console.log(quantities[itemName], itemName);
+    // console.log(quantities[itemName], itemName);
     AllData1[itemName]["qty"]++;
     updateData(itemName, AllData1[itemName]["qty"]);
   };
@@ -319,36 +322,36 @@ const CreateOrder = () => {
   // };
 
   // Handle increasing quantity
-  const handlePlusOrder = (name) => {
-    setData((prevItems) =>
-      data.map((item) =>
-        item.name === name
-          ? {
-              ...item,
-              qty: item.qty + 1, // Increment quantity
-              totalPrice: item.price * (item.qty + 1), // Update total price
-            }
-          : item
-      )
-    );
-  };
+  // const handlePlusOrder = (name) => {
+  //   setData((prevItems) =>
+  //     data.map((item) =>
+  //       item.name === name
+  //         ? {
+  //             ...item,
+  //             qty: item.qty + 1, // Increment quantity
+  //             totalPrice: item.price * (item.qty + 1), // Update total price
+  //           }
+  //         : item
+  //     )
+  //   );
+  // };
 
   // // Handle decreasing quantity for order
-  const handleMinusOrder = (name) => {
-    console.log(name);
+  // const handleMinusOrder = (name) => {
+  //   console.log(name);
 
-    // setData((prevItems) =>
-    //   prevItems.map((item) =>
-    //     item.name === name
-    //       ? {
-    //           ...item,
-    //           qty: Math.max(item.qty - 1, 0), // Decrement quantity but not below 0
-    //           totalPrice: item.price * Math.max(item.qty - 1, 0), // Update total price
-    //         }
-    //       : item
-    //   )
-    // );
-  };
+  //   // setData((prevItems) =>
+  //   //   prevItems.map((item) =>
+  //   //     item.name === name
+  //   //       ? {
+  //   //           ...item,
+  //   //           qty: Math.max(item.qty - 1, 0), // Decrement quantity but not below 0
+  //   //           totalPrice: item.price * Math.max(item.qty - 1, 0), // Update total price
+  //   //         }
+  //   //       : item
+  //   //   )
+  //   // );
+  // };
 
   return (
     <div className="bg-gray-200 pb-20 text-black">

@@ -20,7 +20,7 @@ const SelectItems = ({
   handleMinus,
   AllData1,
   quantities,
-  setMf
+  setMf,
 }) => {
   const data = getStoredCart("order-info");
   const AllData = getStoredCart("item-all-data");
@@ -44,6 +44,8 @@ const SelectItems = ({
   const [loader, setLoader] = useState(true);
   // item data state
   const [itemData, setItemData] = useState([]);
+  // search state
+  const [search, setSearch] = useState(false);
 
   const [count, setCount] = useState(0);
 
@@ -174,7 +176,7 @@ const SelectItems = ({
       //   sum.push(filter[0]);
       // }
       console.log(sum);
-      setMf(sum)
+      setMf(sum);
       addToProceed(sum, "order-info");
 
       // addToProceed(sum, "order-info");
@@ -185,16 +187,21 @@ const SelectItems = ({
   return (
     <div className="bg-gray-200 z-20 text-black">
       {/* heading */}
-      <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
+      <div className="flex justify-between items-center h-14 w-full bg-white px-6 relative">
         <div className="flex items-center gap-4">
           <div onClick={() => setItemOpen(!itemOpen)}>
             <IoMdArrowBack className="text-lg text-blue-600" />
           </div>
           <p className=" font-medium">Select Items</p>
         </div>
-        <div>
-          <IoIosSearch className="text-xl text-blue-600" />
+        <div className="z-10" onClick={() => setSearch(!search)}>
+          <IoIosSearch className="text-xl text-blue-600 cursor-pointer" />
         </div>
+        {search && (
+          <div className="absolute left-4 top-3 right-20 w-full">
+            <input type="text" placeholder="Type here" className="w-[90%] border rounded p-1" />
+          </div>
+        )}
       </div>
 
       {/* Scroll buttons */}
@@ -220,7 +227,9 @@ const SelectItems = ({
                 key={index}
                 onClick={() => handleCategoryClick(item?.name)}
                 className={`border-[1px] border-zinc-400 px-3 py-2 text-sm rounded-3xl ${
-                  activeCategory == item?.name ? "bg-blue-500 text-white" : "bg-white"
+                  activeCategory == item?.name
+                    ? "bg-blue-500 text-white"
+                    : "bg-white"
                 }  font-semibold whitespace-nowrap`}
               >
                 {item.name}
