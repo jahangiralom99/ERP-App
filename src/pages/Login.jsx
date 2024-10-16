@@ -14,16 +14,17 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const [checked, setChecked] = useState(false);
+  // https modal
+  const [open, setOpen] = useState(false);
   const [protocol, setProtocol] = useState("https");
   const navigate = useNavigate();
-  const { url } = getStoredCart("login-info")
+  const { url } = getStoredCart("login-info");
 
   useEffect(() => {
     if (url) {
-      navigate("/")
+      navigate("/");
     }
-  }, [url])
-
+  }, [url]);
 
   const {
     register,
@@ -35,7 +36,6 @@ const Login = () => {
   //       pwd: "Ionic0825",
 
   const onSubmit = (data) => {
-  
     const url = `${protocol}://${data.url}`;
     const pass = data.password;
     const user = data.username;
@@ -65,7 +65,7 @@ const Login = () => {
           };
           addToProceed(info, "login-info");
           navigate("/");
-          toast.success('Login Susses', {
+          toast.success("Login Successfully", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -74,11 +74,13 @@ const Login = () => {
             draggable: true,
             progress: undefined,
             theme: "dark",
-            });
+          });
         }
       })
       .then((e) => console.log(e));
   };
+
+  console.log(protocol);
 
   return (
     <div
@@ -123,46 +125,43 @@ const Login = () => {
                 {/* Open the modal using document.getElementById('ID').showModal() method */}
 
                 {/* <div className="" onClick={() => document.getElementById('my_modal_2').showModal()} > */}
-                <div
-                  className=""
-                  onClick={() =>
-                    document.getElementById("my_modal_2").showModal()
-                  }
-                >
-                  <button className="flex justify-center items-center">
+                <div className="" onClick={() => setOpen(!open)}>
+                  <div className="flex justify-center items-center gap-1 cursor-pointer">
                     {" "}
                     <IoIosGlobe className="text-[#FF0000] text-xl mr-[2px]" />
                     <span>{protocol}</span> <MdArrowDropDown />
-                  </button>
+                  </div>
                 </div>
-                <dialog id="my_modal_2" className="modal">
-                  <div className="h-40  w-80 mx-10 bg-white rounded-xl absolute top-[290px] px-5 pt-3">
-                    <h3 className="font-semibold text-black text-lg py-2">
-                      Select Protocol
-                    </h3>
-                    <hr />
-                    <div className="flex flex-col gap-3 py-2">
-                      <p
-                        onClick={() => setProtocol("https")}
-                        className="flex justify-start gap-3 text-black items-center cursor-pointer"
+                {open && (
+                  <div>
+                    <div className="h-40 w-80 mx-10 bg-white rounded-xl absolute top-[140px] px-5 pt-3">
+                      <h3 className="font-semibold text-black text-lg py-2">
+                        Select Protocol
+                      </h3>
+                      <hr />
+                      <div
+                        onClick={() => setOpen(false)}
+                        className="flex flex-col gap-3 py-2"
                       >
-                        {" "}
-                        <IoIosGlobe className="text-[#116630] text-xl" /> https
-                      </p>
-                      <p
-                        onClick={() => setProtocol("http")}
-                        className="flex justify-start gap-3 text-black items-center "
-                      >
-                        {" "}
-                        <IoIosGlobe className="text-[#116630] text-xl" /> http
-                      </p>
+                        <p
+                          onClick={() => setProtocol("https")}
+                          className="flex justify-start gap-3 text-black items-center cursor-pointer"
+                        >
+                          {" "}
+                          <IoIosGlobe className="text-[#116630] text-xl" />{" "}
+                          https
+                        </p>
+                        <p
+                          onClick={() => setProtocol("http")}
+                          className="flex justify-start gap-3 text-black items-center cursor-pointer"
+                        >
+                          {" "}
+                          <IoIosGlobe className="text-[#116630] text-xl" /> http
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-
+                )}
                 <input
                   className="outline-none w-full focus:ring-0 focus:border-[#116630]"
                   placeholder="URL"
@@ -171,10 +170,10 @@ const Login = () => {
                 {/* {errors.username && <span className='text-red-500'>This field is required</span>} */}
               </div>
               <div className="flex  items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
-                <button className="">
+                <div className="">
                   {" "}
                   <FaRegUser className="text-[#FF0000] text-lg" />
-                </button>
+                </div>
 
                 <input
                   className="outline-none w-full focus:ring-0 focus:border-[#FF0000]"
@@ -184,10 +183,10 @@ const Login = () => {
                 {/* {errors.username && <span className='text-red-500'>This field is required</span>} */}
               </div>
               <div className="flex items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
-                <button className="">
+                <div className="">
                   {" "}
                   <CiLock className="text-[#FF0000] text-xl" />
-                </button>
+                </div>
 
                 <input
                   className="outline-none w-full focus:ring-0 focus:border-[#116630]"

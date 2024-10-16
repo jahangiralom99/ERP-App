@@ -50,7 +50,7 @@ const CostCenter = ({ selectedCostCenter, setSelectedCostCenter }) => {
     }
   };
 
-  console.log(searchResult);
+  // console.log(searchResult);
 
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">

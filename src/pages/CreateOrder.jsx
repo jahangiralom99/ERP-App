@@ -51,6 +51,7 @@ const CreateOrder = () => {
   const date = formatDate();
   const [open4, setOpen4] = useState(false);
   const [total, setTotal] = useState(0);
+
   // dfd
   // const [AllData2, setAllData2] = useState({});
   // data
@@ -75,10 +76,9 @@ const CreateOrder = () => {
   const data = getStoredCart("order-info");
   const [items, setItems] = useState(data);
   // const [loader, setLoader] = useState(true);
+  const [filterData, setFilterData] = useState([]);
 
   const [mf, setMf] = useState([]);
-
-  console.log("sdfkndfjgdhgdf", mf);
 
   useEffect(() => {
     const AllData1 = getStoredCart("item-all-data");
@@ -87,7 +87,27 @@ const CreateOrder = () => {
 
   const m = getStoredCart("item-all-data");
   const filter = Object.values(m).filter((item) => item["qty"] > 0);
-  console.log("filter", filter);
+
+  console.log("filterData", filter);
+  const handleDeleted = () => {
+    console.log("fdgfdgfd");
+    // const keyList = Object.keys(AllData1);
+    // for (let i of keyList) {
+    //   AllData1[i]["qty"] = 0;
+    //   updateData(i, AllData1[i]["qty"]);
+    //   window.location.reload();
+      // toast.success("All Items Deleted", {
+      //   position: "top-center",
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "dark",
+      // });
+    // }
+  };
 
   const { url } = getStoredCart("login-info");
 
@@ -96,210 +116,118 @@ const CreateOrder = () => {
   };
 
   const handleCreateOrder = () => {
-    // deleted items from delivery
-    // const info = {
-    //   erp_url: url,
-    //   doctype_name: "Sales Order",
-    //   document_name: "2024-00159",
-    // };
-
-    // Post order
-    // fetch(`${fetchURL}/delete_data`, {
-    //   method: "DELETE",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(info),
-    // })
-    //   .then((res) => {
-    //     if (!res.ok) {
-    //       throw new Error("Network response was not ok");
-    //     }
-    //     return res.json();
-    //   })
-    //   .then((data) => {
-    //     console.log("success", data);
-    //     if (data) {
-    //       toast.success("Order Create", {
-    //         position: "top-center",
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "dark",
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-
-    // if (selectedCompany == "") {
-    //   toast.warn("Please Selected Company Name", {
-    //     position: "top-center",
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "dark",
-    //   });
-    // } else if (selectedCostCenter == "") {
-    //   toast.warn("Please Selected CostCenter ", {
-    //     position: "top-center",
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "dark",
-    //   });
-    // } else if (selectedCustomer == "") {
-    //   toast.warn("Please Selected Customer Name", {
-    //     position: "top-center",
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "dark",
-    //   });
-    // } else if (data.length == 0) {
-    //   toast.warn("Please Selected Order Items", {
-    //     position: "top-center",
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "dark",
-    //   });
-    // } else {
-    //   console.log("success");
-    // }
-
-    // const info = {
-    //   server: url,
-    //   doctype: "Sales Order",
-    //   data: {
-    //     customer: "nizum2",
-    //     transaction_date: "2024-10-06",
-    //     custom_delivery_type: "",
-    //     items: [
-    //       {
-    //         item_code: "334",
-    //         item_name: "Nestlé Lactogen 4 Infant Formula Milk Powder (2-5 Y)",
-    //         delivery_date: "2024-10-2",
-    //         qty: Quantity,
-    //         rate: RatePerPiece,
-    //         amount: Quantity * RatePerPiece,
-    //       },
-    //     ],
-    //   },
-    //   };
-
-    // const obd = data?.map((itm) => {
-    //   // console.log(itm);
-    //   const info = {
-    //     item_code: itm?.item_code,
-    //     item_name: itm?.item_name,
-    //     delivery_date: date,
-    //     qty: itm?.qty,
-    //   };
-    //   return info;
-    // });
-
-    // console.log(obd);
-
-    // const info = {
-    //   server: url,
-    //   doctype: "Sales Order",
-    //   data: {
-    //     customer: "hossan",
-    //     transaction_date: "2024-09-05",
-    //     custom_delivery_type: "",
-    //     items: obd || [],
-    //   },
-    // };
-
-    // post body new
-    let m = {
-      server: "https://ecommerce.ionicerp.xyz",
-      doctype: "Sales Order",
-      data: {
-        customer: "hossan",
-        transaction_date: "2024-09-05",
-        custom_delivery_type: "",
-        items: [
-          {
-            item_code: "102",
-            item_name: "Deshi Peyaj (Local Onion)",
-            delivery_date: "2024-10-04",
-            qty: 2,
-          },
-        ],
-      },
-    };
-
-    const info1 = {
-      erp_url: url,
-      doctype_name: "Sales Order",
-      // document_name: "2024-00159",
-      data: {
-        customer: "hossan",
-        transaction_date: "2024-09-05",
-        custom_delivery_type: "",
-        items: [
-          {
-            item_code: "101",
-            delivery_date: "2024-09-05",
-            qty: 8,
-            rate: 20,
-          },
-        ],
-      },
-    };
-
-    // // Post order
-    fetch("https://erp-backend-black.vercel.app/post_data", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(m),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("success", data);
-        if (data) {
-          toast.success("Order Create", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+    if (selectedCompany == "") {
+      toast.warn("Please Select Company Name", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
       });
+    } else if (selectedCostCenter == "") {
+      toast.warn("Please Select CostCenter ", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (selectedCustomer == "") {
+      toast.warn("Please Select Customer Name", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (filter.length == 0) {
+      toast.warn("Please Select Order Items", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      // all item set
+      const item = filter?.map((itm) => {
+        const info = {
+          item_code: itm?.item_code,
+          item_name: itm?.item_name,
+          delivery_date: date,
+          qty: itm?.qty,
+        };
+        return info;
+      });
+
+      // post body new
+      let postBody = {
+        server: url,
+        doctype: "Sales Order",
+        data: {
+          customer: selectedCustomer,
+          transaction_date: date,
+          custom_delivery_type: "",
+          items: item,
+        },
+      };
+
+      // // Post order
+      fetch("https://erp-backend-black.vercel.app/post_data", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postBody),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          // console.log("success", data);
+          if (data) {
+            const keyList = Object.keys(AllData1);
+            for (let i of keyList) {
+              AllData1[i]["qty"] = 0;
+              updateData(i, AllData1[i]["qty"]);
+              navigate("/orders");
+              // window.location.reload();
+            }
+            // console.log(AllData1);
+            toast.success("Order Create", {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      console.log("success");
+    }
   };
 
   // item data for Company name
@@ -422,23 +350,6 @@ const CreateOrder = () => {
     // );
   };
 
-  // console.log(totalSum);
-  // clear all selected items
-
-  // const increaseQty = (index) => {
-  //   const updatedItems = data.map((item, idx) =>
-  //     idx === index ? { ...item, qty: item.qty + 1 } : item
-  //   );
-  //   setItems(updatedItems);
-  // };
-
-  // const decreaseQty = (index) => {
-  //   const updatedItems = data.map((item, idx) =>
-  //     idx === index && item.qty > 0 ? { ...item, qty: item.qty - 1 } : item
-  //   );
-  //   setItems(updatedItems);
-  // };
-
   return (
     <div className="bg-gray-200 pb-20 text-black">
       {/* heading */}
@@ -557,18 +468,26 @@ const CreateOrder = () => {
 
         {/* data from select item page */}
 
-        <div className="pt-5 text-sm text-black font-medium">
+        <div className="pt-5 text-sm text-black font-medium mt-4">
           <div className="flex justify-between">
             <p className="text-zinc-500">Items*</p>
-            <p className="text-[#FF0000]">Delete Items</p>
+            <p
+              onClick={handleDeleted}
+              className="text-[#FF0000] cursor-pointer"
+            >
+              Delete Items All
+            </p>
           </div>
 
-          <div className="border-[1px] bg-white border-zinc-300 rounded-xl">
+          <div className="border-[1px] bg-white border-zinc-300 rounded-xl mt-2">
             {/* part-1 */}
             <div className=" p-3 flex flex-col gap-1 rounded-xl ">
               {filter?.map((item, idx) => {
                 return (
-                  <div className="flex justify-between border rounded p-2">
+                  <div
+                    key={idx}
+                    className="flex justify-between border rounded p-2"
+                  >
                     <div className="flex flex-col gap-2">
                       <p className="font-medium text-sm">{item.item_name}</p>
                       <p className="flex items-center gap-1 text-xs text-zinc-600">

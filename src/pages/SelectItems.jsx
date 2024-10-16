@@ -98,6 +98,7 @@ const SelectItems = ({
 
   // handle Category Click button
   const handleCategoryClick = (name) => {
+    console.log(name);
     setActiveCategory(name);
     const filterData = Object.values(AllData1)?.filter(
       (data) => data.item_group == name
@@ -128,6 +129,8 @@ const SelectItems = ({
   //   AllData1[itemName]["qty"]--;
   //   updateData(itemName, AllData1[itemName]["qty"]);
   // };
+
+  console.log(activeCategory);
 
   const handleCreateOrder = () => {
     if (Object.keys(AllData1).length === 0) {
@@ -216,9 +219,9 @@ const SelectItems = ({
               <button
                 key={index}
                 onClick={() => handleCategoryClick(item?.name)}
-                className={`border-[1px] bg-white border-zinc-400 px-3 py-2 text-sm rounded-3xl ${
-                  activeCategory === item?.name ? "bg-blue-500" : " "
-                } focus:bg-blue-500 focus:text-white font-semibold whitespace-nowrap`}
+                className={`border-[1px] border-zinc-400 px-3 py-2 text-sm rounded-3xl ${
+                  activeCategory == item?.name ? "bg-blue-500 text-white" : "bg-white"
+                }  font-semibold whitespace-nowrap`}
               >
                 {item.name}
               </button>
