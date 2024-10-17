@@ -3,7 +3,11 @@ import { fetchURL, getStoredCart } from "../../utilities/function";
 import { FaBuildingColumns } from "react-icons/fa6";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 
-const CostCenter = ({ selectedCostCenter, setSelectedCostCenter }) => {
+const CostCenter = ({
+  selectedCostCenter,
+  setSelectedCostCenter,
+  selectedCompany,
+}) => {
   const { url } = getStoredCart("login-info");
   const [open2, setOpen2] = useState(false);
   // Cost Center api set
@@ -11,6 +15,8 @@ const CostCenter = ({ selectedCostCenter, setSelectedCostCenter }) => {
   // search cost center
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+
+  // console.log(selectedCompany);
 
   // get Cost Center
   useEffect(() => {
@@ -23,14 +29,18 @@ const CostCenter = ({ selectedCostCenter, setSelectedCostCenter }) => {
           throw new Error(`Error: ${response.status}`);
         }
         const result = await response.json();
-        setCostCenter(result);
+        const filter = result?.data?.filter(
+          (item) => item.is_group === 0 && item.company == selectedCompany
+        );
+        // console.log(filter);
+        setCostCenter(filter);
       } catch (err) {
         console.log(err.message);
       }
     };
 
     fetchData();
-  }, [url]);
+  }, [url, selectedCompany]);
 
   const clear1 = () => {
     setSelectedCostCenter("");
@@ -44,13 +54,15 @@ const CostCenter = ({ selectedCostCenter, setSelectedCostCenter }) => {
     try {
       const groupsData = await fetch(url1);
       const data = await groupsData.json();
-      setSearchResult(data);
+      const filter = data?.data?.filter(
+        (item) => item.is_group === 0 && item.company == selectedCompany
+      );
+      // console.log("dtatatata", filter);
+      setSearchResult(filter);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
-  // console.log(searchResult);
 
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
@@ -130,7 +142,7 @@ const CostCenter = ({ selectedCostCenter, setSelectedCostCenter }) => {
             {/* All item show data  */}
             {searchQuery == "" ? (
               <div className="flex flex-col gap-2 text-sm">
-                {costCenter?.data?.map((item) => {
+                {costCenter?.map((item) => {
                   return (
                     <div
                       onClick={() => {
@@ -154,9 +166,9 @@ const CostCenter = ({ selectedCostCenter, setSelectedCostCenter }) => {
             ) : (
               <div className="flex flex-col gap-2 text-sm">
                 {/* search query for  */}
-                {!searchResult?.data?.length == 0 ? (
+                {!searchResult?.length == 0 ? (
                   <div>
-                    {searchResult?.data?.map((item) => {
+                    {searchResult?.map((item) => {
                       return (
                         <div
                           onClick={() => {

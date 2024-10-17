@@ -80,7 +80,7 @@ const Orders = () => {
           className="text-2xl text-blue-600"
         />
         {open && (
-          <div className="fixed bottom-0 left-0 right-0 bg-gray-50  rounded-t-xl z-10 flex justify-center items-center">
+          <div className="fixed top-44 left-0 right-0 bg-gray-50  rounded-t-xl z-10 flex justify-center items-center">
             <div>
               <div className="flex justify-between w-full pt-3 ">
                 <p className="w-10"></p>

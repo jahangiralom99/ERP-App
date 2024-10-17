@@ -1,20 +1,9 @@
 import { useEffect, useState } from "react";
-import { FaRegUser, FaUser } from "react-icons/fa";
-import {
-  FaBangladeshiTakaSign,
-  FaBuildingColumns,
-  FaCirclePlus,
-  FaPlus,
-} from "react-icons/fa6";
+import { FaBangladeshiTakaSign, FaCirclePlus, FaPlus } from "react-icons/fa6";
 import { IoMdArrowBack } from "react-icons/io";
-import { LuBuilding2 } from "react-icons/lu";
-import {
-  RiArrowDropDownLine,
-  RiArrowDropRightLine,
-  RiQrScan2Line,
-} from "react-icons/ri";
+import { RiQrScan2Line } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -27,20 +16,13 @@ import {
   formatDate,
   getStoredCart,
   updateData,
-  updateDataOrder,
 } from "../utilities/function";
 import SelectItems from "./SelectItems";
 import { toast } from "react-toastify";
 import CompanyField from "../components/CreateOrder/CompanyField";
 import CostCenter from "../components/CreateOrder/CostCenter";
 import CustomerField from "../components/CreateOrder/CustomerField";
-
-const calculateTotalPrice = (cartData, quantities) => {
-  return cartData?.reduce(
-    (total, item, idx) => total + item.standard_rate * quantities[idx],
-    0
-  );
-};
+import OrderLoader from "../components/Shared/OrderLoader";
 
 const CreateOrder = () => {
   const [open, setOpen] = useState(false);
@@ -76,9 +58,12 @@ const CreateOrder = () => {
   const data = getStoredCart("order-info");
   const [items, setItems] = useState(data);
   // const [loader, setLoader] = useState(true);
-  const [filterData, setFilterData] = useState([]);
   // color change for deleted items state
-  const [change, setChange] = useState("")
+  const [change, setChange] = useState("");
+  // order button change state
+  const [order, setOrder] = useState("");
+  // image 
+  const [image, setImage] = useState("")
 
   const [mf, setMf] = useState([]);
 
@@ -91,25 +76,26 @@ const CreateOrder = () => {
   const filter = Object.values(m).filter((item) => item["qty"] > 0);
 
   // console.log("filterData", filter);
+  // ALl item deleted from cart
   const handleDeleted = () => {
-    setChange("filterData")
-    console.log("fdgfdgfd");
-    // const keyList = Object.keys(AllData1);
-    // for (let i of keyList) {
-    //   AllData1[i]["qty"] = 0;
-    //   updateData(i, AllData1[i]["qty"]);
-    //   window.location.reload();
-      // toast.success("All Items Deleted", {
-      //   position: "top-center",
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "dark",
-      // });
-    // }
+    // setChange("filterData");
+    const keyList = Object.keys(AllData1);
+    console.log(keyList);
+    for (let i of keyList) {
+      AllData1[i]["qty"] = 0;
+      updateData(i, AllData1[i]["qty"]);
+      window.location.reload();
+    }
+    toast.success("All Items Deleted", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   };
 
   const { url } = getStoredCart("login-info");
@@ -118,6 +104,7 @@ const CreateOrder = () => {
     setOpen((prev) => !prev);
   };
 
+  // create order btn
   const handleCreateOrder = () => {
     if (selectedCompany == "") {
       toast.warn("Please Select Company Name", {
@@ -174,12 +161,14 @@ const CreateOrder = () => {
         };
         return info;
       });
-
+      setOrder("order-success");
       // post body new
       let postBody = {
         server: url,
         doctype: "Sales Order",
         data: {
+          company: selectedCompany,
+          cost_center: selectedCostCenter,
           customer: selectedCustomer,
           transaction_date: date,
           custom_delivery_type: "",
@@ -203,7 +192,7 @@ const CreateOrder = () => {
           return res.json();
         })
         .then((data) => {
-          // console.log("success", data);
+          console.log("success", data);
           if (data) {
             const keyList = Object.keys(AllData1);
             for (let i of keyList) {
@@ -265,6 +254,7 @@ const CreateOrder = () => {
     navigate(-1);
   };
 
+  // total sum
   const totalSum = filter.reduce((acc, item) => {
     return acc + item.standard_rate * item.qty;
   }, 0);
@@ -352,6 +342,11 @@ const CreateOrder = () => {
   //   //   )
   //   // );
   // };
+  console.log("image",image);
+
+  if (!order === "") {
+    return <OrderLoader />;
+  }
 
   return (
     <div className="bg-gray-200 pb-20 text-black">
@@ -374,11 +369,13 @@ const CreateOrder = () => {
         {/* company */}
         <CompanyField
           selectedCompany={selectedCompany}
+          setSelectedCostCenter={setSelectedCostCenter}
           setSelectedCompany={setSelectedCompany}
         />
 
         {/* cost center */}
         <CostCenter
+          selectedCompany={selectedCompany}
           selectedCostCenter={selectedCostCenter}
           setSelectedCostCenter={setSelectedCostCenter}
         />
@@ -463,9 +460,13 @@ const CreateOrder = () => {
                     <label>
                         <input type="file" name="myImage" accept="image/png, image/gif, image/jpeg" />
                     </label> */}
-          <button className="w-full bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl flex justify-center items-center gap-2  ">
-            <IoArrowUpCircleOutline className="text-2xl text-[#ed6262]" />{" "}
-            Attachment
+          <button className="w-full bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl flex justify-center items-center gap-2 relative">
+            <IoArrowUpCircleOutline className="text-2xl text-[#ed6262]" />
+            <span>Attachment</span>
+            <input
+              type="file" onChange={(e)=>setImage(e.target.files[0])}
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
           </button>
         </div>
 
@@ -575,12 +576,21 @@ const CreateOrder = () => {
               Close
             </button>
           </div>
-          <button
-            onClick={handleCreateOrder}
-            className="border-[1px] p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full"
-          >
-            Order Create
-          </button>
+          {order == "" ? (
+            <button
+              onClick={handleCreateOrder}
+              className="border-[1px] p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full"
+            >
+              Order Create
+            </button>
+          ) : (
+            <button
+              // onClick={handleCreateOrder}
+              className="border-[1px] p-3 bg-gradient-to-r from-slate-500 to-blue-950 text-white rounded-xl text-medium w-full cursor-not-allowed"
+            >
+              Order Create
+            </button>
+          )}
         </div>
       </div>
       {itemOpen ? (

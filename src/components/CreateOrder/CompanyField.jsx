@@ -3,7 +3,11 @@ import { fetchURL, getStoredCart } from "../../utilities/function";
 import { LuBuilding2 } from "react-icons/lu";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 
-const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
+const CompanyField = ({
+  selectedCompany,
+  setSelectedCompany,
+  setSelectedCostCenter,
+}) => {
   const { url } = getStoredCart("login-info");
   // Company Name api set
   const [company, setCompany] = useState([]);
@@ -132,6 +136,7 @@ const CompanyField = ({ selectedCompany, setSelectedCompany }) => {
                       onClick={() => {
                         setSelectedCompany(item.company_name);
                         setOpen1(!open1);
+                        setSelectedCostCenter("");
                       }}
                       className="flex items-start gap-4 cursor-pointer"
                     >

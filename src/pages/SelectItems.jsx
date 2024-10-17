@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { FaBangladeshiTakaSign, FaPlus } from "react-icons/fa6";
 import { FiMinus } from "react-icons/fi";
-import { IoIosSearch, IoMdArrowBack } from "react-icons/io";
+import {
+  IoIosArrowRoundBack,
+  IoIosSearch,
+  IoMdArrowBack,
+} from "react-icons/io";
 import { RiQrScan2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import {
@@ -46,6 +50,9 @@ const SelectItems = ({
   const [itemData, setItemData] = useState([]);
   // search state
   const [search, setSearch] = useState(false);
+  // search item
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredItems, setFilteredItems] = useState([]);
 
   const [count, setCount] = useState(0);
 
@@ -100,7 +107,7 @@ const SelectItems = ({
 
   // handle Category Click button
   const handleCategoryClick = (name) => {
-    console.log(name);
+    // console.log(name);
     setActiveCategory(name);
     const filterData = Object.values(AllData1)?.filter(
       (data) => data.item_group == name
@@ -132,7 +139,7 @@ const SelectItems = ({
   //   updateData(itemName, AllData1[itemName]["qty"]);
   // };
 
-  console.log(activeCategory);
+  // console.log(searchTerm);
 
   const handleCreateOrder = () => {
     if (Object.keys(AllData1).length === 0) {
@@ -148,7 +155,7 @@ const SelectItems = ({
       });
     } else {
       const list = Object.values(AllData1);
-      console.log("list", list);
+      // console.log("list", list);
       for (let i of list) {
         let tem = 0;
         if (i.qty > 0) {
@@ -165,7 +172,7 @@ const SelectItems = ({
         }
       }
 
-      console.log(sum);
+      // console.log(sum);
 
       // console.log(list);
       // for (let i in list) {
@@ -175,7 +182,7 @@ const SelectItems = ({
       //   console.log(filter);
       //   sum.push(filter[0]);
       // }
-      console.log(sum);
+      // console.log(sum);
       setMf(sum);
       addToProceed(sum, "order-info");
 
@@ -183,6 +190,21 @@ const SelectItems = ({
       setItemOpen(!itemOpen);
     }
   };
+
+  // search for order list items
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    let filteredData = Object?.values(AllData1)?.filter((item) => {
+      // console.log(item, idx);
+      return (
+        item.item_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+    setItemData1(filteredData);
+  };
+
+  // console.log(filteredItems);
 
   return (
     <div className="bg-gray-200 z-20 text-black">
@@ -195,11 +217,19 @@ const SelectItems = ({
           <p className=" font-medium">Select Items</p>
         </div>
         <div className="z-10" onClick={() => setSearch(!search)}>
-          <IoIosSearch className="text-xl text-blue-600 cursor-pointer" />
+          <IoIosSearch className="text-2xl text-blue-600 cursor-pointer" />
         </div>
         {search && (
-          <div className="absolute left-4 top-3 right-20 w-full">
-            <input type="text" placeholder="Type here" className="w-[90%] border rounded p-1" />
+          <div className="absolute left-6 top-3 right-20 bg-white">
+            <div className="flex items-center">
+              <IoIosArrowRoundBack onClick={() => setSearch(!search)} className="text-2xl cursor-pointer" />
+              <input
+                onChange={handleSearch}
+                type="text"
+                placeholder="Type here"
+                className="border-none focus:outline-none rounded p-1"
+              />
+            </div>
           </div>
         )}
       </div>
