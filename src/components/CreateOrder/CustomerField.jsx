@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 import { fetchURL, getStoredCart } from "../../utilities/function";
+import CommonButtonClear from "../Button/CommonButtonClear";
+import CommonButtonClose from "../Button/CommonButtonClose";
 
 const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
   const { url } = getStoredCart("login-info");
@@ -58,7 +60,7 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
   // console.log(searchResult);
 
   return (
-    <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
+    <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
       <legend className="ml-3 px-[5px] text-xs text-gray-500">
         Select Customer
       </legend>
@@ -72,7 +74,6 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
             {selectedCustomer || "select a customer"}
           </p>
         </div>
-
         <div className="cursor-pointer">
           {open3 ? (
             <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" />
@@ -87,20 +88,16 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
             className="fixed top-[260px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] h-[300px] overflow-hidden p-2 shadow"
           >
             <div>
-              <div className="flex justify-between">
-                <p
-                  onClick={clear2}
-                  className="cursor-pointer text-[12px] text-[#ff3232] font-bold"
-                >
-                  Clear
-                </p>
-                <p className=" text-[12px] text- font-bold">Select Customer </p>
-                <p
-                  onClick={() => setOpen3(!open3)}
-                  className="cursor-pointer text-[12px] text-blue-600 font-bold"
-                >
-                  Close
-                </p>
+              <div className="flex justify-center gap-5">
+                {/* clear button for modal */}
+                <div onClick={clear2}>
+                  <CommonButtonClear />
+                </div>
+                {/* <p className=" text-[12px] text- font-bold">Select Customer </p> */}
+                {/* close button for modal  */}
+                <div onClick={() => setOpen3(!open3)}>
+                  <CommonButtonClose close="Close"></CommonButtonClose>
+                </div>
               </div>
             </div>
 

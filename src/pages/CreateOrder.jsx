@@ -23,6 +23,7 @@ import CompanyField from "../components/CreateOrder/CompanyField";
 import CostCenter from "../components/CreateOrder/CostCenter";
 import CustomerField from "../components/CreateOrder/CustomerField";
 import OrderLoader from "../components/Shared/OrderLoader";
+import MainLoader from "../components/Shared/MainLoader";
 
 const CreateOrder = () => {
   const [open, setOpen] = useState(false);
@@ -62,8 +63,8 @@ const CreateOrder = () => {
   const [change, setChange] = useState("");
   // order button change state
   const [order, setOrder] = useState("");
-  // image 
-  const [image, setImage] = useState("")
+  // image
+  const [image, setImage] = useState("");
 
   const [mf, setMf] = useState([]);
 
@@ -204,7 +205,7 @@ const CreateOrder = () => {
             // console.log(AllData1);
             toast.success("Order Create", {
               position: "top-center",
-              autoClose: 5000,
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -342,10 +343,15 @@ const CreateOrder = () => {
   //   //   )
   //   // );
   // };
-  console.log("image",image);
+  console.log("image", image);
 
   if (!order === "") {
-    return <OrderLoader />;
+    return (
+      <>
+        <MainLoader />
+        <OrderLoader />{" "}
+      </>
+    );
   }
 
   return (
@@ -464,7 +470,8 @@ const CreateOrder = () => {
             <IoArrowUpCircleOutline className="text-2xl text-[#ed6262]" />
             <span>Attachment</span>
             <input
-              type="file" onChange={(e)=>setImage(e.target.files[0])}
+              type="file"
+              onChange={(e) => setImage(e.target.files[0])}
               className="absolute inset-0 opacity-0 cursor-pointer"
             />
           </button>

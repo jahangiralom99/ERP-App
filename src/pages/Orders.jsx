@@ -9,15 +9,15 @@ import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { getStoredCart } from "../utilities/function";
 import CreateOrder from "./CreateOrder";
-import Loader from "../components/Shared/Loader";
+import MainLoader from "../components/Shared/MainLoader";
+import OrderFilterField from "../components/OrderFilterField";
 
 const Orders = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
-  const [open4, setOpen4] = useState(false);
   const [plus, setPlus] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
+  // customer state
+  const [selectedCustomer, setSelectedCustomer] = useState("");
 
   // for data fetching
   const [data, setData] = useState([]);
@@ -56,12 +56,8 @@ const Orders = () => {
     fetchData();
   }, [url]);
 
-  const handleCalendarClick = () => {
-    setOpen4((prev) => !prev);
-  };
-
   if (loading) {
-    return <Loader />;
+    return <MainLoader />;
   }
 
   return (
@@ -79,145 +75,14 @@ const Orders = () => {
           onClick={() => setOpen(!open)}
           className="text-2xl text-blue-600"
         />
+        {/* filter order  */}
         {open && (
-          <div className="fixed top-44 left-0 right-0 bg-gray-50  rounded-t-xl z-10 flex justify-center items-center">
-            <div>
-              <div className="flex justify-between w-full pt-3 ">
-                <p className="w-10"></p>
-                <p className="text-black font-medium">Filter Orders</p>
-                <p
-                  onClick={() => setOpen(!open)}
-                  className="text-blue-600 font-medium"
-                >
-                  {" "}
-                  close
-                </p>
-              </div>
-
-              <div className="h-[1px] w-full bg-[#aca7a7] my-3"></div>
-
-              {/* input field */}
-
-              <div className="flex flex-col gap-3">
-                {/* Select customer */}
-
-                <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
-                  <legend className="ml-3 px-[5px] text-xs text-gray-500">
-                    Select Customer
-                  </legend>
-                  <div className=" flex justify-between gap-2 items-center w-full pl-4 pb-2">
-                    <FaRegUser className="text-[#E70006] text-xl font-bold" />
-
-                    <input
-                      type="text"
-                      className=" bg-transparent w-[80px] text-black"
-                      placeholder="customer"
-                      disabled
-                    />
-
-                    <div onClick={() => setOpen3(!open3)}>
-                      {open3 ? (
-                        <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" />
-                      ) : (
-                        <RiArrowDropRightLine className="text-3xl ml-5 text-blue-600" />
-                      )}
-                    </div>
-
-                    {open3 && (
-                      <div className=" fixed bottom-2 px-3  bg-white rounded-box z-[1] w-[300px] p-2 shadow">
-                        <div>
-                          <div className="flex justify-between">
-                            <p className=" text-[12px] text-[#ff3232] font-bold">
-                              clear
-                            </p>
-                            <p className=" text-[12px] text- font-bold">
-                              Select Company{" "}
-                            </p>
-                            <p
-                              onClick={() => setOpen3(!open3)}
-                              className=" text-[12px] text-blue-600 font-bold"
-                            >
-                              close
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* search */}
-
-                        <label className="input input-bordered h-10 mt-3 flex items-center gap-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 16 16"
-                            fill="currentColor"
-                            className="h-4 w-4 opacity-70"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          <input
-                            type="text"
-                            className="grow"
-                            placeholder="Search"
-                          />
-                        </label>
-
-                        <hr className="my-3" />
-                        <div className="flex gap-2 text-sm">
-                          <input
-                            type="radio"
-                            name="radio-1"
-                            className="radio w-5 h-5"
-                            defaultChecked
-                          />
-                          <p>Tech Solution inc.</p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </fieldset>
-                {/* date */}
-
-                <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
-                  <legend className="ml-3 px-[5px] text-xs text-gray-500">
-                    Company<sup>*</sup>
-                  </legend>
-                  <div className="flex  gap-4 items-center w-full pl-4 pb-2">
-                    <SlCalender
-                      onClick={handleCalendarClick}
-                      className="text-[#E70006] text-xl font-bold"
-                    />
-                    <DatePicker
-                      className="bg-transparent text-black font-medium"
-                      selected={startDate}
-                      onChange={(date) => {
-                        setStartDate(date);
-                        setOpen4(false); // Close the date picker after selection
-                      }}
-                      onClickOutside={() => setOpen4(false)} // Close when clicking outside
-                      open={open4} // Control the open state
-                      onFocus={handleCalendarClick} // Open on focus
-                    />
-                  </div>
-                </fieldset>
-              </div>
-
-              <div className="flex gap-3 px-5 justify-between py-3">
-                <button
-                  onClick={() => setOpen(!open)}
-                  className="border-[1px] border-zinc-400 text-zinc-600 p-3 rounded-xl  w-[130px]"
-                >
-                  Clear Filters
-                </button>
-
-                <button className="border-[1px]  p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl whitespace-nowrap text-medium  w-[130px]">
-                  Apply Filters
-                </button>
-              </div>
-            </div>
-          </div>
+          <OrderFilterField
+            selectedCustomer={selectedCustomer}
+            setSelectedCustomer={setSelectedCustomer}
+            open={open}
+            setOpen={setOpen}
+          />
         )}
       </div>
 
@@ -234,15 +99,20 @@ const Orders = () => {
       <div className="px-5 pt-5 flex flex-col gap-3 ">
         {/* order1 */}
         {data?.data?.map((item, index) => {
+          console.log(item);
           return (
-            <div key={index} className="bg-white p-3 rounded-xl  ">
+            <Link
+              to={`/details/${item?.name}`}
+              key={index}
+              className="bg-white p-3 rounded-xl  "
+            >
               <div className=" flex justify-between">
                 <div>
                   <p className="text-xs text-blue-600 font-semibold">
                     {item?.naming_series.slice(0, 8)} {item?.name}
                   </p>
                   <p className="text-xs text-zinc-500">
-                    {item.creation.slice(0, 10)}
+                    {item?.creation?.slice(0, 10)}
                   </p>
                 </div>
                 <div>
@@ -273,7 +143,7 @@ const Orders = () => {
                   </p>
                 </p>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

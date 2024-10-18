@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { fetchURL, getStoredCart } from "../../utilities/function";
 import { LuBuilding2 } from "react-icons/lu";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
+import CommonButtonClear from "../Button/CommonButtonClear";
+import CommonButtonClose from "../Button/CommonButtonClose";
 
 const CompanyField = ({
   selectedCompany,
@@ -84,20 +86,16 @@ const CompanyField = ({
             className="fixed top-[140px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] p-2 shadow"
           >
             <div>
-              <div className="flex justify-between">
-                <p
-                  onClick={clear}
-                  className="cursor-pointer text-[12px] text-[#ff3232] font-bold"
-                >
-                  Clear
-                </p>
-                <p className=" text-[12px] text- font-bold">Select Company </p>
-                <p
-                  onClick={() => setOpen1(!open1)}
-                  className="cursor-pointer text-[12px] text-blue-600 font-bold"
-                >
-                  Close
-                </p>
+              <div className="flex justify-center gap-5">
+                {/* clear button for search */}
+                <div onClick={clear}>
+                  <CommonButtonClear />
+                </div>
+                {/* <p className=" text-[12px] text- font-bold">Select Company </p> */}
+                {/* close button */}
+                <div onClick={() => setOpen1(!open1)}>
+                  <CommonButtonClose close="Close" />
+                </div>
               </div>
             </div>
 

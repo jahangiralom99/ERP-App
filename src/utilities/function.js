@@ -46,6 +46,12 @@ const getStoredCart = (store) => {
   return strCart;
 };
 
+
+const clearStoredCart = (store) => {
+  localStorage.removeItem(`${window.location.hostname}-${store}`);
+};
+
+
 const removeItemFromCart = (store, itemId) => {
   let cart = getStoredCart(store);
 
@@ -202,5 +208,6 @@ export {
   removeItemFromCart,
   updateData,
   updateOrder,
-  updateDataOrder
+  updateDataOrder,
+  clearStoredCart
 };

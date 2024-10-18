@@ -1,5 +1,4 @@
 import { IoIosGlobe } from "react-icons/io";
-// import bgImg from '../assets/abstract-line-hexagon-geometric-texture_1035-17372.avif';
 import erp from "../assets/IONIC-ERP-icon.png";
 import { useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
@@ -8,17 +7,18 @@ import { FaRegCopyright, FaRegUser } from "react-icons/fa";
 import { CiLock } from "react-icons/ci";
 import { MdArrowDropDown } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { SiNba } from "react-icons/si";
-import { addToProceed, getStoredCart } from "../utilities/function";
+import { addToProceed, fetchURL, getStoredCart } from "../utilities/function";
 import { toast } from "react-toastify";
+import MainLoader from "../components/Shared/MainLoader";
 
 const Login = () => {
   const [checked, setChecked] = useState(false);
-  // https modal
   const [open, setOpen] = useState(false);
   const [protocol, setProtocol] = useState("https");
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const navigate = useNavigate();
   const { url } = getStoredCart("login-info");
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     if (url) {
@@ -32,15 +32,11 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  // usr: "hm",
-  //       pwd: "Ionic0825",
-
   const onSubmit = (data) => {
     const url = `${protocol}://${data.url}`;
     const pass = data.password;
     const user = data.username;
 
-    console.log(`${protocol}://${data.url}`);
     const info = {
       erp_url: url,
       erp_data: {
@@ -48,7 +44,10 @@ const Login = () => {
         pwd: pass,
       },
     };
-    fetch("https://erp-backend-xkze.vercel.app/login", {
+
+    setIsLoading(true); // Start loader
+
+    fetch(`${fetchURL}/login`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -65,9 +64,22 @@ const Login = () => {
           };
           addToProceed(info, "login-info");
           navigate("/");
+          setValue("login");
           toast.success("Login Successfully", {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else {
+          // Trigger error toast if no cookies are found
+          toast.error("Invalid credentials. Please try again.", {
+            position: "top-center",
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -77,20 +89,34 @@ const Login = () => {
           });
         }
       })
-      .then((e) => console.log(e));
+      .catch((error) => {
+        toast.error("Login Successfully", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        // toast.success("Login failed. Please try again.");
+        console.error("Login error:", error);
+      })
+      .finally(() => {
+        setIsLoading(false); // Stop loader
+      });
   };
 
-  console.log(protocol);
+  if (isLoading) {
+    return <MainLoader />;
+  }
 
   return (
-    <div
-      // style={{ background: `url(${bgImg})` }}
-      className="h-screen bg-gray-200"
-    >
-      {/* ---------heading-------------- */}
+    <div className="h-screen bg-gray-200">
       <div className="flex justify-between items-center gap-5 px-5 h-1/4">
         <div className="flex justify-center items-center gap-2  rounded-2xl p-2 bg-opacity-60">
-          <img className="w-[40px] " src={erp} alt="" />
+          <img className="w-[40px]" src={erp} alt="" />
           <div>
             <p className="text-2xl">
               <span className="font-bold">IONIC</span>{" "}
@@ -106,28 +132,21 @@ const Login = () => {
         </div>
       </div>
 
-      {/* ----------------login interface------------- */}
-      <div className="bg-black rounded-3xl h-3/4 pt-[3px] px-[2px] pb-[2px] flex flex-col relative ">
+      <div className="bg-black rounded-3xl h-3/4 pt-[3px] px-[2px] pb-[2px] flex flex-col relative">
         <div className="bg-white rounded-3xl h-full">
           <p className="text-3xl font-semibold text-black px-5 pt-3">Login!</p>
           <p className="text-lg font-semibold text-gray-600 pl-5">
             Enter Your IONIC ERP Credentials
           </p>
 
-          {/* --------------------login form--------------- */}
           <div>
             <form
               className="flex flex-col gap-4 p-5"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <div className="flex  items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
-                {/* -------------modal--------------- */}
-                {/* Open the modal using document.getElementById('ID').showModal() method */}
-
-                {/* <div className="" onClick={() => document.getElementById('my_modal_2').showModal()} > */}
+              <div className="flex items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
                 <div className="" onClick={() => setOpen(!open)}>
                   <div className="flex justify-center items-center gap-1 cursor-pointer">
-                    {" "}
                     <IoIosGlobe className="text-[#FF0000] text-xl mr-[2px]" />
                     <span>{protocol}</span> <MdArrowDropDown />
                   </div>
@@ -147,7 +166,6 @@ const Login = () => {
                           onClick={() => setProtocol("https")}
                           className="flex justify-start gap-3 text-black items-center cursor-pointer"
                         >
-                          {" "}
                           <IoIosGlobe className="text-[#116630] text-xl" />{" "}
                           https
                         </p>
@@ -155,7 +173,6 @@ const Login = () => {
                           onClick={() => setProtocol("http")}
                           className="flex justify-start gap-3 text-black items-center cursor-pointer"
                         >
-                          {" "}
                           <IoIosGlobe className="text-[#116630] text-xl" /> http
                         </p>
                       </div>
@@ -167,27 +184,19 @@ const Login = () => {
                   placeholder="URL"
                   {...register("url", { required: true })}
                 />
-                {/* {errors.username && <span className='text-red-500'>This field is required</span>} */}
               </div>
-              <div className="flex  items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
-                <div className="">
-                  {" "}
-                  <FaRegUser className="text-[#FF0000] text-lg" />
-                </div>
 
+              <div className="flex items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
+                <FaRegUser className="text-[#FF0000] text-lg" />
                 <input
                   className="outline-none w-full focus:ring-0 focus:border-[#FF0000]"
                   placeholder="Username"
                   {...register("username", { required: true })}
                 />
-                {/* {errors.username && <span className='text-red-500'>This field is required</span>} */}
               </div>
-              <div className="flex items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
-                <div className="">
-                  {" "}
-                  <CiLock className="text-[#FF0000] text-xl" />
-                </div>
 
+              <div className="flex items-center gap-2 border-[1px] border-gray-400 p-2 rounded-xl">
+                <CiLock className="text-[#FF0000] text-xl" />
                 <input
                   className="outline-none w-full focus:ring-0 focus:border-[#116630]"
                   type="password"
@@ -195,7 +204,6 @@ const Login = () => {
                   {...register("password", { required: true })}
                 />
               </div>
-              {/* {errors.password && <span className='text-red-500'>This field is required</span>} */}
 
               <div className="flex justify-between items-center gap-2">
                 <p>Remember Me</p>
@@ -206,17 +214,13 @@ const Login = () => {
                   checked={checked}
                 />
               </div>
-
               <input
                 type="submit"
                 value="Login"
                 className="border-[1px] font-bold border-black bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl cursor-pointer"
               />
-
-              <button className=" border-black border-[1px] rounded-xl p-2 text-black font-bold shadow-xl ">
-                Sign Up
-              </button>
             </form>
+
             <div className="fixed bottom-1 left-0 right-0 flex flex-col justify-center items-center">
               <hr className="w-[70%]" />
               <p className="flex justify-center items-center gap-2 text-[10px] pt-1">

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { fetchURL, getStoredCart } from "../../utilities/function";
 import { FaBuildingColumns } from "react-icons/fa6";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
+import CommonButtonClose from "../Button/CommonButtonClose";
+import CommonButtonClear from "../Button/CommonButtonClear";
 
 const CostCenter = ({
   selectedCostCenter,
@@ -93,22 +95,18 @@ const CostCenter = ({
             className="fixed top-[195px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] p-2 shadow"
           >
             <div>
-              <div className="flex justify-between">
-                <p
-                  onClick={clear1}
-                  className="cursor-pointer text-[12px] text-[#ff3232] font-bold"
-                >
-                  Clear
-                </p>
-                <p className=" text-[12px] text- font-bold">
+              <div className="flex justify-center gap-5">
+                {/* clear button  */}
+                <div onClick={clear1}>
+                  <CommonButtonClear />
+                </div>
+                {/* <p className=" text-[12px] text- font-bold">
                   Select Cost Of Center{" "}
-                </p>
-                <p
-                  onClick={() => setOpen2(!open2)}
-                  className="cursor-pointer text-[12px] text-blue-600 font-bold"
-                >
-                  Close
-                </p>
+                </p> */}
+                {/* close button for open modal  */}
+                <div onClick={() => setOpen2(!open2)}>
+                  <CommonButtonClose close="Close" />
+                </div>
               </div>
             </div>
 
