@@ -83,7 +83,7 @@ const CompanyField = ({
         {open1 && (
           <div
             onClick={(event) => event.stopPropagation()}
-            className="fixed top-[140px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] p-2 shadow"
+            className="fixed border border-gray-300 top-[140px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] p-4 shadow"
           >
             <div>
               <div className="flex justify-center gap-5">

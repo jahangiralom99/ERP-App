@@ -73,7 +73,7 @@ const Orders = () => {
 
         <BsFilterLeft
           onClick={() => setOpen(!open)}
-          className="text-2xl text-blue-600"
+          className="text-2xl text-blue-600 cursor-pointer"
         />
         {/* filter order  */}
         {open && (

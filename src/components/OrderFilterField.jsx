@@ -118,7 +118,7 @@ const OrderFilterField = ({
               {open3 && (
                 <div
                   onClick={(event) => event.stopPropagation()}
-                  className="fixed top-[246px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] h-[300px] overflow-hidden p-2 shadow"
+                  className="fixed top-[246px] left-1/2 -translate-x-1/2 px-3 border border-gray-300 bg-white rounded-box z-[1] w-[350px] h-[300px] overflow-hidden p-5 shadow"
                 >
                   <div>
                     <div className="flex justify-center gap-5">
@@ -233,10 +233,10 @@ const OrderFilterField = ({
             <div className="flex gap-4 items-center w-full pl-4 pb-2">
               <SlCalender
                 onClick={handleCalendarClick}
-                className="text-[#FF0000] text-[17px] font-bold"
+                className="text-[#FF0000] text-[17px] font-bold "
               />
               <DatePicker
-                className="bg-transparent text-black font-medium"
+                className="bg-transparent text-black font-medium border-none outline-none"
                 selected={startDate}
                 onChange={(date) => {
                   // Format the date as DD/MM/YYYY
@@ -261,15 +261,15 @@ const OrderFilterField = ({
           </fieldset>
         </div>
 
-        <div className="flex gap-3 px-5 justify-between py-3">
+        <div className="flex gap-3 px-5 justify-between py-6">
           <button
             // onClick={() => setOpen(!open)}
-            className="border-[1px] border-zinc-400 text-zinc-600 p-3 rounded-xl  w-[130px]"
+            className=" text-white font-bold bg-black rounded-xl px-6 py-1 "
           >
             Clear Filters
           </button>
 
-          <button className="border-[1px]  p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl whitespace-nowrap text-medium  w-[130px]">
+          <button className="border-[1px] bg-gradient-to-r font-bold bg-[#E70006] text-white rounded-xl whitespace-nowrap text-medium px-6 py-1 ">
             Apply Filters
           </button>
         </div>
