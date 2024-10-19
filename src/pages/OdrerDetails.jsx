@@ -4,11 +4,15 @@ import { TfiPencil } from "react-icons/tfi";
 import { Link, useParams } from "react-router-dom";
 import UpdateOrder from "./UpdateOrder";
 import { fetchURL, getStoredCart } from "../utilities/function";
+import MainLoader from "../components/Shared/MainLoader";
 
 const OdrerDetails = () => {
   const { name } = useParams();
   const [data, setData] = useState({});
-  //   const [loading, setLoading] = useState(true);
+  // sales order items  Data
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  // const [loading1, setLoading1] = useState(true);
 
   const { url } = getStoredCart("login-info");
 
@@ -44,8 +48,50 @@ const OdrerDetails = () => {
     fetchData();
   }, [url, name]);
 
-  //   console.log(name);
+  // {fetchURL}/getchildtable?erp_url={url}&doctype_name=Sales Order&child_table=Sales Order Item&name=2024-00207
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${fetchURL}/getchildtable?erp_url=${url}&doctype_name=Sales Order&child_table=Sales Order Item&name=${name}`,
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const result = await response.json();
+        // const filter = result?.data?.find((item) => item.name == name);
+        setItems(result?.message);
+        // setData(filter);
+        // setLoading1(false);
+      } catch (err) {
+        // console.log(err);
+        setError(err.message);
+      } finally {
+        // setLoading1(false);
+      }
+    };
+
+    fetchData();
+  }, [url, name]);
+
+  const totalSum = items.reduce((acc, item) => {
+    return acc + item.amount * item.qty;
+  }, 0);
+
+  
+  // if (loading) {
+  //   return <MainLoader />;
+  // }
+  console.log(items);
+  
   const [open5, setOpen5] = useState(false);
   return (
     <div className=" bg-gray-200 pb-32  text-black relative">
@@ -86,7 +132,7 @@ const OdrerDetails = () => {
               <button className="bg-[#e1ebf8] border-[1px] border-[#7579ff] p-[5px] rounded-lg font-medium text-sm text-[#7579ff] ">
                 {data?.status}
               </button>
-            </div> 
+            </div>
           </div>
 
           <div className="pt-3 flex gap-2 justify-between flex-wrap ">
@@ -111,15 +157,21 @@ const OdrerDetails = () => {
       {/* Accounting */}
 
       <div className="mx-5 mt-5 flex flex-col gap-3  bg-white rounded-xl p-3">
-        <div className="flex justify-between">
-          <div>
-            <p className="text-sm font-medium pb-1 text-black">
-              HP Pavillion x360
-            </p>
-            <p className="text-xs text-zinc-500">&#2547; 75000.00*3.0</p>
-          </div>
-          <p className="text-sm font-medium">&#2547; 225000.00</p>
-        </div>
+        {items?.map((item, idx) => {
+          return (
+            <div key={idx} className="flex justify-between border-b pb-2">
+              <div>
+                <p className="text-sm font-medium pb-1 text-black">
+                  {item?.item_name}
+                </p>
+                <p className="text-xs text-zinc-500">
+                  &#2547; {item?.net_rate} * {item?.qty}
+                </p>
+              </div>
+              <p className="text-sm font-medium">&#2547; {item?.amount}</p>
+            </div>
+          );
+        })}
 
         <hr />
 
@@ -140,7 +192,7 @@ const OdrerDetails = () => {
             <p className="text-sm font-medium pb-1  text-zinc-500">
               Sub total:
             </p>
-            <p className="text-sm font-medium">&#2547; 2,25,000.00</p>
+            <p className="text-sm font-medium">&#2547; {totalSum}</p>
           </div>
           <div className="flex justify-between">
             <p className="text-sm font-medium pb-1  text-zinc-500">Discount:</p>
@@ -154,7 +206,7 @@ const OdrerDetails = () => {
           <div className="flex justify-between">
             <p className="text-sm font-medium pb-1  text-zinc-500">Total:</p>
             <p className="text-sm text-blue-600 font-medium">
-              &#2547; 2,25,000.00
+              &#2547; {totalSum}
             </p>
           </div>
         </div>

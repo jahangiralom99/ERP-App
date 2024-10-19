@@ -7,12 +7,16 @@ import { fetchURL, getStoredCart } from "../utilities/function";
 import { data } from "autoprefixer";
 import CommonButtonClose from "./Button/CommonButtonClose";
 import CommonButtonClear from "./Button/CommonButtonClear";
+import MainLoader from "./Shared/MainLoader";
 
 const OrderFilterField = ({
   setOpen,
   open,
   selectedCustomer,
   setSelectedCustomer,
+  setSearchData,
+  data,
+  setData,
 }) => {
   const [open1, setOpen1] = useState(false);
   const [open3, setOpen3] = useState(false);
@@ -26,6 +30,9 @@ const OrderFilterField = ({
   // search for selected customer
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  // const loader
+  const [loader, setLoader] = useState(false);
+  // data for order
 
   // get Select Customer
   useEffect(() => {
@@ -47,7 +54,76 @@ const OrderFilterField = ({
     fetchData();
   }, []);
 
-  // handle search results
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Sales Order`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             Accept: "application/json",
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error(`Error: ${response.status}`);
+  //       }
+  //       const result = await response.json();
+  //       // console.log(result);
+  //       const filter = result?.data?.filter(
+  //         (item) =>
+  //           item.customer == selectedCustomer &&
+  //           item.transaction_date == formattedDate
+  //       );
+  //       console.log("filter data", filter);
+  //       // setM(result);
+  //       // setLoading(false);
+  //     } catch (err) {
+  //       console.log(err);
+  //       // setError(err.message);
+  //     } finally {
+  //       // setLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [url, selectedCustomer, formattedDate]);
+
+  const fetchData = async () => {
+    setLoader(true);
+    try {
+      const response = await fetch(
+        `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Sales Order`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      const result = await response.json();
+      const filter = result?.data?.filter(
+        (item) =>
+          item.customer === selectedCustomer &&
+          item.transaction_date === formattedDate
+      );
+      console.log("filtered data", filter);
+      setData(filter);
+      setLoader(false);
+    } catch (err) {
+      console.error(err);
+      // setError(err.message);
+    } finally {
+      setLoader(false);
+    }
+  };
+
   // search for customers
   const handleSearch = async () => {
     const query = encodeURIComponent(`[["name", "like", "%${searchQuery}%"]]`);
@@ -62,18 +138,34 @@ const OrderFilterField = ({
     }
   };
 
+  // handle Apply for Filter by Customer name and  date
+  const handleFilter = () => {
+    fetchData();
+    setTimeout(() => {
+      setOpen(!open);
+    }, 2000);
+  };
+
   const clear2 = () => {
     setSelectedCustomer("");
   };
 
-  console.log(customer, formattedDate);
+  // console.log("data", m);
 
   const handleCalendarClick = () => {
     setOpen1((prev) => !prev);
   };
 
+  if (loader) {
+    return (
+      <div className="absolute top-0 left-0 w-full h-screen z-20">
+        <MainLoader />
+      </div>
+    );
+  }
+
   return (
-    <div className="fixed top-32 left-0 right-0 bg-gray-50  rounded-t-xl z-10 flex justify-center items-center">
+    <div className="fixed top-14 left-0 right-0 bg-gray-50 h-[400px] rounded-t-xl z-10 flex justify-center items-center">
       <div>
         <div className="flex justify-between w-full pt-3 ">
           <p className="w-10"></p>
@@ -118,7 +210,7 @@ const OrderFilterField = ({
               {open3 && (
                 <div
                   onClick={(event) => event.stopPropagation()}
-                  className="fixed top-[246px] left-1/2 -translate-x-1/2 px-3 border border-gray-300 bg-white rounded-box z-[1] w-[350px] h-[300px] overflow-hidden p-5 shadow"
+                  className="fixed top-[246px] left-1/2 -translate-x-1/2 px-3 border border-gray-300 bg-white rounded-box z-[1] w-[360px] h-[300px] overflow-hidden p-5 shadow"
                 >
                   <div>
                     <div className="flex justify-center gap-5">
@@ -233,19 +325,21 @@ const OrderFilterField = ({
             <div className="flex gap-4 items-center w-full pl-4 pb-2">
               <SlCalender
                 onClick={handleCalendarClick}
-                className="text-[#FF0000] text-[17px] font-bold "
+                className="text-[#FF0000] text-[17px] font-bold"
               />
               <DatePicker
                 className="bg-transparent text-black font-medium border-none outline-none"
                 selected={startDate}
                 onChange={(date) => {
-                  // Format the date as DD/MM/YYYY
-                  const formattedDate = `${date
+                  // Format the date as YYYY-MM-DD
+                  const formattedDate = `${date.getFullYear()}-${(
+                    date.getMonth() + 1
+                  )
+                    .toString()
+                    .padStart(2, "0")}-${date
                     .getDate()
                     .toString()
-                    .padStart(2, "0")}/${(date.getMonth() + 1)
-                    .toString()
-                    .padStart(2, "0")}/${date.getFullYear()}`;
+                    .padStart(2, "0")}`;
 
                   setStartDate(date); // Set the Date object
                   setFormattedDate(formattedDate); // Set the formatted string
@@ -263,13 +357,16 @@ const OrderFilterField = ({
 
         <div className="flex gap-3 px-5 justify-between py-6">
           <button
-            // onClick={() => setOpen(!open)}
+            onClick={clear2}
             className=" text-white font-bold bg-black rounded-xl px-6 py-1 "
           >
             Clear Filters
           </button>
 
-          <button className="border-[1px] bg-gradient-to-r font-bold bg-[#E70006] text-white rounded-xl whitespace-nowrap text-medium px-6 py-1 ">
+          <button
+            onClick={handleFilter}
+            className="border-[1px] bg-gradient-to-r font-bold bg-[#E70006] text-white rounded-xl whitespace-nowrap text-medium px-6 py-1 "
+          >
             Apply Filters
           </button>
         </div>
