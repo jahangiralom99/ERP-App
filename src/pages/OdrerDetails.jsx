@@ -9,6 +9,8 @@ import MainLoader from "../components/Shared/MainLoader";
 const OdrerDetails = () => {
   const { name } = useParams();
   const [data, setData] = useState({});
+  // use state for update modal
+  const [open5, setOpen5] = useState(false);
   // sales order items  Data
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +36,7 @@ const OdrerDetails = () => {
         }
         const result = await response.json();
         const filter = result?.data?.find((item) => item.name == name);
-        console.log(filter);
+        console.log("Filter", filter);
         setData(filter);
         // setLoading(false);
       } catch (err) {
@@ -86,13 +88,11 @@ const OdrerDetails = () => {
     return acc + item.amount * item.qty;
   }, 0);
 
-  
   // if (loading) {
   //   return <MainLoader />;
   // }
-  console.log(items);
-  
-  const [open5, setOpen5] = useState(false);
+  // console.log(items);
+
   return (
     <div className=" bg-gray-200 pb-32  text-black relative">
       {/* header */}
@@ -104,12 +104,18 @@ const OdrerDetails = () => {
             </Link>
             <p className=" font-medium">Order Details</p>
           </div>
-          <div onClick={() => setOpen5(!open5)}>
+          <div className="cursor-pointer" onClick={() => setOpen5(!open5)}>
             <TfiPencil className="text-lg text-blue-600" />
           </div>
           {open5 && (
             <div className="absolute top-0 left-0 right-0">
-              <UpdateOrder setOpen5={setOpen5} />
+              <UpdateOrder
+                setOpen5={setOpen5}
+                items={items}
+                data={data}
+                open5={open5}
+                name={name}
+              />
             </div>
           )}
         </div>

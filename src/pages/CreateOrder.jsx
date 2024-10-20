@@ -22,8 +22,8 @@ import { toast } from "react-toastify";
 import CompanyField from "../components/CreateOrder/CompanyField";
 import CostCenter from "../components/CreateOrder/CostCenter";
 import CustomerField from "../components/CreateOrder/CustomerField";
-import OrderLoader from "../components/Shared/OrderLoader";
 import MainLoader from "../components/Shared/MainLoader";
+import CommonButtonClose from "../components/Button/CommonButtonClose";
 
 const CreateOrder = () => {
   const [open, setOpen] = useState(false);
@@ -34,6 +34,7 @@ const CreateOrder = () => {
   const date = formatDate();
   const [open4, setOpen4] = useState(false);
   const [total, setTotal] = useState(0);
+
 
   // dfd
   // const [AllData2, setAllData2] = useState({});
@@ -79,24 +80,37 @@ const CreateOrder = () => {
   // console.log("filterData", filter);
   // ALl item deleted from cart
   const handleDeleted = () => {
-    // setChange("filterData");
-    const keyList = Object.keys(AllData1);
-    console.log(keyList);
-    for (let i of keyList) {
-      AllData1[i]["qty"] = 0;
-      updateData(i, AllData1[i]["qty"]);
-      window.location.reload();
+    if (!filter.length == 0) {
+      setChange("filterData");
+      const keyList = Object.keys(AllData1);
+      console.log(keyList);
+      for (let i of keyList) {
+        AllData1[i]["qty"] = 0;
+        updateData(i, AllData1[i]["qty"]);
+        window.location.reload();
+      }
+      toast.success("All Items Deleted", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      toast.info("Item Not Found", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
-    toast.success("All Items Deleted", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
   };
 
   const { url } = getStoredCart("login-info");
@@ -343,13 +357,12 @@ const CreateOrder = () => {
   //   //   )
   //   // );
   // };
-  console.log("image", image);
+  // console.log("image", filter);
 
-  if (!order === "") {
+  if (!order === "" || !change == "") {
     return (
       <>
         <MainLoader />
-        <OrderLoader />{" "}
       </>
     );
   }
@@ -400,7 +413,7 @@ const CreateOrder = () => {
               className="text-[#FF0000] text-[17px] font-bold"
             />
             <DatePicker
-              className="bg-transparent text-black font-medium"
+              className="bg-transparent text-black font-medium border-none outline-none"
               selected={startDate}
               onChange={(date) => {
                 // Format the date as DD/MM/YYYY
@@ -482,12 +495,9 @@ const CreateOrder = () => {
         <div className="pt-5 text-sm text-black font-medium mt-4">
           <div className="flex justify-between">
             <p className="text-zinc-500">Items*</p>
-            <p
-              onClick={handleDeleted}
-              className="text-[#FF0000] cursor-pointer"
-            >
-              Delete Items All
-            </p>
+            <div onClick={handleDeleted}>
+              <CommonButtonClose close="Clean All" />
+            </div>
           </div>
 
           <div className="border-[1px] bg-white border-zinc-300 rounded-xl mt-2">
