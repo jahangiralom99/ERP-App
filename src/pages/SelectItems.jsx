@@ -24,7 +24,6 @@ const SelectItems = ({
   handleMinus,
   AllData1,
   quantities,
-  setMf,
 }) => {
   const data = getStoredCart("order-info");
   const AllData = getStoredCart("item-all-data");
@@ -183,7 +182,7 @@ const SelectItems = ({
       //   sum.push(filter[0]);
       // }
       // console.log(sum);
-      setMf(sum);
+      // setMf(sum);
       addToProceed(sum, "order-info");
 
       // addToProceed(sum, "order-info");

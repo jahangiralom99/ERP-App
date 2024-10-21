@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { TfiPencil } from "react-icons/tfi";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import UpdateOrder from "./UpdateOrder";
-import { fetchURL, getStoredCart } from "../utilities/function";
+import { fetchURL, getStoredCart, updateData } from "../utilities/function";
 import MainLoader from "../components/Shared/MainLoader";
 
 const OdrerDetails = () => {
@@ -11,14 +11,18 @@ const OdrerDetails = () => {
   const [data, setData] = useState({});
   // use state for update modal
   const [open5, setOpen5] = useState(false);
+  // navigate
+  const navigate = useNavigate();
   // sales order items  Data
+  // all data
+  const [AllData1, setAllData] = useState({});
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  // const [loading1, setLoading1] = useState(true);
-
+  const [loading, setLoading] = useState(false);
+  // const [loading1, setLoading1] = useState(true)
   const { url } = getStoredCart("login-info");
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -38,18 +42,23 @@ const OdrerDetails = () => {
         const filter = result?.data?.find((item) => item.name == name);
         console.log("Filter", filter);
         setData(filter);
-        // setLoading(false);
+        setLoading(false);
       } catch (err) {
         console.log(err);
         setError(err.message);
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [url, name]);
 
+  // all data clear
+  useEffect(() => {
+    const AllData1 = getStoredCart("item-all-data");
+    setAllData(AllData1);
+  }, []);
   // {fetchURL}/getchildtable?erp_url={url}&doctype_name=Sales Order&child_table=Sales Order Item&name=2024-00207
 
   useEffect(() => {
@@ -84,13 +93,32 @@ const OdrerDetails = () => {
     fetchData();
   }, [url, name]);
 
+  const m = getStoredCart("item-all-data");
+  const filter = Object.values(m).filter((item) => item["qty"] > 0);
+
+  // console.log(filter);
+  if (!filter.length == 0) {
+    // setChange("filterData");
+    const keyList = Object.keys(AllData1);
+    // console.log(keyList);
+    for (let i of keyList) {
+      AllData1[i]["qty"] = 0;
+      updateData(i, AllData1[i]["qty"]);
+      // window.location.reload();
+    }
+  }
+
+  const handleNavigate = () => {
+    navigate(-1);
+  };
+
   const totalSum = items.reduce((acc, item) => {
     return acc + item.amount * item.qty;
   }, 0);
 
-  // if (loading) {
-  //   return <MainLoader />;
-  // }
+  if (loading) {
+    return <MainLoader />;
+  }
   // console.log(items);
 
   return (
@@ -99,9 +127,9 @@ const OdrerDetails = () => {
       <div>
         <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
           <div className="flex items-center gap-4">
-            <Link to="/orders">
+            <div className="cursor-pointer" onClick={handleNavigate}>
               <IoMdArrowBack className="text-lg text-blue-600" />
-            </Link>
+            </div>
             <p className=" font-medium">Order Details</p>
           </div>
           <div className="cursor-pointer" onClick={() => setOpen5(!open5)}>

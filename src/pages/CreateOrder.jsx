@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaBangladeshiTakaSign, FaCirclePlus, FaPlus } from "react-icons/fa6";
-import { IoMdArrowBack } from "react-icons/io";
+import { IoMdArrowBack, IoMdCloseCircleOutline } from "react-icons/io";
 import { RiQrScan2Line } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoArrowUpCircleOutline } from "react-icons/io5";
 import { FiMinus } from "react-icons/fi";
-import { Scanner } from "@yudiel/react-qr-scanner";
 import {
   addToProceed,
   fetchURL,
@@ -24,6 +23,7 @@ import CostCenter from "../components/CreateOrder/CostCenter";
 import CustomerField from "../components/CreateOrder/CustomerField";
 import MainLoader from "../components/Shared/MainLoader";
 import CommonButtonClose from "../components/Button/CommonButtonClose";
+import BarcodeScannerComponent from "react-qr-barcode-scanner";
 
 const CreateOrder = () => {
   const [open, setOpen] = useState(false);
@@ -34,7 +34,6 @@ const CreateOrder = () => {
   const date = formatDate();
   const [open4, setOpen4] = useState(false);
   const [total, setTotal] = useState(0);
-
 
   // dfd
   // const [AllData2, setAllData2] = useState({});
@@ -54,7 +53,7 @@ const CreateOrder = () => {
   const [itemOpen, setItemOpen] = useState(false);
   // qty set
   const [quantities, setQuantities] = useState({});
-  // const [data, setData] = useState([]);
+  const [data1, setData1] = useState("");
   const [count, setCount] = useState(10);
   // fg
   const data = getStoredCart("order-info");
@@ -67,7 +66,7 @@ const CreateOrder = () => {
   // image
   const [image, setImage] = useState("");
 
-  const [mf, setMf] = useState([]);
+  // const [mf, setMf] = useState([]);
 
   useEffect(() => {
     const AllData1 = getStoredCart("item-all-data");
@@ -113,6 +112,20 @@ const CreateOrder = () => {
     }
   };
 
+
+  // Attachment file 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImage(file);
+    }
+  };
+
+  // Attachment file remove 
+  const removeImage = () => {
+    setImage(null);
+  };
+
   const { url } = getStoredCart("login-info");
 
   const handleCalendarClick = () => {
@@ -145,6 +158,17 @@ const CreateOrder = () => {
       });
     } else if (selectedCustomer == "") {
       toast.warn("Please Select Customer Name", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (formattedDate == "") {
+      toast.warn("Please Select Date", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -372,7 +396,7 @@ const CreateOrder = () => {
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         <div className="flex items-center gap-4">
-          <div>
+          <div className="cursor-pointer">
             <IoMdArrowBack onClick={goBack} className="text-lg text-blue-600" />
           </div>
           <p className=" font-medium">Create Order</p>
@@ -414,21 +438,23 @@ const CreateOrder = () => {
             />
             <DatePicker
               className="bg-transparent text-black font-medium border-none outline-none"
-              selected={startDate}
+              selected={formattedDate}
               onChange={(date) => {
-                // Format the date as DD/MM/YYYY
-                const formattedDate = `${date
+                // Format the date as YYYY-MM-DD
+                const formattedDate = `${date.getFullYear()}-${(
+                  date.getMonth() + 1
+                )
+                  .toString()
+                  .padStart(2, "0")}-${date
                   .getDate()
                   .toString()
-                  .padStart(2, "0")}/${(date.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}/${date.getFullYear()}`;
+                  .padStart(2, "0")}`;
 
                 setStartDate(date); // Set the Date object
                 setFormattedDate(formattedDate); // Set the formatted string
                 setOpen(false); // Close the date picker after selection
               }}
-              onClickOutside={() => setOpen(false)} // Close when clicking outside
+              onClickOutside={() => setOpen(false)} // Close on outside click
               open={open} // Control the open state
               onFocus={handleCalendarClick} // Open on focus
             />
@@ -441,8 +467,19 @@ const CreateOrder = () => {
       {/* qr scanner */}
 
       {open4 && (
-        <div classNames=" w-20 bg-white">
-          <Scanner onScan={(result) => console.log(result)} />
+        <div className="absolute px-10 left-1/2 -translate-x-1/2 w-full top-16 z-20  bg-white">
+          <BarcodeScannerComponent
+            width={500}
+            // height={500}
+            onUpdate={(err, result) => {
+              if (result) {
+                // console.log(result);
+                console.log(result);
+                setData1(result?.text || "");
+              } else setData1("Not Found");
+            }}
+          />
+          <p>{data1}</p>
         </div>
       )}
 
@@ -479,15 +516,32 @@ const CreateOrder = () => {
                     <label>
                         <input type="file" name="myImage" accept="image/png, image/gif, image/jpeg" />
                     </label> */}
-          <button className="w-full bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl flex justify-center items-center gap-2 relative">
-            <IoArrowUpCircleOutline className="text-2xl text-[#ed6262]" />
-            <span>Attachment</span>
-            <input
-              type="file"
-              onChange={(e) => setImage(e.target.files[0])}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-            />
-          </button>
+        {/* Attachment part  */}
+        <div className="w-full">
+            <button className="w-full bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl flex justify-center items-center gap-2 relative">
+              <IoArrowUpCircleOutline className="text-2xl text-red-500" />
+              <span>Attachment</span>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept="image/*" // Limit to image files
+                className="absolute inset-0 opacity-0 cursor-pointer"
+              />
+            </button>
+            {image && (
+              <div className="flex bg-white mt-4 flex-col items-center border border-gray-300 rounded-full p-3 gap-2 w-full">
+                <div className="flex justify-between items-center w-full font-bold px-3">
+                  <span className="truncate text-sm">{image.name}</span>
+                  <button
+                    className="text-red-500 hover:text-red-700"
+                    onClick={removeImage}
+                  >
+                    <IoMdCloseCircleOutline className="text-xl" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* data from select item page */}
@@ -618,7 +672,6 @@ const CreateOrder = () => {
             itemOpen={itemOpen}
             AllData1={AllData1}
             quantities={quantities}
-            setMf={setMf}
             setItemOpen={setItemOpen}
           />
         </div>

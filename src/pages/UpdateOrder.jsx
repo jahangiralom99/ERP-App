@@ -25,9 +25,15 @@ import { FiMinus } from "react-icons/fi";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import CommonButtonClear from "../components/Button/CommonButtonClear";
 import CommonButtonClose from "../components/Button/CommonButtonClose";
-import { fetchURL, formatDate, getStoredCart } from "../utilities/function";
+import {
+  fetchURL,
+  formatDate,
+  getStoredCart,
+  updateData,
+} from "../utilities/function";
 import { toast } from "react-toastify";
 import MainLoader from "../components/Shared/MainLoader";
+import SelectItems from "./SelectItems";
 
 const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
   const [open, setOpen] = useState(false);
@@ -47,12 +53,23 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
   const [open4, setOpen4] = useState(false);
   // image
   const [image, setImage] = useState(null);
+  // Add Item Details popup state
+  const [itemOpen, setItemOpen] = useState(false);
+  // qty set
+  const [quantities, setQuantities] = useState({});
+  // data
+  const [AllData1, setAllData] = useState({});
 
   const { url } = getStoredCart("login-info");
 
   const handleCalendarClick = () => {
     setOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const AllData1 = getStoredCart("item-all-data");
+    setAllData(AllData1);
+  }, []);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -85,6 +102,10 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     );
   };
 
+  const m = getStoredCart("item-all-data");
+  const filter = Object.values(m).filter((item) => item["qty"] > 0);
+  // console.log(filter);
+
   //   {
   //     "item_code": "Item Code",
   //     "item_name": "Item Name",
@@ -107,43 +128,69 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     return order;
   });
 
+  // console.log(formattedDate);
+
   // handle update
   const handleUpdateOrder = () => {
-    SetUpdate(true);
-    console.log(name);
-    // body for update sales orders
-    const bodyInfo = {
-      erp_url: `${url}`,
-      doctype_name: "Sales Order",
-      document_name: `${encodeURIComponent(name)}`,
-      customer: data?.customer,
-      transaction_date: date,
-      custom_delivery_type: "",
-      data: {
-        items: items2,
-      },
-    };
+    if (formattedDate == "") {
+      toast.info("Delivery Date Is Required", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      SetUpdate(true);
+      // console.log(name);
+      // body for update sales orders
+      const bodyInfo = {
+        erp_url: `${url}`,
+        doctype_name: "Sales Order",
+        document_name: `${encodeURIComponent(name)}`,
+        customer: data?.customer,
+        transaction_date: date,
+        custom_delivery_type: "",
+        data: {
+          items: items2,
+        },
+      };
 
-    // console.log("bofy info", bodyInfo);
-
-    // update sales order api
-    fetch(`${fetchURL}/put_data`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bodyInfo),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
+      // update sales order api
+      fetch(`${fetchURL}/put_data`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bodyInfo),
       })
-      .then((result) => {
-        if (result) {
-          toast.success("Update Order", {
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        })
+        .then((result) => {
+          if (result) {
+            toast.success("Updated Order", {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+            SetUpdate(false);
+          }
+        })
+        .catch((error) => {
+          toast.error("Order Not Updated", {
             position: "top-center",
             autoClose: 1000,
             hideProgressBar: false,
@@ -153,29 +200,50 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
             progress: undefined,
             theme: "dark",
           });
-          SetUpdate(false);
-        }
-      })
-      .catch((error) => {
-        toast.error("Order Not Updated", {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        console.error("Error:", error);
-      })
-      .finally(() => SetUpdate(false));
-      };
-    
+          console.error("Error:", error);
+        })
+        .finally(() => SetUpdate(false));
+    }
 
-    // const handleUpdateOrder = () => {
-    //     console.log("update ");
-    // }
+    // console.log("bofy info", bodyInfo);
+  };
+
+  // const handleUpdateOrder = () => {
+  //     console.log("update ");
+  // }
+
+  // handle plus btn for modal
+  const handlePlus = (itemName) => {
+    // console.log(i);
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [itemName]: (prevQuantities[itemName] || 0) + 1,
+    }));
+    // console.log(quantities[itemName], itemName);
+    AllData1[itemName]["qty"]++;
+    updateData(itemName, AllData1[itemName]["qty"]);
+  };
+
+  // handle minus btn for modal
+  const handleMinus = (itemName) => {
+    setQuantities((prevQuantities) => {
+      const newQty = Math.max((prevQuantities[itemName] || 0) - 1, 0);
+
+      // Update qty in AllData1 immutably
+      AllData1[itemName] = {
+        ...AllData1[itemName],
+        qty: newQty, // Set the new qty
+      };
+
+      // Optionally call updateData if needed to handle external syncs
+      updateData(itemName, newQty);
+
+      return {
+        ...prevQuantities,
+        [itemName]: newQty,
+      };
+    });
+  };
 
   //   console.log(formattedDate);
   if (update) {
@@ -288,7 +356,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
             />
             <DatePicker
               className="bg-transparent text-black font-medium border-none outline-none"
-              selected={startDate}
+              selected={formattedDate}
               onChange={(date) => {
                 // Format the date as YYYY-MM-DD
                 const formattedDate = `${date.getFullYear()}-${(
@@ -324,6 +392,16 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
 
       <div className="px-5 flex flex-col">
         <div className="flex flex-col gap-3">
+          <div>
+            <button
+              onClick={() => setItemOpen(!itemOpen)}
+              className="w-full bg-gradient-to-r from-gray-800 to-gray-300 p-2 rounded-xl flex justify-center items-center gap-2 text-white"
+            >
+              {" "}
+              <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-xl" />{" "}
+              Add item Details
+            </button>
+          </div>
           {/* <Link to='/selectitems'>
                         <button className="w-full bg-gradient-to-r from-gray-800 to-gray-300 p-2 rounded-xl flex justify-center items-center gap-2 text-white"> <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-xl" /> Add item Details</button>
                     </Link> */}
@@ -380,8 +458,9 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         <div className="pt-5 text-sm text-black font-medium">
           <div className="flex justify-between">
             <p className="text-zinc-500">Items*</p>
-            <div></div>
-            <p className="text-[#FF0000]">Delete</p>
+            <div>
+              <CommonButtonClose close="Delete All" />
+            </div>
           </div>
 
           <div className="border-[1px] mt-3 bg-white border-zinc-300 rounded-xl">
@@ -406,16 +485,40 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
                 </div>
               </div>
             ))}
+            {/* new add to card  */}
+            {filter?.map((item, idx) => (
+              <div key={idx} className=" p-3 rounded-xl">
+                <div className="flex justify-between">
+                  <div className="flex flex-col gap-2">
+                    <p className="font-medium text-sm">{item?.item_name}</p>
+                    <p className="flex items-center gap-1 text-xs text-zinc-600">
+                      <FaBangladeshiTakaSign /> {item.amount} * {item.qty}
+                    </p>
+                  </div>
+                  <div className="flex flex-col justify-end items-center text-sm">
+                    <p>{item.standard_rate * item.qty}</p>
+                    <div className="flex items-center gap-2 border-[2px] rounded-lg p-1 ">
+                      <FiMinus onClick={() => handleMinus(item.name)} />{" "}
+                      {<p>{item.qty}</p>}
+                      <FaPlus
+                        className="cursor-pointer"
+                        onClick={() => handlePlus(item.name)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
 
             <hr />
 
             {/* button */}
-            {/* <Link to="/selectitems">
-              <div className="p-3 flex items-center gap-2">
+            <div onClick={() => setItemOpen(!itemOpen)}>
+              <div className="p-3 flex items-center gap-2 cursor-pointer">
                 <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-lg" />
                 <p className="">Add Another Item</p>
               </div>
-            </Link> */}
+            </div>
 
             <hr />
 
@@ -441,7 +544,11 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
                     {quantity.reduce(
                       (total, item) => total + item.amount * item.qty,
                       0
-                    )}
+                    ) +
+                      filter.reduce(
+                        (total, item) => total + item.standard_rate * item.qty,
+                        0
+                      )}
                   </span>{" "}
                 </p>
               </div>
@@ -465,8 +572,12 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
                   {quantity.reduce(
                     (total, item) => total + item.amount * item.qty,
                     0
-                  )}
-                </span>{" "}
+                  ) +
+                    filter.reduce(
+                      (total, item) => total + item.standard_rate * item.qty,
+                      0
+                    )}
+                </span>
               </p>
             </div>
           </div>
@@ -485,6 +596,19 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
             Update Order
           </button>
         </div>
+        {itemOpen ? (
+          <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-slate-200 z-20">
+            <SelectItems
+              handlePlus={handlePlus}
+              handleMinus={handleMinus}
+              itemOpen={itemOpen}
+              AllData1={AllData1}
+              quantities={quantities}
+              // setMf={setMf}
+              setItemOpen={setItemOpen}
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );

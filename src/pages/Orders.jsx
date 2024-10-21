@@ -7,7 +7,7 @@ import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
-import { getStoredCart } from "../utilities/function";
+import { getStoredCart, updateData } from "../utilities/function";
 import MainLoader from "../components/Shared/MainLoader";
 import OrderFilterField from "../components/OrderFilterField";
 
@@ -18,6 +18,8 @@ const Orders = () => {
   // customer state
   const [selectedCustomer, setSelectedCustomer] = useState("");
 
+  // all data
+  const [AllData1, setAllData] = useState({});
   // for data fetching
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +28,12 @@ const Orders = () => {
   const [searchData, setSearchData] = useState([]);
 
   const { url } = getStoredCart("login-info");
+
+  // all data clear
+  useEffect(() => {
+    const AllData1 = getStoredCart("item-all-data");
+    setAllData(AllData1);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,12 +65,27 @@ const Orders = () => {
     fetchData();
   }, [url]);
 
+  const m = getStoredCart("item-all-data");
+  const filter = Object.values(m).filter((item) => item["qty"] > 0);
+
+  // console.log(filter);
+  if (!filter.length == 0) {
+    // setChange("filterData");
+    const keyList = Object.keys(AllData1);
+    // console.log(keyList);
+    for (let i of keyList) {
+      AllData1[i]["qty"] = 0;
+      updateData(i, AllData1[i]["qty"]);
+      // window.location.reload();
+    }
+  }
+
   // console.log(data);
 
   if (loading) {
     return <MainLoader />;
   }
-  console.log(data);
+  // console.log(data);
   return (
     <div className=" bg-gray-200 pb-12 ">
       {/* header */}
