@@ -24,6 +24,7 @@ import CustomerField from "../components/CreateOrder/CustomerField";
 import MainLoader from "../components/Shared/MainLoader";
 import CommonButtonClose from "../components/Button/CommonButtonClose";
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
+import CommonBackButton from "../components/Button/CommonBackButton";
 
 const CreateOrder = () => {
   const [open, setOpen] = useState(false);
@@ -112,8 +113,7 @@ const CreateOrder = () => {
     }
   };
 
-
-  // Attachment file 
+  // Attachment file
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -121,7 +121,7 @@ const CreateOrder = () => {
     }
   };
 
-  // Attachment file remove 
+  // Attachment file remove
   const removeImage = () => {
     setImage(null);
   };
@@ -396,13 +396,19 @@ const CreateOrder = () => {
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         <div className="flex items-center gap-4">
-          <div className="cursor-pointer">
+          <div onClick={goBack} className="cursor-pointer">
+            <CommonBackButton value="Create Order" />
+          </div>
+          {/* <div className="cursor-pointer">
             <IoMdArrowBack onClick={goBack} className="text-lg text-blue-600" />
           </div>
-          <p className=" font-medium">Create Order</p>
+          <p className=" font-medium">Create Order</p> */}
         </div>
-        <div onClick={() => setOpen4(!open4)} className="">
-          <RiQrScan2Line className="text-xl text-blue-600" />
+        <div
+          onClick={() => setOpen4(!open4)}
+          className="bg-[#FF0000] p-[4px] rounded border border-black"
+        >
+          <RiQrScan2Line className="text-xl text-white" />
         </div>
       </div>
 
@@ -430,7 +436,9 @@ const CreateOrder = () => {
 
         {/* date */}
         <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
-          <legend className="ml-3 px-[5px] text-xs text-gray-500">date</legend>
+          <legend className="ml-3 px-[5px] text-xs text-gray-500">
+            Delivery Date
+          </legend>
           <div className="flex gap-4 items-center w-full pl-4 pb-2">
             <SlCalender
               onClick={handleCalendarClick}
@@ -490,11 +498,11 @@ const CreateOrder = () => {
           <div>
             <button
               onClick={() => setItemOpen(!itemOpen)}
-              className="w-full bg-gradient-to-r from-gray-800 to-gray-300 p-2 rounded-xl flex justify-center items-center gap-2 text-white"
+              className="w-full bg-gradient-to-r from-black to-[#FF0000] p-2 rounded-xl flex justify-center items-center gap-2 text-white font-bold"
             >
               {" "}
-              <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-xl" />{" "}
-              Add item Details
+              <FaCirclePlus className="bg-[#FF0000] rounded-full text-xl" /> Add
+              Items
             </button>
           </div>
 
@@ -516,10 +524,10 @@ const CreateOrder = () => {
                     <label>
                         <input type="file" name="myImage" accept="image/png, image/gif, image/jpeg" />
                     </label> */}
-        {/* Attachment part  */}
-        <div className="w-full">
-            <button className="w-full bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl flex justify-center items-center gap-2 relative">
-              <IoArrowUpCircleOutline className="text-2xl text-red-500" />
+          {/* Attachment part  */}
+          <div className="w-full">
+            <button className="w-full bg-gradient-to-r from-black to-[#FF0000] text-white p-2 rounded-xl flex justify-center items-center gap-2 relative font-bold">
+              <IoArrowUpCircleOutline className="text-2xl  rounded-full" />
               <span>Attachment</span>
               <input
                 type="file"
@@ -564,7 +572,9 @@ const CreateOrder = () => {
                     className="flex justify-between border rounded p-2"
                   >
                     <div className="flex flex-col gap-2">
-                      <p className="font-medium text-sm">{item.item_name}</p>
+                      <p className="font-medium text-sm text-[#FF0000]">
+                        {item.item_name}
+                      </p>
                       <p className="flex items-center gap-1 text-xs text-zinc-600">
                         <FaBangladeshiTakaSign /> {item.standard_rate}
                       </p>
@@ -594,7 +604,7 @@ const CreateOrder = () => {
                 className="p-3 flex items-center gap-2 cursor-pointer"
               >
                 <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-lg" />
-                <p className="">Add Another Item</p>
+                <p className="">Add New Items</p>
               </div>
             </div>
 
@@ -634,7 +644,7 @@ const CreateOrder = () => {
 
             <div className="flex justify-between p-3">
               <p className=" text-black">Total : </p>
-              <p className="flex items-center gap-1 text-blue-600">
+              <p className="flex items-center gap-1 text-[#FF0000]">
                 <FaBangladeshiTakaSign /> <span>{totalSum}</span>{" "}
               </p>
             </div>
@@ -642,15 +652,15 @@ const CreateOrder = () => {
         </div>
 
         <div className="flex gap-3 px-5 bg-gray-100 fixed bottom-0 left-0 right-0 justify-center pb-2">
-          <div className="w-full">
-            <button className="border-[1px] border-zinc-400 text-zinc-600 p-3 rounded-xl w-full">
+          <div onClick={goBack} className="w-full">
+            <button className="border-[1px] bg-black border-zinc-400 font-bold text-white p-3 rounded-xl w-full">
               Close
             </button>
           </div>
           {order == "" ? (
             <button
               onClick={handleCreateOrder}
-              className="border-[1px] p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full"
+              className="border-[1px] p-3 bg-gradient-to-r from-black to-[#FF0000] text-white rounded-xl font-bold w-full"
             >
               Order Create
             </button>

@@ -217,7 +217,7 @@ const Login = () => {
               <input
                 type="submit"
                 value="Login"
-                className="border-[1px] font-bold border-black bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl cursor-pointer"
+                className="border-[1px] font-bold border-black bg-gradient-to-r from-black to-[#FF0000] text-white p-2 rounded-xl cursor-pointer"
               />
             </form>
 

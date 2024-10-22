@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { getStoredCart, updateData } from "../utilities/function";
 import MainLoader from "../components/Shared/MainLoader";
 import OrderFilterField from "../components/OrderFilterField";
+import CommonBackButton from "../components/Button/CommonBackButton";
 
 const Orders = () => {
   const [open, setOpen] = useState(false);
@@ -80,6 +81,18 @@ const Orders = () => {
     }
   }
 
+  // color change for draft or to Delivery and Bill
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Draft":
+        return "bg-orange-400 text-white"; // Gray for Draft
+      case "To Deliver and Bill":
+        return "bg-orange-600 text-white"; // Yellow for To Deliver
+      default:
+        return "bg-white"; // Default color
+    }
+  };
+
   // console.log(data);
 
   if (loading) {
@@ -87,20 +100,30 @@ const Orders = () => {
   }
   // console.log(data);
   return (
-    <div className=" bg-gray-200 pb-12 ">
+    <div className=" bg-gray-200 pb-12">
       {/* header */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
-        <div className="flex items-center gap-4">
-          <Link to="/">
-            <IoMdArrowBack className="text-lg text-blue-600" />
-          </Link>
+        {/* <div
+          className="flex items-center gap-4 bg-gradient-to-r from-black to-[#FF0000] text-white px-4 rounded-lg"
+        >
+          <div>
+            <IoMdArrowBack className="text-lg" />
+          </div>
           <p className=" font-medium">Orders</p>
+        </div> */}
+        <Link to="/">
+          <CommonBackButton value="Order" />
+        </Link>
+
+        <div
+          className="bg-[#FF0000] border border-black p-[4px] rounded-lg font-medium text-sm text-white flex justify-center items-center"
+        >
+          <BsFilterLeft
+            onClick={() => setOpen(!open)}
+            className="text-2xl text-white cursor-pointer"
+          />
         </div>
 
-        <BsFilterLeft
-          onClick={() => setOpen(!open)}
-          className="text-2xl text-blue-600 cursor-pointer"
-        />
         {/* filter order  */}
         {open && (
           <OrderFilterField
@@ -116,11 +139,20 @@ const Orders = () => {
       </div>
 
       {/* plus button */}
-      <Link
+      {/* <Link
         to="/createorders"
-        className="border-[1px]  border-[#7579ff] p-3 w-12 bg-white rounded-lg font-medium text-sm text-[#7579ff] flex justify-center items-center fixed bottom-5 right-5"
+        className="border-[1px] p-3 w-12 bg-gradient-to-r from-black to-[#FF0000] rounded-lg font-medium text-sm text-white flex justify-center items-center fixed bottom-5 right-5"
       >
         <FaPlus className="text-lg " />
+      </Link> */}
+      <Link
+        to="/createorders"
+        className="border-[1px] p-4 w-14 h-14 rounded-lg font-medium text-sm text-white flex justify-center items-center fixed bottom-5 right-5 border-[#FF0000]"
+        style={{
+          background: "radial-gradient(circle, #FF0000 30%, black 50%)",
+        }}
+      >
+        <FaPlus className="text-[20px] font-bold" />
       </Link>
 
       {/* orders */}
@@ -129,6 +161,7 @@ const Orders = () => {
         <div className="px-5 pt-5 flex flex-col gap-3 ">
           {/* order1 */}
           {data?.map((item, index) => {
+            console.log(item);
             return (
               <Link
                 to={`/details/${item?.name}`}
@@ -137,7 +170,7 @@ const Orders = () => {
               >
                 <div className=" flex justify-between">
                   <div>
-                    <p className="text-xs text-blue-600 font-semibold">
+                    <p className="text-xs text-[#FF0000] font-semibold">
                       {item?.naming_series.slice(0, 8)} {item?.name}
                     </p>
                     <p className="text-xs text-zinc-500">
@@ -145,7 +178,11 @@ const Orders = () => {
                     </p>
                   </div>
                   <div>
-                    <button className="bg-[#e1ebf8] border-[1px] border-[#7579ff] p-[5px] rounded-lg font-medium text-sm text-gray-400 ">
+                    <button
+                      className={`${getStatusColor(
+                        item?.status
+                      )} border-[1px] p-[5px] rounded-lg font-medium text-sm `}
+                    >
                       {item?.status}
                     </button>
                   </div>

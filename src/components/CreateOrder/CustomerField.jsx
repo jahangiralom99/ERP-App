@@ -71,14 +71,14 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
         <div className="flex items-center gap-4">
           <FaRegUser className="text-[#FF0000] text-[18px] font-bold" />
           <p className=" text-start w-[100px] whitespace-nowrap font-medium cursor-pointer">
-            {selectedCustomer || "select a customer"}
+            {selectedCustomer || "Select Customer"}
           </p>
         </div>
         <div className="cursor-pointer">
           {open3 ? (
-            <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" />
+            <RiArrowDropDownLine className="text-3xl ml-5 text-[#FF0000]" />
           ) : (
-            <RiArrowDropRightLine className="text-3xl ml-5 text-blue-600" />
+            <RiArrowDropRightLine className="text-3xl ml-5 text-[#FF0000]" />
           )}
         </div>
 

@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import UpdateOrder from "./UpdateOrder";
 import { fetchURL, getStoredCart, updateData } from "../utilities/function";
 import MainLoader from "../components/Shared/MainLoader";
+import CommonBackButton from "../components/Button/CommonBackButton";
 
 const OdrerDetails = () => {
   const { name } = useParams();
@@ -127,13 +128,16 @@ const OdrerDetails = () => {
       <div>
         <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
           <div className="flex items-center gap-4">
-            <div className="cursor-pointer" onClick={handleNavigate}>
+            <div onClick={handleNavigate} className="cursor-pointer">
+              <CommonBackButton value="Order Details" />
+            </div>
+            {/* <div className="cursor-pointer" onClick={handleNavigate}>
               <IoMdArrowBack className="text-lg text-blue-600" />
             </div>
-            <p className=" font-medium">Order Details</p>
+            <p className=" font-medium">Order Details</p> */}
           </div>
-          <div className="cursor-pointer" onClick={() => setOpen5(!open5)}>
-            <TfiPencil className="text-lg text-blue-600" />
+          <div className="cursor-pointer bg-[#FF0000] p-[5px] border border-black rounded" onClick={() => setOpen5(!open5)}>
+            <TfiPencil className="text-lg text-white" />
           </div>
           {open5 && (
             <div className="absolute top-0 left-0 right-0">
@@ -155,7 +159,7 @@ const OdrerDetails = () => {
         <div className="bg-white rounded-xl p-3 ">
           <div className=" flex justify-between">
             <div>
-              <p className="text-xs text-blue-600">
+              <p className="text-xs text-[#FF0000]">
                 {data?.naming_series?.slice(0, 8)} {data?.name}
               </p>
               <p className="text-xs text-zinc-500">
@@ -163,7 +167,7 @@ const OdrerDetails = () => {
               </p>
             </div>
             <div>
-              <button className="bg-[#e1ebf8] border-[1px] border-[#7579ff] p-[5px] rounded-lg font-medium text-sm text-[#7579ff] ">
+              <button className="bg-orange-400 text-white border-[1px]  p-[5px] rounded-lg font-medium text-sm ">
                 {data?.status}
               </button>
             </div>
@@ -239,7 +243,7 @@ const OdrerDetails = () => {
         <div>
           <div className="flex justify-between">
             <p className="text-sm font-medium pb-1  text-zinc-500">Total:</p>
-            <p className="text-sm text-blue-600 font-medium">
+            <p className="text-sm text-[#FF0000] font-medium">
               &#2547; {totalSum}
             </p>
           </div>
@@ -251,13 +255,13 @@ const OdrerDetails = () => {
       <div className="mx-5 mt-5 flex flex-col gap-3  bg-white rounded-xl p-3">
         <div>
           <p className="text-sm font-medium pb-3">Comments</p>
-          <div className="flex items-center border-[1px] border-blue-600  rounded-lg overflow-hidden">
+          <div className="flex items-center border-[1px] border-[#FF0000]  rounded-lg overflow-hidden">
             <input
               type="text"
               className="w-full p-2 border-none focus:outline-none"
               placeholder="Comment here..."
             />
-            <button className=" text-blue-600 font-medium p-2">Send</button>
+            <button className=" text-[#FF0000] font-medium p-2">Send</button>
           </div>
         </div>
       </div>

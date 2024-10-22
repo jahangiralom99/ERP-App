@@ -16,6 +16,7 @@ import {
   updateData,
 } from "../utilities/function";
 import { toast } from "react-toastify";
+import CommonBackButton from "../components/Button/CommonBackButton";
 
 const SelectItems = ({
   setItemOpen,
@@ -210,18 +211,27 @@ const SelectItems = ({
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 relative">
         <div className="flex items-center gap-4">
-          <div onClick={() => setItemOpen(!itemOpen)}>
+          <div
+            className="cursor-pointer"
+            onClick={() => setItemOpen(!itemOpen)}
+          >
+            <CommonBackButton value="Select Items" />
+          </div>
+          {/* <div onClick={() => setItemOpen(!itemOpen)}>
             <IoMdArrowBack className="text-lg text-blue-600" />
           </div>
-          <p className=" font-medium">Select Items</p>
+          <p className=" font-medium">Select Items</p> */}
         </div>
         <div className="z-10" onClick={() => setSearch(!search)}>
-          <IoIosSearch className="text-2xl text-blue-600 cursor-pointer" />
+          <IoIosSearch className="text-2xl text-[#FF0000] cursor-pointer" />
         </div>
         {search && (
           <div className="absolute left-6 top-3 right-20 bg-white">
             <div className="flex items-center">
-              <IoIosArrowRoundBack onClick={() => setSearch(!search)} className="text-2xl cursor-pointer" />
+              <IoIosArrowRoundBack
+                onClick={() => setSearch(!search)}
+                className="text-2xl cursor-pointer"
+              />
               <input
                 onChange={handleSearch}
                 type="text"
@@ -255,9 +265,9 @@ const SelectItems = ({
               <button
                 key={index}
                 onClick={() => handleCategoryClick(item?.name)}
-                className={`border-[1px] border-zinc-400 px-3 py-2 text-sm rounded-3xl ${
+                className={`border-[1px] px-3 py-2 text-sm rounded-3xl ${
                   activeCategory == item?.name
-                    ? "bg-blue-500 text-white"
+                    ? "bg-[#FF0000] text-white border border-black"
                     : "bg-white"
                 }  font-semibold whitespace-nowrap`}
               >
@@ -276,23 +286,23 @@ const SelectItems = ({
                 <div key={idx} className="bg-white p-3">
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-2">
-                      <p className="font-medium text-sm">{item?.item_name}</p>
+                      <p className="font-medium text-[#FF0000] text-sm">{item?.item_name}</p>
                       <p className="flex items-center gap-1 text-xs text-zinc-600">
                         <FaBangladeshiTakaSign /> {item?.valuation_rate}
                       </p>
                     </div>
                     <div className="flex flex-col justify-end items-center text-sm">
-                      {item?.qty * item?.valuation_rate}
-                      <div className="flex items-center gap-2 border-[2px] rounded-lg p-1">
+                      <div className="flex items-center gap-2 border-b-[1px] border-black p-1">
                         <div onClick={() => handleMinus(item?.name)}>
-                          <FiMinus className="cursor-pointer" />{" "}
+                          <FiMinus className="cursor-pointer text-xl text-black" />{" "}
                         </div>
                         <p>{item?.qty}</p>{" "}
                         <FaPlus
-                          className="cursor-pointer"
+                          className="cursor-pointer text-green-500 text-xl"
                           onClick={() => handlePlus(item?.name)}
                         />
                       </div>
+                      <p>{item?.qty * item?.valuation_rate}</p>
                     </div>
                   </div>
                 </div>
@@ -319,7 +329,7 @@ const SelectItems = ({
                         </div>
                         <p>{item?.qty}</p>{" "}
                         <FaPlus
-                          className="cursor-pointer"
+                          className="cursor-pointer text-green-400"
                           onClick={(e) => handlePlus(item?.name, e)}
                         />
                       </div>
@@ -354,7 +364,7 @@ const SelectItems = ({
       {/* </div> */}
 
       <div className="" onClick={handleCreateOrder}>
-        <button className="fixed bottom-0 z-20 border-[1px] p-4 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full">
+        <button className="fixed bottom-0 z-20 border-[1px] p-4 bg-gradient-to-r from-black to-[#FF0000] font-bold text-white rounded-xl text-medium w-full">
           Add Item
         </button>
       </div>

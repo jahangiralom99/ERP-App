@@ -69,7 +69,7 @@ const CostCenter = ({
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
       <legend className="ml-3 px-[5px] text-xs text-gray-500">
-        Cost Center
+        Location
       </legend>
       <div
         onClick={() => setOpen2(!open2)}
@@ -78,14 +78,14 @@ const CostCenter = ({
         <div className="flex items-center gap-4">
           <FaBuildingColumns className="text-[#FF0000]" />
           <p className=" text-start w-[100px] whitespace-nowrap font-medium cursor-pointer">
-            {selectedCostCenter || "select a cost of center"}
+            {selectedCostCenter || "Select  Location"}
           </p>
         </div>
         <div className="cursor-pointer">
           {open2 ? (
-            <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" />
+            <RiArrowDropDownLine className="text-3xl ml-5 text-[#FF0000]" />
           ) : (
-            <RiArrowDropRightLine className="text-3xl ml-5 text-blue-600" />
+            <RiArrowDropRightLine className="text-3xl ml-5 text-[#FF0000]" />
           )}
         </div>
 

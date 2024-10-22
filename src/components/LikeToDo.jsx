@@ -199,7 +199,7 @@ const LikeToDo = () => {
         </div>
       </div>
 
-      <button className="border-[1px] w-full font-bold border-black bg-gradient-to-r from-gray-800 to-gray-300 text-white p-2 rounded-xl flex items-center justify-center gap-2">
+      <button className="border-[1px] w-full font-bold border-black bg-gradient-to-r from-black to-[#FF0000] text-white p-2 rounded-xl flex items-center justify-center gap-2">
         {" "}
         View more
       </button>

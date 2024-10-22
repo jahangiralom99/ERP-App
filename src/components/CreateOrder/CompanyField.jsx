@@ -68,15 +68,15 @@ const CompanyField = ({
         <div className="flex items-center gap-4">
           <LuBuilding2 className="text-[#FF0000]" />
           <p className="cursor-pointer text-start w-[100px] whitespace-nowrap font-medium">
-            {selectedCompany || "Select a Company"}
+            {selectedCompany || "Select Company"}
           </p>
         </div>
 
         <div className="cursor-pointer">
           {open1 ? (
-            <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" />
+            <RiArrowDropDownLine className="text-3xl ml-5 text-[#FF0000]" />
           ) : (
-            <RiArrowDropRightLine className="text-3xl ml-5 text-blue-600" />
+            <RiArrowDropRightLine className="text-3xl ml-5 text-[#FF0000]" />
           )}
         </div>
 
