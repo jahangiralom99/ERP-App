@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { addToProceed, fetchURL, getStoredCart } from "../utilities/function";
 import { toast } from "react-toastify";
 import MainLoader from "../components/Shared/MainLoader";
+import { Line } from "rc-progress";
+import loginLogo from "../assets/ionic-erp-logo.png"
 
 const Login = () => {
   const [checked, setChecked] = useState(false);
@@ -108,7 +110,6 @@ const Login = () => {
       });
   };
 
-
   // console.log(protocol);
 
   if (isLoading) {
@@ -135,11 +136,16 @@ const Login = () => {
         </div> */}
       </div>
       <div className="rounded-3xl pt-[3px] pb-[2px] flex flex-col relative px-8">
-        <div className="bg-white text-center rounded-3xl h-full">
-          <p className="text-3xl font-semibold text-black px-5 pt-3">Login</p>
-          <p className="text-[14px] font-semibold text-gray-400 pl-5 mt-3">
-            Enter Your IONIC ERP Credentials
+        <div className="bg-white text-center rounded-3xl h-full pt-5">
+          <div className="text-center">
+            <img className="w-[120px] inline" src={loginLogo} alt="" />
+          </div>
+          <p className="text-xl font-semibold text-black px-5 pt-3">
+            Login To IONIC ERP
           </p>
+          {/* <p className="text-[13px] font-semibold text-gray-400 pl-5 mt-3">
+            Enter Your IONIC ERP Credentials
+          </p> */}
 
           <div>
             <form
@@ -224,12 +230,21 @@ const Login = () => {
               />
             </form>
 
-            <div className=" flex flex-col justify-center items-center">
+            <div className="mb-5">
               {/* <hr className="w-[70%]" /> */}
-              <p className="flex justify-center items-center gap-2 text-[12px] pt-1 mt-2 mb-5">
+              {/* <p className="flex items-center text-center gap-2 text-[12px] pt-1 mt-2 mb-5">
                 Copyright <FaRegCopyright />
                 2009-2023 IONIC Corporation. All Rights Reserved.
+              </p> */}
+              <p className="flex items-center justify-center text-[12px] px-3">
+                Copyright © 2009-2023 IONIC Corporation.
               </p>
+              <a
+                className="text-[12px] hover:underline hover:text-[#FF0000]"
+                href="https://ioniccorporation.com/"
+              >
+                Development By IONIC Corporation
+              </a>
             </div>
           </div>
         </div>
