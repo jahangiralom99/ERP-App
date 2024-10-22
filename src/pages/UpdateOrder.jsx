@@ -283,7 +283,10 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
           </Link>
           <p className=" font-medium">Update Order</p> */}
         </div>
-        <div onClick={() => setOpen4(!open4)} className="bg-[#FF0000] p-[4px] rounded border border-black">
+        <div
+          onClick={() => setOpen4(!open4)}
+          className="bg-[#FF0000] p-[4px] rounded border border-black"
+        >
           <RiQrScan2Line className="text-xl text-white" />
         </div>
       </div>
@@ -526,18 +529,26 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
               <div key={idx} className="border-b p-3 rounded-xl">
                 <div className="flex justify-between">
                   <div className="flex flex-col gap-2">
-                    <p className="font-medium text-sm">{item?.item_name}</p>
+                    <p className="font-medium text-sm text-[#FF0000]">
+                      {item?.item_name}
+                    </p>
                     <p className="flex items-center gap-1 text-xs text-zinc-600">
                       <FaBangladeshiTakaSign /> {item.amount} * {item.qty}
                     </p>
                   </div>
                   <div className="flex flex-col justify-end items-center text-sm">
-                    <p>{item.amount * item.qty}</p>
-                    <div className="flex items-center gap-2 border-[2px] rounded-lg p-1 ">
-                      <FiMinus onClick={() => decrementQty(item.item_code)} />{" "}
+                    <div className="flex items-center gap-2 border-b border-black p-1 ">
+                      <FiMinus
+                        className="text-xl cursor-pointer"
+                        onClick={() => decrementQty(item.item_code)}
+                      />{" "}
                       <p>{item?.qty}</p>{" "}
-                      <FaPlus onClick={() => incrementQty(item.item_code)} />
+                      <FaPlus
+                        className="text-xl text-green-500 cursor-pointer"
+                        onClick={() => incrementQty(item.item_code)}
+                      />
                     </div>
+                    <p>{item.amount * item.qty}</p>
                   </div>
                 </div>
               </div>
@@ -547,22 +558,27 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
               <div key={idx} className="border-b p-3 rounded-xl">
                 <div className="flex justify-between">
                   <div className="flex flex-col gap-2">
-                    <p className="font-medium text-sm">{item?.item_name}</p>
+                    <p className="font-medium text-sm text-[#FF0000]">
+                      {item?.item_name}
+                    </p>
                     <p className="flex items-center gap-1 text-xs text-zinc-600">
                       <FaBangladeshiTakaSign /> {item.standard_rate} *{" "}
                       {item.qty}
                     </p>
                   </div>
                   <div className="flex flex-col justify-end items-center text-sm">
-                    <p>{item.standard_rate * item.qty}</p>
-                    <div className="flex items-center gap-2 border-[2px] rounded-lg p-1 ">
-                      <FiMinus onClick={() => handleMinus(item.name)} />{" "}
+                    <div className="flex items-center gap-2 border-b border-black p-1 ">
+                      <FiMinus
+                        className="text-xl cursor-pointer"
+                        onClick={() => handleMinus(item.name)}
+                      />{" "}
                       {<p>{item.qty}</p>}
                       <FaPlus
-                        className="cursor-pointer"
+                        className="text-xl text-green-500 cursor-pointer"
                         onClick={() => handlePlus(item.name)}
                       />
                     </div>
+                    <p>{item.standard_rate * item.qty}</p>
                   </div>
                 </div>
               </div>

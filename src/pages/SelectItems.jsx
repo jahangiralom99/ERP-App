@@ -55,6 +55,8 @@ const SelectItems = ({
   const [filteredItems, setFilteredItems] = useState([]);
 
   const [count, setCount] = useState(0);
+  // on Change value
+  const [inputValue, setInputValue] = useState();
 
   // get data for Company name
   useEffect(() => {
@@ -204,7 +206,7 @@ const SelectItems = ({
     setItemData1(filteredData);
   };
 
-  // console.log(filteredItems);
+  console.log(inputValue);
 
   return (
     <div className="bg-gray-200 z-20 text-black">
@@ -286,7 +288,9 @@ const SelectItems = ({
                 <div key={idx} className="bg-white p-3">
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-2">
-                      <p className="font-medium text-[#FF0000] text-sm">{item?.item_name}</p>
+                      <p className="font-medium text-[#FF0000] text-sm">
+                        {item?.item_name}
+                      </p>
                       <p className="flex items-center gap-1 text-xs text-zinc-600">
                         <FaBangladeshiTakaSign /> {item?.valuation_rate}
                       </p>
@@ -296,6 +300,7 @@ const SelectItems = ({
                         <div onClick={() => handleMinus(item?.name)}>
                           <FiMinus className="cursor-pointer text-xl text-black" />{" "}
                         </div>
+                        {/* <input onChange={(e)=>setInputValue(e.target.value)} value={item?.qty + inputValue} className="w-12 text-center" type="text" /> */}
                         <p>{item?.qty}</p>{" "}
                         <FaPlus
                           className="cursor-pointer text-green-500 text-xl"
@@ -322,17 +327,18 @@ const SelectItems = ({
                       </p>
                     </div>
                     <div className="flex flex-col justify-end items-center text-sm">
-                      {item?.qty * item?.valuation_rate}
-                      <div className="flex items-center gap-2 border-[2px] rounded-lg p-1">
+                      {/* {item?.qty * item?.valuation_rate} */}
+                      <div className="flex items-center gap-2 border-b border-black  p-1">
                         <div onClick={() => handleMinus(item?.name)}>
-                          <FiMinus className="cursor-pointer" />{" "}
+                          <FiMinus className="cursor-pointer text-xl" />{" "}
                         </div>
                         <p>{item?.qty}</p>{" "}
                         <FaPlus
-                          className="cursor-pointer text-green-400"
+                          className="cursor-pointer text-green-500 text-xl"
                           onClick={(e) => handlePlus(item?.name, e)}
                         />
                       </div>
+                      <p>{item?.qty * item?.valuation_rate}</p>
                     </div>
                   </div>
                 </div>

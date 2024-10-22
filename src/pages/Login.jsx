@@ -108,13 +108,16 @@ const Login = () => {
       });
   };
 
+
+  // console.log(protocol);
+
   if (isLoading) {
     return <MainLoader />;
   }
 
   return (
-    <div className="h-screen bg-gray-200">
-      <div className="flex justify-between items-center gap-5 px-5 h-1/4">
+    <div className="bg-gray-200 h-screen">
+      <div className="flex justify-center items-center gap-5 px-5 h-1/4">
         <div className="flex justify-center items-center gap-2  rounded-2xl p-2 bg-opacity-60">
           <img className="w-[40px]" src={erp} alt="" />
           <div>
@@ -127,15 +130,14 @@ const Login = () => {
             </p>
           </div>
         </div>
-        <div className="bg-white rounded-lg p-2 text-2xl text-[#FF0000] ">
+        {/* <div className="bg-white rounded-lg p-2 text-2xl text-[#FF0000] ">
           <IoIosGlobe />
-        </div>
+        </div> */}
       </div>
-
-      <div className="bg-black rounded-3xl h-3/4 pt-[3px] px-[2px] pb-[2px] flex flex-col relative">
-        <div className="bg-white rounded-3xl h-full">
-          <p className="text-3xl font-semibold text-black px-5 pt-3">Login!</p>
-          <p className="text-lg font-semibold text-gray-600 pl-5">
+      <div className="rounded-3xl pt-[3px] pb-[2px] flex flex-col relative px-8">
+        <div className="bg-white text-center rounded-3xl h-full">
+          <p className="text-3xl font-semibold text-black px-5 pt-3">Login</p>
+          <p className="text-[14px] font-semibold text-gray-400 pl-5 mt-3">
             Enter Your IONIC ERP Credentials
           </p>
 
@@ -148,10 +150,11 @@ const Login = () => {
                 <div className="" onClick={() => setOpen(!open)}>
                   <div className="flex justify-center items-center gap-1 cursor-pointer">
                     <IoIosGlobe className="text-[#FF0000] text-xl mr-[2px]" />
-                    <span>{protocol}</span> <MdArrowDropDown />
+                    <span>{protocol}</span>
+                    {/* <MdArrowDropDown /> */}
                   </div>
                 </div>
-                {open && (
+                {/* {open && (
                   <div>
                     <div className="h-40 w-80 mx-10 bg-white rounded-xl absolute top-[140px] px-5 pt-3">
                       <h3 className="font-semibold text-black text-lg py-2">
@@ -178,7 +181,7 @@ const Login = () => {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
                 <input
                   className="outline-none w-full focus:ring-0 focus:border-[#116630]"
                   placeholder="URL"
@@ -217,13 +220,13 @@ const Login = () => {
               <input
                 type="submit"
                 value="Login"
-                className="border-[1px] font-bold border-black bg-gradient-to-r from-black to-[#FF0000] text-white p-2 rounded-xl cursor-pointer"
+                className="border-[1px] w-[180px] mx-auto font-bold border-black bg-gradient-to-r from-black to-[#FF0000] text-white p-2 rounded-xl cursor-pointer"
               />
             </form>
 
-            <div className="fixed bottom-1 left-0 right-0 flex flex-col justify-center items-center">
-              <hr className="w-[70%]" />
-              <p className="flex justify-center items-center gap-2 text-[10px] pt-1">
+            <div className=" flex flex-col justify-center items-center">
+              {/* <hr className="w-[70%]" /> */}
+              <p className="flex justify-center items-center gap-2 text-[12px] pt-1 mt-2 mb-5">
                 Copyright <FaRegCopyright />
                 2009-2023 IONIC Corporation. All Rights Reserved.
               </p>

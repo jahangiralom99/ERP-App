@@ -331,6 +331,26 @@ const CreateOrder = () => {
     });
   };
 
+  // input field vale
+  // Input field handler for manual changes
+  const handleInputChange = (itemName, event) => {
+    const newQty = parseInt(event.target.value) || 0; // Parse the input value or default to 0 if invalid
+
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [itemName]: newQty,
+    }));
+
+    // Also update in AllData1
+    AllData1[itemName] = {
+      ...AllData1[itemName],
+      qty: newQty,
+    };
+
+    // Optionally sync with an external update function
+    updateData(itemName, newQty);
+  };
+
   // handle minus btn for order info
   // const handlePlusOrder = (itemName) => {
   //   setCount()
@@ -580,15 +600,15 @@ const CreateOrder = () => {
                       </p>
                     </div>
                     <div className="flex flex-col justify-end items-center text-sm">
-                      <p>{item.standard_rate * item.qty}</p>
-                      <div className="flex items-center gap-2 border-[2px] rounded-lg p-1 ">
-                        <FiMinus onClick={() => handleMinus(item.name)} />{" "}
+                      <div className="flex items-center gap-2 border-b border-black p-1 ">
+                        <FiMinus className="cursor-pointer text-xl" onClick={() => handleMinus(item.name)} />{" "}
                         {<p>{item.qty}</p>}
                         <FaPlus
-                          className="cursor-pointer"
+                          className="cursor-pointer text-green-500 text-xl"
                           onClick={() => handlePlus(item.name)}
                         />
                       </div>
+                      <p>{item.standard_rate * item.qty}</p>
                     </div>
                   </div>
                 );

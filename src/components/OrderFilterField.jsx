@@ -199,9 +199,9 @@ const OrderFilterField = ({
               </div>
               <div>
                 {open3 ? (
-                  <RiArrowDropDownLine className="text-3xl ml-5 text-blue-600" />
+                  <RiArrowDropDownLine className="text-3xl ml-5 text-[#FF0000]" />
                 ) : (
-                  <RiArrowDropRightLine className="text-3xl ml-5 text-blue-600" />
+                  <RiArrowDropRightLine className="text-3xl ml-5 text-[#FF0000]" />
                 )}
               </div>
 

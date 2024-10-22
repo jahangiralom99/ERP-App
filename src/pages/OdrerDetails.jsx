@@ -120,7 +120,7 @@ const OdrerDetails = () => {
   if (loading) {
     return <MainLoader />;
   }
-  // console.log(items);
+  console.log(items);
 
   return (
     <div className=" bg-gray-200 pb-32  text-black relative">
