@@ -100,7 +100,7 @@ const Orders = () => {
   }
   // console.log(data);
   return (
-    <div className=" bg-gray-200 pb-12">
+    <div className=" bg-gray-200 pb-12 mt-16">
       {/* header */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         {/* <div

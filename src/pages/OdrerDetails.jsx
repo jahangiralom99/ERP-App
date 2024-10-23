@@ -123,7 +123,7 @@ const OdrerDetails = () => {
   console.log(items);
 
   return (
-    <div className=" bg-gray-200 pb-32  text-black relative">
+    <div className=" bg-gray-200 pb-32 mt-16 text-black relative">
       {/* header */}
       <div>
         <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">

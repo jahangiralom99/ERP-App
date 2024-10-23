@@ -412,7 +412,7 @@ const CreateOrder = () => {
   }
 
   return (
-    <div className="bg-gray-200 pb-20 text-black">
+    <div className="bg-gray-200 pb-20 text-black mt-16">
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         <div className="flex items-center gap-4">
@@ -495,7 +495,7 @@ const CreateOrder = () => {
       {/* qr scanner */}
 
       {open4 && (
-        <div className="absolute px-10 left-1/2 -translate-x-1/2 w-full top-16 z-20  bg-white">
+        <div className="absolute px-10 left-1/2 -translate-x-1/2 w-full top-32 z-20  bg-white">
           <BarcodeScannerComponent
             width={500}
             // height={500}

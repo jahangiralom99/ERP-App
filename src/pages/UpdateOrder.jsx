@@ -140,7 +140,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
   const items2 = quantity?.map((item) => {
     // console.log(item.qty);
     const order = {
-      item_code: item?.item_code,
+      item_code : item?.item_code,
       item_name: item?.item_name,
       delivery_date: formattedDate,
       qty: item?.qty,
@@ -148,7 +148,42 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     return order;
   });
 
-  // console.log(formattedDate);
+
+  // {
+  //   "erp_url": "https://ecommerce.ionicerp.xyz",
+  //   "doctype_name": "Sales Order",
+  //   "document_name" : "2024-00213",
+  //   "data": {
+  //     "customer": "hossan",
+  //     "transaction_date": "2024-09-05",
+  //     "custom_delivery_type": "",
+  //     "items": [
+  //       {
+  //         "item_code": "102",
+  //         "item_name": "Deshi Peyaj (Local Onion)",
+  //         "delivery_date": "2024-10-04",
+  //         "qty": 5
+  //       }
+  //     ]
+  //   }
+  // }
+
+
+  // body for update sales orders
+  const bodyInfo = {
+    erp_url: url,
+    doctype_name: "Sales Order",
+    document_name: name,
+    data: {
+      customer: data?.customer,
+      transaction_date: date,
+      custom_delivery_type: "",
+      items: items2,
+    },
+  };
+
+  // console.log("data",data, name);
+  console.log("body", bodyInfo);
 
   // handle update
   const handleUpdateOrder = () => {
@@ -166,18 +201,6 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     } else {
       SetUpdate(true);
       // console.log(name);
-      // body for update sales orders
-      const bodyInfo = {
-        erp_url: `${url}`,
-        doctype_name: "Sales Order",
-        document_name: `${encodeURIComponent(name)}`,
-        customer: data?.customer,
-        transaction_date: date,
-        custom_delivery_type: "",
-        data: {
-          items: items2,
-        },
-      };
 
       // update sales order api
       fetch(`${fetchURL}/put_data`, {
@@ -195,6 +218,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
           return res.json();
         })
         .then((result) => {
+          console.log("result", result);
           if (result) {
             toast.success("Updated Order", {
               position: "top-center",

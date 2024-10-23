@@ -209,7 +209,7 @@ const SelectItems = ({
   console.log(inputValue);
 
   return (
-    <div className="bg-gray-200 z-20 text-black">
+    <div className="bg-gray-200 z-20 text-black mt-14">
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 relative">
         <div className="flex items-center gap-4">

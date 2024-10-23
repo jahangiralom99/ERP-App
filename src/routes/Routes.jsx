@@ -9,6 +9,9 @@ import SelectItems from "../pages/SelectItems";
 import MarkAttendence from "../pages/MarkAttendence";
 import Profile from "../pages/Profile";
 import PrivetRoute from "./PrivetRoute";
+import Expense from "../pages/Expense";
+import ExpenseClaim from "../components/ExpenseClaim";
+import ExpenseClaimHistory from "../components/ExpenseClaimHistory";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +54,18 @@ export const router = createBrowserRouter([
         path: "/markattendence",
         element: <MarkAttendence />,
       },
+      {
+        path: "/expense",
+        element: <Expense/>
+    },
+    {
+        path: "/expenseclaim",
+        element: <ExpenseClaim/>
+      },
+      {
+        path: "/expenseclaimhistory",
+        element: <ExpenseClaimHistory/>
+    },
     ],
   },
 ]);
