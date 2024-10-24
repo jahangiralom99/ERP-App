@@ -24,8 +24,8 @@ const BottomFilter = ({
   const [month, setMonth] = useState("Select Month");
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-50  rounded-t-xl z-10 flex justify-center items-center text-black font-bold text-sm">
-      <div>
+    <div className="fixed top-[110px] left-1/2 -translate-x-1/2 w-full  bg-gray-50  rounded-t-xl z-10 flex justify-center items-center text-black font-bold text-sm">
+      <div className="relative">
         <div className="flex justify-between w-full pt-3 ">
           <p className="w-10"></p>
           <p className=" ">{title}</p>
@@ -58,7 +58,7 @@ const BottomFilter = ({
           />
 
           {open1 && (
-            <div className="fixed w-40 p-3 bottom-48 left-8   bg-gray-200  rounded-xl z-10">
+            <div className="fixed w-44 p-3 top-28 left-1/2 -translate-x-1/2   bg-gray-200  rounded-xl z-10">
               <div>
                 {[2024, 2023, 2022].map((item, index) => {
                   return (
@@ -90,7 +90,7 @@ const BottomFilter = ({
           />
 
           {open2 && (
-            <div className="fixed w-40 p-3 bottom-48 left-8  top-32 overflow-scroll  bg-gray-200  rounded-xl z-10">
+            <div className="fixed w-40 p-5 pb-6 top-44 h-44 left-1/2 -translate-x-1/2   overflow-y-scroll bg-gray-200 rounded-xl z-10">
               <div>
                 {[
                   "January",
@@ -127,7 +127,7 @@ const BottomFilter = ({
 
         <div className="flex gap-3 px- justify-between py-3">
           <button
-            onClick={() => setonclick1(!onclick1)}
+            // onClick={() => setonclick1(!onclick1)}
             className="border-[1px] bg-black text-white font-bold p-3 rounded-xl  w-[130px]"
           >
             Clear Filters

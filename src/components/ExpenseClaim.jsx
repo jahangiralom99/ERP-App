@@ -18,7 +18,7 @@ const ExpenseClaim = ({ setOpen }) => {
 
       <div className=" flex justify-between items-center bg-white px-5 p-3  mt-3 ">
         <div>
-          <p className="font-bold text-blue-600">HR-EXP-2024-00067</p>
+          <p className="font-bold text-[#FF0000]">HR-EXP-2024-00067</p>
           <p className="text-zinc-500 font-bold ">2024-10-03</p>
         </div>
 

@@ -5,9 +5,11 @@ import BottomFilter from "../components/BottomFilter";
 import PendingExpense from "../components/PendingExpense";
 import ExpenseHistory from "../components/ExpenseHistory";
 import PlusButton from "../components/PlusButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CommonBackButton from "../components/Button/CommonBackButton";
+import { getStoredCart } from "../utilities/function";
+import MainLoader from "../components/Shared/MainLoader";
 
 const Expense = () => {
   const [open, setOpen] = useState(false);
@@ -20,6 +22,50 @@ const Expense = () => {
   const [year, setYear] = useState("Select Year");
   const [month, setMonth] = useState("Select Month");
   const [startDate, setStartDate] = useState(new Date());
+
+
+    // for data fetching
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const { url } = getStoredCart("login-info");
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Journal Entry`,
+            {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+          }
+          const result = await response.json();
+          setData(result?.data);
+          setLoading(false);
+        } catch (err) {
+          console.log(err);
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchData();
+    }, [url]);
+  
+    if (loading) {
+      return <MainLoader />;
+    }
+  
+    console.log(data);
+
+
 
   const handleCalendarClick = () => {
     setOpen4((prev) => !prev);
@@ -36,6 +82,8 @@ const Expense = () => {
         <SubHeadingToggle
           setonclick1={setOpen6}
           setonclick2={setOpen1}
+          open1={open1}
+          open6={open6}
           titile1={"Pending Expense"}
           titile2={"Expense History"}
         />

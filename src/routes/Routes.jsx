@@ -12,6 +12,8 @@ import PrivetRoute from "./PrivetRoute";
 import Expense from "../pages/Expense";
 import ExpenseClaim from "../components/ExpenseClaim";
 import ExpenseClaimHistory from "../components/ExpenseClaimHistory";
+import ApplyExpense from "../components/ApplyExpense";
+import UpdateExpense from "../components/UpdateExpense";
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +30,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/orders",
-        element: <Orders />
+        element: <Orders />,
       },
       {
         path: "/createorders",
@@ -56,16 +58,24 @@ export const router = createBrowserRouter([
       },
       {
         path: "/expense",
-        element: <Expense/>
-    },
-    {
+        element: <Expense />,
+      },
+      {
         path: "/expenseclaim",
-        element: <ExpenseClaim/>
+        element: <ExpenseClaim />,
       },
       {
         path: "/expenseclaimhistory",
-        element: <ExpenseClaimHistory/>
-    },
+        element: <ExpenseClaimHistory />,
+      },
+      {
+        path: "/applyexpense",
+        element: <ApplyExpense />,
+      },
+      {
+        path: "/updateexpense",
+        element: <UpdateExpense />,
+      },
     ],
   },
 ]);
