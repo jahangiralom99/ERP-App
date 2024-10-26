@@ -300,7 +300,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         <div className="flex items-center gap-4">
           <div onClick={() => setOpen5(false)} className="cursor-pointer">
-            <CommonBackButton value="Update Order" />
+            <CommonBackButton value="Back" />
           </div>
           {/* <Link onClick={() => setOpen5(false)}>
             <IoMdArrowBack className="text-lg text-blue-600" />
@@ -695,7 +695,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
           </button>
         </div>
         {itemOpen ? (
-          <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-slate-200 z-20">
+          <div className="absolute -top-16 left-0 bottom-0 w-full h-full bg-slate-200 z-20">
             <SelectItems
               handlePlus={handlePlus}
               handleMinus={handleMinus}

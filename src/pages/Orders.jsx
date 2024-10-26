@@ -34,7 +34,7 @@ const Orders = () => {
   useEffect(() => {
     const AllData1 = getStoredCart("item-all-data");
     setAllData(AllData1);
-  }, []);
+  }, [loading]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,7 +112,7 @@ const Orders = () => {
           <p className=" font-medium">Orders</p>
         </div> */}
         <Link to="/">
-          <CommonBackButton value="Order" />
+          <CommonBackButton value="Back" />
         </Link>
 
         <div

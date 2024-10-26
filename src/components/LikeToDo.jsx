@@ -28,7 +28,7 @@ const LikeToDo = ({ orderLink }) => {
     {
       name: "Expense",
       icon: expenses,
-      link: "/expense",
+      // link: "/expense",
     },
     {
       name: "Leave",

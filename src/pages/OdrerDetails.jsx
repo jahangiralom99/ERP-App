@@ -129,7 +129,7 @@ const OdrerDetails = () => {
         <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
           <div className="flex items-center gap-4">
             <div onClick={handleNavigate} className="cursor-pointer">
-              <CommonBackButton value="Order Details" />
+              <CommonBackButton value="Back" />
             </div>
             {/* <div className="cursor-pointer" onClick={handleNavigate}>
               <IoMdArrowBack className="text-lg text-blue-600" />

@@ -17,6 +17,7 @@ import {
 } from "../utilities/function";
 import { toast } from "react-toastify";
 import CommonBackButton from "../components/Button/CommonBackButton";
+import MainLoader from "../components/Shared/MainLoader";
 
 const SelectItems = ({
   setItemOpen,
@@ -45,7 +46,7 @@ const SelectItems = ({
   // set grp item state
   const [grpItem, setGrpItem] = useState([]);
   const [itemData1, setItemData1] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   // item data state
   const [itemData, setItemData] = useState([]);
   // search state
@@ -79,6 +80,7 @@ const SelectItems = ({
 
   // item data for Company name
   useEffect(() => {
+    setLoader(true);
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -89,8 +91,10 @@ const SelectItems = ({
         }
         const result = await response.json();
         setItemData(result);
+        setLoader(false);
       } catch (err) {
         console.log(err.message);
+        setLoader(false);
       }
     };
     fetchData();
@@ -206,7 +210,10 @@ const SelectItems = ({
     setItemData1(filteredData);
   };
 
-  console.log(inputValue);
+  // console.log(inputValue);
+  if (loader) {
+    return <MainLoader />;
+  }
 
   return (
     <div className="bg-gray-200 z-20 text-black mt-14">
@@ -217,7 +224,7 @@ const SelectItems = ({
             className="cursor-pointer"
             onClick={() => setItemOpen(!itemOpen)}
           >
-            <CommonBackButton value="Select Items" />
+            <CommonBackButton value="Back" />
           </div>
           {/* <div onClick={() => setItemOpen(!itemOpen)}>
             <IoMdArrowBack className="text-lg text-blue-600" />

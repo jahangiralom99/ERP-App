@@ -65,21 +65,25 @@ const CreateOrder = () => {
   const [change, setChange] = useState("");
   // order button change state
   const [order, setOrder] = useState("");
+  // image
+  const [image, setImage] = useState(null);
+  const [responseMessage, setResponseMessage] = useState("");
 
   // const [mf, setMf] = useState([]);
 
   useEffect(() => {
     const AllData1 = getStoredCart("item-all-data");
     setAllData(AllData1);
-  }, []);
+    // window.location.reload();
+  }, [AllData1]);
 
   const m = getStoredCart("item-all-data");
-  const filter = Object.values(m).filter((item) => item["qty"] > 0);
+  const filter = Object?.values(m)?.filter((item) => item["qty"] > 0);
 
   // console.log("filterData", filter);
   // ALl item deleted from cart
   const handleDeleted = () => {
-    if (!filter.length == 0) {
+    if (!filter?.length == 0) {
       setChange("filterData");
       const keyList = Object.keys(AllData1);
       console.log(keyList);
@@ -90,7 +94,7 @@ const CreateOrder = () => {
       }
       toast.success("All Items Deleted", {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -101,7 +105,7 @@ const CreateOrder = () => {
     } else {
       toast.info("Item Not Found", {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -118,12 +122,19 @@ const CreateOrder = () => {
     setOpen((prev) => !prev);
   };
 
+  const handleFileChange = (e) => {
+    setResponseMessage("");
+    const file = e.target.files[0];
+    setImage(file);
+  };
+
+  // console.log(image);
   // create order btn
   const handleCreateOrder = () => {
     if (selectedCompany == "") {
       toast.warn("Please Select Company Name", {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -134,7 +145,7 @@ const CreateOrder = () => {
     } else if (selectedCostCenter == "") {
       toast.warn("Please Select CostCenter ", {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -145,7 +156,7 @@ const CreateOrder = () => {
     } else if (selectedCustomer == "") {
       toast.warn("Please Select Customer Name", {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -156,7 +167,18 @@ const CreateOrder = () => {
     } else if (formattedDate == "") {
       toast.warn("Please Select Date", {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (image == null) {
+      toast.warn("Please Select Attachment Image", {
+        position: "top-center",
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -167,7 +189,7 @@ const CreateOrder = () => {
     } else if (filter.length == 0) {
       toast.warn("Please Select Order Items", {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -223,7 +245,6 @@ const CreateOrder = () => {
             for (let i of keyList) {
               AllData1[i]["qty"] = 0;
               updateData(i, AllData1[i]["qty"]);
-              navigate("/orders");
               // window.location.reload();
             }
             // console.log(AllData1);
@@ -237,6 +258,37 @@ const CreateOrder = () => {
               progress: undefined,
               theme: "dark",
             });
+          }
+          if (data?.response_data?.data) {
+            console.log(data?.response_data?.data);
+            const formData = new FormData();
+            formData.append("file", image); // Append the file object
+            formData.append("server", url);
+            formData.append("doctype_name", "Sales Order");
+            formData.append("document_name", data?.response_data?.data?.name);
+
+            // console.log("Form Data:", formData);
+
+            fetch("https://erp-backend-black.vercel.app/file", {
+              method: "POST",
+              body: formData, // Use FormData as the body
+            })
+              .then((res) => {
+                if (!res.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return res.json();
+              })
+              .then((data) => {
+                console.log("Success:", data);
+                navigate("/orders");
+                setResponseMessage("File uploaded successfully!");
+              })
+              .catch((error) => {
+                console.error("Error posting data:", error);
+                setResponseMessage("Error: " + error.message);
+              });
+            console.log(data?.response_data?.data.name);
           }
         })
         .catch((error) => {
@@ -403,7 +455,7 @@ const CreateOrder = () => {
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         <div className="flex items-center gap-4">
           <div onClick={goBack} className="cursor-pointer">
-            <CommonBackButton value="Create Order" />
+            <CommonBackButton value="Back" />
           </div>
           {/* <div className="cursor-pointer">
             <IoMdArrowBack onClick={goBack} className="text-lg text-blue-600" />
@@ -531,7 +583,13 @@ const CreateOrder = () => {
                         <input type="file" name="myImage" accept="image/png, image/gif, image/jpeg" />
                     </label> */}
           {/* Attachment part  */}
-          <Attachment />
+          <Attachment
+            image={image}
+            responseMessage={responseMessage}
+            setResponseMessage={setResponseMessage}
+            setImage={setImage}
+            handleFileChange={handleFileChange}
+          />
         </div>
 
         {/* data from select item page */}
