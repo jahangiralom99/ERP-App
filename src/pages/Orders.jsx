@@ -161,7 +161,7 @@ const Orders = () => {
         <div className="px-5 pt-5 flex flex-col gap-3 ">
           {/* order1 */}
           {data?.map((item, index) => {
-            console.log(item);
+            // console.log(item);
             return (
               <Link
                 to={`/details/${item?.name}`}

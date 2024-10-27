@@ -86,7 +86,7 @@ const CreateOrder = () => {
     if (!filter?.length == 0) {
       setChange("filterData");
       const keyList = Object.keys(AllData1);
-      console.log(keyList);
+      // console.log(keyList);
       for (let i of keyList) {
         AllData1[i]["qty"] = 0;
         updateData(i, AllData1[i]["qty"]);
@@ -239,7 +239,7 @@ const CreateOrder = () => {
           return res.json();
         })
         .then((data) => {
-          console.log("success", data);
+          // console.log("success", data);
           if (data) {
             const keyList = Object.keys(AllData1);
             for (let i of keyList) {
@@ -288,7 +288,7 @@ const CreateOrder = () => {
                 console.error("Error posting data:", error);
                 setResponseMessage("Error: " + error.message);
               });
-            console.log(data?.response_data?.data.name);
+            // console.log(data?.response_data?.data.name);
           }
         })
         .catch((error) => {

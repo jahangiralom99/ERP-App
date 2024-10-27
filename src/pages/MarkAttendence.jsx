@@ -6,8 +6,11 @@ import { BsFileImage, BsFillFileImageFill } from "react-icons/bs";
 import BottomCheckIn from "../components/BottomCheckIn";
 // import Location from '../components/Location';
 import { useState, useRef } from "react";
-import { Camera } from "react-camera-pro";
 import Webcam from "react-webcam";
+import { fetchURL, getStoredCart } from "../utilities/function";
+import image10 from "../assets/IONIC-ERP-icon.png";
+import { toast } from "react-toastify";
+import MainLoader from "../components/Shared/MainLoader";
 
 const MarkAttendence = () => {
   const camera = useRef(null);
@@ -15,11 +18,25 @@ const MarkAttendence = () => {
   const [image1, setImage1] = useState(null);
   const [open2, setOpen2] = useState(false);
   const [open1, setOpen1] = useState(false);
+  // address for Check in page
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [address, setAddress] = useState("");
+  // check in out status
+  const [isCheckedIn, setIsCheckedIn] = useState(false); // State for Check In/Out status
+  const [checkInTime, setCheckInTime] = useState(null);
+  const [checkOutTime, setCheckOutTime] = useState(null);
+  // base user
+  const { url } = getStoredCart("login-info");
+  // loader
+  const [loader, setLoader] = useState(false);
 
   const webcamRef = useRef(null);
   const webcamRef2 = useRef(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [imageUrl2, setImageUrl2] = useState(null);
+  // image
+  const [imageFile , setImageFile] = useState(null);
 
   const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -38,14 +55,125 @@ const MarkAttendence = () => {
     setImageUrl2(shortUrl); // Set shorter URL for <img> tag
   };
 
-    //   console.log("main url", imageUrl);
-    
+  console.log(imageUrl);
 
+  const body = {
+    server: url,
+    doctype: "Employee Checkin",
+    data: {
+      employee: "HR-EMP-00001",
+      log_type: "IN",
+      custom_upload_font_image: imageFile,
+      custom_upload_back_image: imageFile,
+      latitude: latitude,
+      longitude: longitude,
+    },
+  };
 
-    const handleCheckIn = () => {
-      console.log("checkIN");
+  // console.log(image10);
+
+  const handleCheckIn = () => {
+    // Check if images and location data are provided
+    if (!imageUrl || !imageUrl2) {
+      return toast.info("Please Take Picture", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (!longitude || !latitude) {
+      return toast.info("Please On Location", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      setLoader(true);
+      const currentTime = new Date().toLocaleTimeString();
+      if (!isCheckedIn) {
+        // if check out het the this route
+        fetch(`${fetchURL}/post_data`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // Setting Check-In
+            setCheckInTime(currentTime);
+            setIsCheckedIn(true);
+            setLoader(false);
+            console.log(data);
+            if (data?.response_data?.data) {
+              console.log(data?.response_data?.data);
+              const formData = new FormData();
+              formData.append("file", imageFile); // Append the file object
+              formData.append("server", url);
+              formData.append("doctype_name", "Employee Checkin");
+              formData.append("document_name", data?.response_data?.data?.name);
+              // console.log("Form Data:", formData);
+              fetch("https://erp-backend-black.vercel.app/file", {
+                method: "POST",
+                body: formData, // Use FormData as the body
+              })
+                .then((res) => {
+                  if (!res.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                  return res.json();
+                })
+                .then((data) => {
+                  console.log("Success:", data);
+                  // setResponseMessage("File uploaded successfully!");
+                })
+                .catch((error) => {
+                  console.error("Error posting data:", error);
+                  // setResponseMessage("Error: " + error.message);
+                });
+              console.log(data?.response_data?.data.name);
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            setLoader(false);
+          });
+      } else {
+        // if check in het the this route
+        // Setting Check-Out
+        // console.log("fdgdfghgdfjjhdg");
+        setCheckOutTime(currentTime);
+        setIsCheckedIn(false);
+        setLoader(false);
+      }
+    }
+
+    // if (imageUrl2 == null || imageUrl == null) {
+    //   alert("please Image ");
+    // } else if (longitude == null || latitude == null) {
+    //   alert("please longitude");
+    // }
+
+    // alert("checkIN");
+  };
+
+  // fetch;
+
+  if (loader) {
+    return <MainLoader />;
   }
-
+  console.log(checkOutTime, checkOutTime);
 
   return (
     <div className="bg-white h-screen  text-black">
@@ -65,14 +193,35 @@ const MarkAttendence = () => {
       <div className="">
         <TimeAttendence />
 
+        {/* <div>
+          <input onChange={(e)=> setImageFile(e.target.files[0])} type="file" name="" id="" />
+        </div> */}
         {/* check in finger */}
 
-        <div onClick={handleCheckIn} className="flex flex-col justify-evenly items-center  mx-5 pb-3 pt-2    rounded-xl  px-6 ">
-          <div className="w-24 h-24 border-[#FF0000] bg-gray-100 border-2 rounded-full flex justify-center items-center">
-            <PiHandTapLight className="text-6xl" />
+        <div
+          onClick={handleCheckIn}
+          className={`flex flex-col justify-evenly cursor-pointer items-center pb-3 pt-2 w-44 mx-auto rounded-xl px-6 ${
+            isCheckedIn ? "" : " text-black"
+          }`}
+        >
+          <div
+            className={`w-24 h-24 ${
+              isCheckedIn ? "border-green-500" : "border-[#FF0000]"
+            }  bg-gray-100 border-2 rounded-full flex justify-center items-center`}
+          >
+            <PiHandTapLight
+              className={`text-6xl ${
+                isCheckedIn ? "text-green-500" : "text-[#FF0000]"
+              } `}
+            />
           </div>
-          <p className="text-2xl ">
-            check <span className="font-bold">In</span>{" "}
+          <p
+            onClick={handleCheckIn}
+            className={`text-2xl ${
+              isCheckedIn ? "text-green-500" : ""
+            }  font-bold`}
+          >
+            {isCheckedIn ? "Check Out" : "Check In"}
           </p>
         </div>
 
@@ -210,7 +359,16 @@ const MarkAttendence = () => {
           </div>
         </div>
 
-        <BottomCheckIn />
+        <BottomCheckIn
+          latitude={latitude}
+          setLatitude={setLatitude}
+          longitude={longitude}
+          setLongitude={setLongitude}
+          address={address}
+          setAddress={setAddress}
+          checkOutTime={checkOutTime}
+          checkInTime={checkInTime}
+        />
       </div>
     </div>
   );

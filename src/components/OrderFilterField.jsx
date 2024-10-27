@@ -113,7 +113,7 @@ const OrderFilterField = ({
           item.customer === selectedCustomer &&
           item.transaction_date === formattedDate
       );
-      console.log("filtered data", filter);
+      // console.log("filtered data", filter);
       setData(filter);
       setLoader(false);
     } catch (err) {

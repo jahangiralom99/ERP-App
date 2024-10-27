@@ -6,7 +6,7 @@ import { getStoredCart } from "../utilities/function";
 
 const Footer = () => {
   const { url } = getStoredCart("login-info");
-  console.log(url);
+  // console.log(url);
 
   return (
     <div className="flex justify-between items-center h-10 w-full bg-white">

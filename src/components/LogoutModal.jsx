@@ -18,7 +18,7 @@ const LogoutModal = ({ setOpen8 }) => {
     const postBody = {
       erp_url: url,
     };
-    console.log(postBody);
+    // console.log(postBody);
     fetch(`${fetchURL}/logout`, {
       method: "POST",
       headers: {

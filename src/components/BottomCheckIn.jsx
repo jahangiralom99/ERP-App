@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiCurrentLocation } from "react-icons/bi";
 import {
   PiArrowsCounterClockwiseFill,
@@ -6,10 +6,16 @@ import {
   PiClockCounterClockwiseFill,
 } from "react-icons/pi";
 
-const BottomCheckIn = () => {
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [address, setAddress] = useState("");
+const BottomCheckIn = ({
+  latitude,
+  setLatitude,
+  longitude,
+  setLongitude,
+  address,
+  setAddress,
+  checkInTime,
+  checkOutTime,
+}) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   // get location
@@ -41,15 +47,21 @@ const BottomCheckIn = () => {
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
       );
       const data = await response.json();
-      setAddress(data.display_name);
+      // console.log(data);
+      // const addressParts = data.display_name.split(", ");
+      // const shortAddress = `${addressParts[0]}, ${addressParts[1]}`; // Adjust indices for desired format
+
+      setAddress(data?.display_name);
     } catch (error) {
       console.error("Error fetching address:", error);
     }
   };
-//   console.log(latitude, longitude, address);
+  // console.log(latitude, longitude, address);
 
-  // call the function
-  getLocation();
+  // call getLocation when component mounts or on demand
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   return (
     <div className="   rounded-2xl mx-5 pb-">
@@ -83,12 +95,12 @@ const BottomCheckIn = () => {
       <div className=" flex justify-between  items-center py-1 px-5">
         <div className="flex flex-col justify-end items-center">
           <PiClockClockwiseFill className="text-[#FF0000] text-2xl" />
-          <p className="text- font-medium">--:--</p>
+          <p className="text- font-medium">{checkInTime && checkInTime}</p>
           <p className="text-[#FF0000] text-xs font-medium"> Check In</p>
         </div>
         <div className="flex flex-col justify-end items-center">
           <PiClockCounterClockwiseFill className="text-[#FF0000] text-2xl" />
-          <p className="text- font-medium">--:--</p>
+          <p className="text- font-medium">{checkOutTime && checkOutTime}</p>
           <p className="text-[#FF0000] text-xs font-medium"> Check Out</p>
         </div>
         <div className="flex flex-col justify-end items-center">
