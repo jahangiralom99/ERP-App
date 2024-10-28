@@ -1,6 +1,5 @@
 const fetchURL = "https://erp-backend-xkze.vercel.app";
 
-
 let formatDate = () => {
   let date = new Date();
   let year = date.getFullYear();
@@ -19,7 +18,6 @@ const addToProceed = (newItem, store) => {
   );
   return true;
 };
-
 
 // const addToProceed = (newItem, store) => {
 //   const storageKey = `${window.location.hostname}-${store}`;
@@ -47,11 +45,9 @@ const getStoredCart = (store) => {
   return strCart;
 };
 
-
 const clearStoredCart = (store) => {
   localStorage.removeItem(`${window.location.hostname}-${store}`);
 };
-
 
 const removeItemFromCart = (store, itemId) => {
   let cart = getStoredCart(store);
@@ -67,10 +63,9 @@ const removeItemFromCart = (store, itemId) => {
 };
 
 const addToCart = (newItem) => {
-  const currentCart =
-    JSON.parse(
-      localStorage.getItem(`${window.location.hostname}-order-info`)
-    );
+  const currentCart = JSON.parse(
+    localStorage.getItem(`${window.location.hostname}-order-info`)
+  );
   const existing = currentCart.findIndex(
     (item) => item.item_code === newItem.item_code
   );
@@ -129,17 +124,16 @@ function updateData(key, newName) {
   }
 }
 
-
 function updateDataOrder(key, newName) {
   console.log(key, newName);
   // Retrieve and parse the object from local storage
   const storedSum = getStoredCart("order-info");
-  console.log("function ",storedSum);
+  console.log("function ", storedSum);
   if (storedSum) {
     // Update the specified key with the new name
     for (let i of storedSum) {
       if (i.item_code === key) {
-        i.qty = newName
+        i.qty = newName;
         addToProceed(storedSum, "order-info");
         break;
       }
@@ -169,12 +163,56 @@ function updateDataOrder(key, newName) {
 //   }));
 //   for (let i in data) {
 //     if (i.item_code === itemName) {
-//       i.qty +=1 
+//       i.qty +=1
 //       updateDataOrder(itemName, i.qty );
 //     }
 //   }
- 
+
 // };
+
+// image convert to base64Data
+function base64ToFile(base64Data, filename) {
+  const arr = base64Data.split(",");
+  const mimeType = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, { type: mimeType });
+}
+
+function UploadAttachmentFile(imageUrl, url, data, name) {
+  const formData = new FormData();
+  const file = base64ToFile(imageUrl, name);
+  formData.append("file", file); // Append the file object
+  formData.append("server", url);
+  formData.append("doctype_name", "Employee Checkin");
+  formData.append("document_name", data);
+  // console.log("Form Data:", formData);
+  fetch("https://erp-backend-black.vercel.app/file", {
+    method: "POST",
+    body: formData, // Use FormData as the body
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return res.json();
+    })
+    .then((result) => {
+      console.log("Success:", result);
+      return result;
+    })
+    .catch((error) => {
+      console.error("Error posting data:", error);
+      return error.message;
+      // setResponseMessage("Error: " + error.message);
+    });
+}
 
 function updateOrder(key, newName) {
   // Retrieve and parse the object from local storage
@@ -210,5 +248,6 @@ export {
   updateData,
   updateOrder,
   updateDataOrder,
-  clearStoredCart
+  clearStoredCart,
+  UploadAttachmentFile,
 };

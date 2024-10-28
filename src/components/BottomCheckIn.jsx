@@ -63,6 +63,21 @@ const BottomCheckIn = ({
     getLocation();
   }, []);
 
+  // distance
+  // const calculateDuration = () => {
+  //   if (checkInTime && checkOutTime) {
+  //     const durationMilliseconds = checkOutTime - checkInTime;
+  //     if (durationMilliseconds < 0) return "Check-out time must be after check-in time."; // Optional check
+  //     const durationSeconds = Math.floor(durationMilliseconds / 1000);
+  //     const hours = Math.floor(durationSeconds / 3600);
+  //     const minutes = Math.floor((durationSeconds % 3600) / 60);
+  //     const seconds = durationSeconds % 60;
+
+  //     return `${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+  //   }
+  //   return null;
+  // };
+
   return (
     <div className="   rounded-2xl mx-5 pb-">
       {/* location */}
@@ -105,7 +120,10 @@ const BottomCheckIn = ({
         </div>
         <div className="flex flex-col justify-end items-center">
           <PiArrowsCounterClockwiseFill className="text-[#FF0000] text-2xl" />
-          <p className="text- font-medium">--:--</p>
+          <p className="text- font-medium">
+            {/* {checkInTime && checkOutTime && <p>{calculateDuration()}</p>} */}
+            ----^-----
+          </p>
           <p className="text-[#FF0000] text-xs font-medium"> Duration</p>
         </div>
       </div>

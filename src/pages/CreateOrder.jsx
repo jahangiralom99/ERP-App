@@ -74,8 +74,7 @@ const CreateOrder = () => {
   useEffect(() => {
     const AllData1 = getStoredCart("item-all-data");
     setAllData(AllData1);
-    // window.location.reload();
-  }, [AllData1]);
+  }, []);
 
   const m = getStoredCart("item-all-data");
   const filter = Object?.values(m)?.filter((item) => item["qty"] > 0);
@@ -300,32 +299,33 @@ const CreateOrder = () => {
   };
 
   // item data for Company name
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${fetchURL}/getall?erp_url=${url}&doctype_name=Item`
-        );
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const result = await response.json();
-        const tem = result?.data;
-        // console.log(tem);
-        const l = {};
-        for (let i = 0; i < tem.length; i++) {
-          tem[i]["qty"] = 0;
-          l[tem[i].name] = tem[i];
-          // console.log(tem[i]);
-        }
-        addToProceed(l, "item-all-data");
-        // setItemData(result);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${fetchURL}/getall?erp_url=${url}&doctype_name=Item`
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error(`Error: ${response.status}`);
+  //       }
+  //       const result = await response.json();
+  //       const tem = result?.data;
+  //       // console.log(tem);
+  //       const l = {};
+  //       for (let i = 0; i < tem.length; i++) {
+  //         tem[i]["qty"] = 0;
+  //         l[tem[i].name] = tem[i];
+  //         // console.log(tem[i]);
+  //       }
+  //       addToProceed(l, "item-all-data");
+  //       // window.location.reload();
+  //       // setItemData(result);
+  //     } catch (err) {
+  //       console.log(err.message);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   const goBack = () => {
     navigate(-1);

@@ -7,7 +7,7 @@ import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
-import { getStoredCart, updateData } from "../utilities/function";
+import { addToProceed, fetchURL, getStoredCart, updateData } from "../utilities/function";
 import MainLoader from "../components/Shared/MainLoader";
 import OrderFilterField from "../components/OrderFilterField";
 import CommonBackButton from "../components/Button/CommonBackButton";
@@ -65,6 +65,35 @@ const Orders = () => {
 
     fetchData();
   }, [url]);
+
+  // sfdgdfgdgf
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${fetchURL}/getall?erp_url=${url}&doctype_name=Item`
+        ); 
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const result = await response.json();
+        const tem = result?.data;
+        // console.log(tem);
+        const l = {};
+        for (let i = 0; i < tem.length; i++) {
+          tem[i]["qty"] = 0;
+          l[tem[i].name] = tem[i];
+          // console.log(tem[i]);
+        }
+        addToProceed(l, "item-all-data");
+        // window.location.reload();
+        // setItemData(result);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+    fetchData();
+  }, []);
 
   const m = getStoredCart("item-all-data");
   const filter = Object.values(m).filter((item) => item["qty"] > 0);

@@ -11,6 +11,11 @@ import LineProgress from "../components/LineProgress";
 const Home = () => {
   return (
     <div className=" bg-gray-200 pb-12 ">
+      {/* <div className="flex items-center justify-center ">
+        <img className="h-[500px]" src={img1} alt="" />
+        <img className="h-[500px]" src={img2} alt="" />
+      </div> */}
+
       {/* header */}
 
       <div className="flex justify-between items-center h-14 w-full bg-white px-5">

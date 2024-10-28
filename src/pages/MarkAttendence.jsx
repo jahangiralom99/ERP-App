@@ -7,7 +7,11 @@ import BottomCheckIn from "../components/BottomCheckIn";
 // import Location from '../components/Location';
 import { useState, useRef } from "react";
 import Webcam from "react-webcam";
-import { fetchURL, getStoredCart } from "../utilities/function";
+import {
+  fetchURL,
+  getStoredCart,
+  UploadAttachmentFile,
+} from "../utilities/function";
 import image10 from "../assets/IONIC-ERP-icon.png";
 import { toast } from "react-toastify";
 import MainLoader from "../components/Shared/MainLoader";
@@ -36,26 +40,27 @@ const MarkAttendence = () => {
   const [imageUrl, setImageUrl] = useState(null);
   const [imageUrl2, setImageUrl2] = useState(null);
   // image
-  const [imageFile , setImageFile] = useState(null);
+  // const [imageFile, setImageFile] = useState(null);
 
   const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
     if (!imageSrc) return;
 
-    const blob = await fetch(imageSrc).then((res) => res.blob());
-    const shortUrl = URL.createObjectURL(blob); // Temporary URL for displaying
-    setImageUrl(shortUrl); // Set shorter URL for <img> tag
+    // const blob = await fetch(imageSrc).then((res) => res.blob());
+    // const shortUrl = URL.createObjectURL(blob); // Temporary URL for displaying
+    setImageUrl(imageSrc); // Set shorter URL for <img> tag
   };
   const capture2 = async () => {
     const imageSrc = webcamRef2.current.getScreenshot();
     if (!imageSrc) return;
 
-    const blob = await fetch(imageSrc).then((res) => res.blob());
-    const shortUrl = URL.createObjectURL(blob); // Temporary URL for displaying
-    setImageUrl2(shortUrl); // Set shorter URL for <img> tag
+    // const blob = await fetch(imageSrc).then((res) => res.blob());
+    // const shortUrl = URL.createObjectURL(blob); // Temporary URL for displaying
+    setImageUrl2(imageSrc); // Set shorter URL for <img> tag
   };
 
-  console.log(imageUrl);
+  console.log(checkInTime);
+  console.log(checkOutTime);
 
   const body = {
     server: url,
@@ -63,15 +68,16 @@ const MarkAttendence = () => {
     data: {
       employee: "HR-EMP-00001",
       log_type: "IN",
-      custom_upload_font_image: imageFile,
-      custom_upload_back_image: imageFile,
+      custom_upload_font_image: imageUrl,
+      custom_upload_back_image: imageUrl2,
       latitude: latitude,
       longitude: longitude,
     },
   };
 
   // console.log(image10);
-
+  const currentTime = new Date().toLocaleTimeString();
+  console.log(currentTime);
   const handleCheckIn = () => {
     // Check if images and location data are provided
     if (!imageUrl || !imageUrl2) {
@@ -98,7 +104,6 @@ const MarkAttendence = () => {
       });
     } else {
       setLoader(true);
-      const currentTime = new Date().toLocaleTimeString();
       if (!isCheckedIn) {
         // if check out het the this route
         fetch(`${fetchURL}/post_data`, {
@@ -111,42 +116,30 @@ const MarkAttendence = () => {
         })
           .then((res) => res.json())
           .then((data) => {
+            console.log("success", data);
             // Setting Check-In
             setCheckInTime(currentTime);
             setIsCheckedIn(true);
             setLoader(false);
-            console.log(data);
+            // post for front image
             if (data?.response_data?.data) {
-              console.log(data?.response_data?.data);
-              const formData = new FormData();
-              formData.append("file", imageFile); // Append the file object
-              formData.append("server", url);
-              formData.append("doctype_name", "Employee Checkin");
-              formData.append("document_name", data?.response_data?.data?.name);
-              // console.log("Form Data:", formData);
-              fetch("https://erp-backend-black.vercel.app/file", {
-                method: "POST",
-                body: formData, // Use FormData as the body
-              })
-                .then((res) => {
-                  if (!res.ok) {
-                    throw new Error("Network response was not ok");
-                  }
-                  return res.json();
-                })
-                .then((data) => {
-                  console.log("Success:", data);
-                  // setResponseMessage("File uploaded successfully!");
-                })
-                .catch((error) => {
-                  console.error("Error posting data:", error);
-                  // setResponseMessage("Error: " + error.message);
-                });
-              console.log(data?.response_data?.data.name);
+              UploadAttachmentFile(
+                imageUrl,
+                url,
+                data?.response_data?.data?.name,
+                "front-image.jpg"
+              );
+              // post for back camera image
+              UploadAttachmentFile(
+                imageUrl2,
+                url,
+                data?.response_data?.data?.name,
+                "back-image.jpg"
+              );
             }
           })
           .catch((err) => {
-            console.error(err);
+            console.log(err);
             setLoader(false);
           });
       } else {
@@ -156,6 +149,8 @@ const MarkAttendence = () => {
         setCheckOutTime(currentTime);
         setIsCheckedIn(false);
         setLoader(false);
+        setImageUrl2(null);
+        setImageUrl(null);
       }
     }
 
@@ -168,7 +163,6 @@ const MarkAttendence = () => {
     // alert("checkIN");
   };
 
-  // fetch;
 
   if (loader) {
     return <MainLoader />;
