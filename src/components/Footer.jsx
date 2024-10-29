@@ -3,37 +3,44 @@ import { FaRegUser, FaTasks } from "react-icons/fa";
 import { RiHome2Line, RiNewsLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { getStoredCart } from "../utilities/function";
+import { RxCrossCircled } from "react-icons/rx";
+import { useState } from "react";
+import ButtonFooter from "./ButtonFooter";
 
 const Footer = () => {
   const { url } = getStoredCart("login-info");
+  const [open, setOpen] = useState(false);
   // console.log(url);
 
   return (
-    <div className="flex justify-between items-center h-10 w-full bg-white">
-      <div className="flex justify-evenly items-center w-full ">
-        <RiHome2Line className="text-2xl" />
-        <FaTasks className="text-2xl" />
-      </div>
-      <div className="text-5xl relative h-10 w-20 ">
-        <CiCirclePlus
-          className="absolute bottom-[15px] bg-white rounded-full
-            
-            "
-        />
-      </div>
-      <div className="flex justify-evenly items-center w-full ">
-        <RiNewsLine className="text-2xl" />
-        {url ? (
+    <>
+      <div className="flex justify-between items-center h-10 w-full bg-white fixed bottom-0 left-0 right-0 max-w-screen-sm mx-auto">
+        <div className="flex justify-evenly items-center w-full ">
+          <Link to="/">
+            <RiHome2Line className="text-xl" />
+          </Link>
+
+          <FaTasks className="text-xl" />
+        </div>
+        <div
+          onClick={() => setOpen(!open)}
+          className="text-5xl relative h-10 w-20"
+        >
+          {open ? (
+            <RxCrossCircled className="absolute  bottom-[14px] text-4xl bg-white rounded-full" />
+          ) : (
+            <CiCirclePlus className="absolute bottom-[14px] text-4xl bg-white rounded-full" />
+          )}
+        </div>
+        <div className="flex justify-evenly items-center w-full ">
+          <RiNewsLine className="text-xl" />
           <Link to="/profile">
-            <FaRegUser className="text-2xl" />
+            <FaRegUser className="text-xl" />
           </Link>
-        ) : (
-          <Link to="/login">
-            <FaRegUser className="text-2xl" />
-          </Link>
-        )}
+        </div>
       </div>
-    </div>
+      {open && <ButtonFooter setOpen={setOpen} />}
+    </>
   );
 };
 

@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { addToProceed, fetchURL, getStoredCart } from "../utilities/function";
 import { toast } from "react-toastify";
 import MainLoader from "../components/Shared/MainLoader";
-import { Line } from "rc-progress";
 import loginLogo from "../assets/ionic-erp-logo.png"
 
 const Login = () => {

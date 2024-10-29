@@ -37,9 +37,9 @@ const Home = () => {
 
       {/* <LineProgress/> */}
 
-      <div className="fixed bottom-0 left-0 right-0 flex justify-center ">
+      {/* <div className="fixed bottom-0 left-0 right-0 flex justify-center ">
         <Footer />
-      </div>
+      </div> */}
     </div>
   );
 };

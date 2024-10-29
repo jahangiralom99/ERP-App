@@ -539,7 +539,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
 
         {/* data from select item page */}
 
-        <div className="pt-5 text-sm text-black font-medium">
+        <div className="pt-5 text-sm text-black font-medium pb-16">
           <div className="flex justify-between">
             <p className="text-zinc-500">Items*</p>
             <div>
@@ -681,7 +681,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
           </div>
         </div>
 
-        <div className="flex gap-3 px-5 bg-gray-100 fixed bottom-0 left-0 right-0 justify-center pb-2">
+        <div className="flex gap-3 px-5 bg-gray-100 fixed bottom-10 left-0 right-0 justify-center pb-2">
           <div onClick={() => setOpen5(!open5)} className="w-full">
             <button className="border-[1px] bg-black font-bold text-white p-3 rounded-xl w-full">
               Close

@@ -19,6 +19,17 @@ const addToProceed = (newItem, store) => {
   return true;
 };
 
+
+// const addToProceed2 = (newItem, store, status) => {
+//   // Set a boolean property based on the status argument
+//   newItem.isActive = status; // `status` should be true or false
+//   localStorage.setItem(
+//     `${window.location.hostname}-${store}`,
+//     JSON.stringify(newItem)
+//   );
+//   return true;
+// };
+
 // const addToProceed = (newItem, store) => {
 //   const storageKey = `${window.location.hostname}-${store}`;
 
@@ -250,4 +261,5 @@ export {
   updateDataOrder,
   clearStoredCart,
   UploadAttachmentFile,
+  // addToProceed2
 };

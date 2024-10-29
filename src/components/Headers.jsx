@@ -1,6 +1,7 @@
 import { FaRegBell } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import logo from "../assets/ionic-erp-logo.png";
+import avatar from "../assets/avater.jpg";
 
 const Headers = () => {
   return (
@@ -12,11 +13,16 @@ const Headers = () => {
             <p className="font-bold">IONIC ERP</p>
           </p>
         </Link>
-        <p>
+        <div className="flex items-center justify-center gap-4">
           <div className="text-xl text-[#FF0000] ">
-            <FaRegBell />
+            <FaRegBell className="text-xl" />
           </div>
-        </p>
+          <div className="avatar">
+            <div className="w-9 rounded-full">
+              <img src={avatar} />
+            </div>
+          </div>
+        </div>
       </div>
       <hr />
     </div>

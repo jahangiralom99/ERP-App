@@ -1,29 +1,25 @@
 import { useEffect } from "react";
 import { getStoredCart } from "../utilities/function";
 import { toast } from "react-toastify";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-const PrivetRoute = ({ children }) => {
+const PrivateRoute = ({ children }) => {
   const { url } = getStoredCart("login-info");
-  const navigate = useNavigate();
-    const location = useLocation();
-    
-
+  const location = useLocation();
 
   useEffect(() => {
     if (!url) {
       toast("You have to log in first");
     }
   }, [url]);
-    
 
-    // local storage usr not find and return to login page
-  if (url) {
-    navigate("/");
-    return children;
+  // If the user is not logged in, redirect to login page
+  if (!url) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return <Navigate to="/login" state={{ from: location }} replace></Navigate>;
+  // User is logged in, render the children
+  return children;
 };
 
-export default PrivetRoute;
+export default PrivateRoute;

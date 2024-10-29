@@ -594,7 +594,7 @@ const CreateOrder = () => {
 
         {/* data from select item page */}
 
-        <div className="pt-5 text-sm text-black font-medium mt-4">
+        <div className="pt-5 text-sm text-black font-medium mt-4 pb-12">
           <div className="flex justify-between">
             <p className="text-zinc-500">Items*</p>
             <div onClick={handleDeleted}>
@@ -694,7 +694,7 @@ const CreateOrder = () => {
           </div>
         </div>
 
-        <div className="flex gap-3 px-5 bg-gray-100 fixed bottom-0 left-0 right-0 justify-center pb-2">
+        <div className="flex gap-3 px-5 bg-gray-100 fixed bottom-10 left-0 right-0 justify-center pb-2">
           <div onClick={goBack} className="w-full">
             <button className="border-[1px] bg-black border-zinc-400 font-bold text-white p-3 rounded-xl w-full">
               Close

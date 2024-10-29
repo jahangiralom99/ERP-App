@@ -40,10 +40,10 @@ export const router = createBrowserRouter([
         path: "/details/:name",
         element: <OdrerDetails />,
       },
-      {
-        path: "/login",
-        element: <Login />,
-      },
+      // {
+      //   path: "/login",
+      //   element: <Login />,
+      // },
       {
         path: "/profile",
         element: <Profile />,
@@ -77,5 +77,10 @@ export const router = createBrowserRouter([
         element: <UpdateExpense />,
       },
     ],
+  },
+  // if login redirects to home page
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);

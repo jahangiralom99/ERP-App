@@ -5,7 +5,7 @@ import { PiHandTapLight } from "react-icons/pi";
 import { BsFileImage, BsFillFileImageFill } from "react-icons/bs";
 import BottomCheckIn from "../components/BottomCheckIn";
 // import Location from '../components/Location';
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import {
   fetchURL,
@@ -15,6 +15,7 @@ import {
 import image10 from "../assets/IONIC-ERP-icon.png";
 import { toast } from "react-toastify";
 import MainLoader from "../components/Shared/MainLoader";
+import CommonBackButton from "../components/Button/CommonBackButton";
 
 const MarkAttendence = () => {
   const camera = useRef(null);
@@ -27,11 +28,13 @@ const MarkAttendence = () => {
   const [longitude, setLongitude] = useState(null);
   const [address, setAddress] = useState("");
   // check in out status
-  const [isCheckedIn, setIsCheckedIn] = useState(false); // State for Check In/Out status
+  const [isCheckedIn, setIsCheckedIn] = useState(
+    JSON.parse(localStorage.getItem("isCheckedIn")) || false
+  ); // State for Check In/Out status
   const [checkInTime, setCheckInTime] = useState(null);
   const [checkOutTime, setCheckOutTime] = useState(null);
   // base user
-  const { url } = getStoredCart("login-info");
+  const { url, data } = getStoredCart("login-info");
   // loader
   const [loader, setLoader] = useState(false);
 
@@ -41,11 +44,12 @@ const MarkAttendence = () => {
   const [imageUrl2, setImageUrl2] = useState(null);
   // image
   // const [imageFile, setImageFile] = useState(null);
+  // name sate
+  const [name, setName] = useState({});
 
   const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
     if (!imageSrc) return;
-
     // const blob = await fetch(imageSrc).then((res) => res.blob());
     // const shortUrl = URL.createObjectURL(blob); // Temporary URL for displaying
     setImageUrl(imageSrc); // Set shorter URL for <img> tag
@@ -59,14 +63,14 @@ const MarkAttendence = () => {
     setImageUrl2(imageSrc); // Set shorter URL for <img> tag
   };
 
-  console.log(checkInTime);
-  console.log(checkOutTime);
+  // console.log(checkInTime);
+  // console.log(checkOutTime);
 
   const body = {
     server: url,
     doctype: "Employee Checkin",
     data: {
-      employee: "HR-EMP-00001",
+      employee: name,
       log_type: "IN",
       custom_upload_font_image: imageUrl,
       custom_upload_back_image: imageUrl2,
@@ -74,10 +78,52 @@ const MarkAttendence = () => {
       longitude: longitude,
     },
   };
+  const body2 = {
+    server: url,
+    doctype: "Employee Checkin",
+    data: {
+      employee: name,
+      log_type: "OUT",
+      custom_upload_font_image: imageUrl,
+      custom_upload_back_image: imageUrl2,
+      latitude: latitude,
+      longitude: longitude,
+    },
+  };
 
-  // console.log(image10);
+  const email = decodeURIComponent(data?.user_id);
+
+  console.log(body);
+
+  // sfdgdfgdgf
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${fetchURL}/getall?erp_url=${url}&doctype_name=Employee`
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const result = await response.json();
+        const findEmail = result?.data?.find(
+          (item) => item?.prefered_email === email
+        );
+        setName(findEmail?.name);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+    fetchData();
+  }, [url, email]);
+
+  console.log(name);
+  useEffect(() => {
+    localStorage.setItem("isCheckedIn", JSON.stringify(isCheckedIn));
+  }, [isCheckedIn]);
+
   const currentTime = new Date().toLocaleTimeString();
-  console.log(currentTime);
+  // console.log(currentTime);
   const handleCheckIn = () => {
     // Check if images and location data are provided
     if (!imageUrl || !imageUrl2) {
@@ -146,39 +192,65 @@ const MarkAttendence = () => {
         // if check in het the this route
         // Setting Check-Out
         // console.log("fdgdfghgdfjjhdg");
-        setCheckOutTime(currentTime);
-        setIsCheckedIn(false);
-        setLoader(false);
-        setImageUrl2(null);
-        setImageUrl(null);
+        // if check out het the this route
+        fetch(`${fetchURL}/post_data`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body2),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setCheckOutTime(currentTime);
+            setIsCheckedIn(false);
+            setLoader(false);
+            setImageUrl2(null);
+            setImageUrl(null);
+            console.log("success", data);
+            // Setting Check-In
+            setCheckInTime(currentTime);
+            setLoader(false);
+            // post for front image
+            if (data?.response_data?.data) {
+              UploadAttachmentFile(
+                imageUrl,
+                url,
+                data?.response_data?.data?.name,
+                "front-image.jpg"
+              );
+              // post for back camera image
+              UploadAttachmentFile(
+                imageUrl2,
+                url,
+                data?.response_data?.data?.name,
+                "back-image.jpg"
+              );
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoader(false);
+          });
       }
     }
-
-    // if (imageUrl2 == null || imageUrl == null) {
-    //   alert("please Image ");
-    // } else if (longitude == null || latitude == null) {
-    //   alert("please longitude");
-    // }
-
-    // alert("checkIN");
   };
-
 
   if (loader) {
     return <MainLoader />;
   }
-  console.log(checkOutTime, checkOutTime);
+  // console.log(checkOutTime, checkOutTime);
 
   return (
-    <div className="bg-white h-screen  text-black">
+    <div className="bg-white h-screen text-black">
       {/* header */}
       <div className="">
-        <div className="flex justify-between items-center h-14 w-full bg-gray-200 text-black px-6 ">
+        <div className="flex justify-between items-center mt-[66px] w-full  text-black px-6 ">
           <div className="flex items-center gap-4">
-            <Link to="/orders">
-              <IoMdArrowBack className="text-lg text-[#FF0000]" />
+            <Link to="/">
+              <CommonBackButton value="Back" />
             </Link>
-            <p className=" font-medium">Mark Attendence</p>
           </div>
           <div>{/* <TfiPencil className="text-lg text-blue-600" /> */}</div>
         </div>
@@ -200,12 +272,14 @@ const MarkAttendence = () => {
         >
           <div
             className={`w-24 h-24 ${
-              isCheckedIn ? "border-green-500" : "border-[#FF0000]"
-            }  bg-gray-100 border-2 rounded-full flex justify-center items-center`}
+              isCheckedIn
+                ? "bg-green-500 border-black"
+                : "bg-[#FF0000] border-black"
+            }  border-2 rounded-full flex justify-center items-center`}
           >
             <PiHandTapLight
               className={`text-6xl ${
-                isCheckedIn ? "text-green-500" : "text-[#FF0000]"
+                isCheckedIn ? "text-white" : "text-white"
               } `}
             />
           </div>
@@ -221,13 +295,13 @@ const MarkAttendence = () => {
 
         {/* photo part */}
 
-        <div className="flex  justify-evenly items-center mx-5 pb-12   rounded-xl  px-6 ">
+        <div className="flex  justify-evenly items-center mx-5 pb-12 rounded-xl mt-6 px-6 ">
           <div
             onClick={() => setOpen1(!open1)}
-            className="flex flex-col justify-evenly items-center py-1   w-full  rounded-xl  px-6 "
+            className="flex flex-col justify-evenly items-center py-1  w-full  rounded-xl  px-6 "
           >
             {open1 && (
-              <div className="flex flex-col fixed left-8 right-8  bottom-32  border-[#FF0000] bg-gray-100 border-[1px] rounded-xl">
+              <div className="flex flex-col top-[66px] fixed left-8 right-8 border-[#FF0000] bg-gray-100 border-[1px] rounded-xl">
                 <div className=" flex justify-center pt-5 ">
                   {/* camera area */}
 
@@ -288,7 +362,7 @@ const MarkAttendence = () => {
             className="flex flex-col justify-evenly items-center py-1   w-full  rounded-xl  px-6 "
           >
             {open2 && (
-              <div className="flex flex-col fixed left-8 right-8  bottom-32  border-[#FF0000] bg-gray-100 border-[1px] rounded-xl">
+              <div className="flex flex-col fixed left-8 right-8  top-[66px]  border-[#FF0000] bg-gray-100 border-[1px] rounded-xl">
                 <div className=" flex justify-center pt-5 ">
                   {/* camera area */}
 

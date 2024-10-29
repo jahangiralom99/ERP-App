@@ -20,7 +20,7 @@ const Time = () => {
   });
 
   return (
-    <div className="mb-7 mt-1 mx-5 p-3  rounded-xl">
+    <div className="mt-1 mx-5 p-3  rounded-xl">
       <p className="text-[#FF0000] text-3xl text-center py-1 mb-2 font-bold">
         {formattedTime}
       </p>

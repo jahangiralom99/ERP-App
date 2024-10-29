@@ -79,7 +79,7 @@ const BottomCheckIn = ({
   // };
 
   return (
-    <div className="   rounded-2xl mx-5 pb-">
+    <div className="rounded-2xl mx-5 mt-2 pb-16 ">
       {/* location */}
 
       <div className="flex justify-between items-center px-7  pb-3  rounded-2xl">
@@ -93,7 +93,7 @@ const BottomCheckIn = ({
         <div className="">
           <iframe
             title="Google Map"
-            className="w-32 h-32 border-[1px] border-[#FF0000] rounded-full"
+            className="w-16 h-16 border-[1px] border-[#FF0000] rounded-full"
             src={`https://maps.google.com/maps?q=${latitude},${longitude}&hl=en&z=14&output=embed`}
             frameBorder="0"
             scrolling="no"
@@ -107,7 +107,7 @@ const BottomCheckIn = ({
 
       {/* checkin */}
 
-      <div className=" flex justify-between  items-center py-1 px-5">
+      <div className=" flex justify-between  items-center py-1 px-5 mt-4">
         <div className="flex flex-col justify-end items-center">
           <PiClockClockwiseFill className="text-[#FF0000] text-2xl" />
           <p className="text- font-medium">{checkInTime && checkInTime}</p>
