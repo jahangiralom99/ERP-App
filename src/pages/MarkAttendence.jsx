@@ -90,10 +90,10 @@ const MarkAttendence = () => {
       longitude: longitude,
     },
   };
-
+  // email decode URL
   const email = decodeURIComponent(data?.user_id);
 
-  console.log(body);
+  // console.log(body);
 
   // sfdgdfgdgf
   useEffect(() => {
@@ -121,6 +121,15 @@ const MarkAttendence = () => {
   useEffect(() => {
     localStorage.setItem("isCheckedIn", JSON.stringify(isCheckedIn));
   }, [isCheckedIn]);
+
+  useEffect(() => {
+    fetch(`${fetchURL}/duration?server=${url}&employee=${name}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  }, [url, name]);
 
   const currentTime = new Date().toLocaleTimeString();
   // console.log(currentTime);

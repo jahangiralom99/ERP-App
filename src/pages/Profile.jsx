@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 import avatar from "../assets/avater.jpg";
@@ -13,7 +13,8 @@ import EducationDetails from "../components/EducationDetails";
 import BankDetails from "../components/BankDetails";
 import ChangePassword from "../components/ChangePassword";
 import LogoutModal from "../components/LogoutModal";
-import { getStoredCart } from "../utilities/function";
+import { fetchURL, getStoredCart } from "../utilities/function";
+import MainLoader from "../components/Shared/MainLoader";
 
 const Profile = () => {
   const [checked, setChecked] = useState(false);
@@ -25,14 +26,50 @@ const Profile = () => {
   const [open6, setOpen6] = useState(false);
   const [open7, setOpen7] = useState(false);
   const [open8, setOpen8] = useState(false);
+  // user info
+  const [user, setUser] = useState({});
+  // loader
+  const [loader, setLoader] = useState(false);
 
   const onSubmit = (data) => {
     console.log(data);
     console.log(checked);
   };
 
-  const { data } = getStoredCart("login-info");
-//   console.log(data);
+  const { data, url } = getStoredCart("login-info");
+  // email decode URL
+  const email = decodeURIComponent(data?.user_id);
+
+  useEffect(() => {
+    setLoader(true);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${fetchURL}/getall?erp_url=${url}&doctype_name=Employee`
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const result = await response.json();
+        const findEmail = result?.data?.find(
+          (item) => item?.prefered_email === email
+        );
+        setUser(findEmail);
+        setLoader(false);
+      } catch (err) {
+        setLoader(false);
+        console.log(err.message);
+      }
+    };
+    fetchData();
+  }, [url, email]);
+
+  // console.log(user);
+  if (loader) {
+    return <MainLoader />;
+  }
+
+  console.log(user);
 
   return (
     <div className="bg-gray-200  text-black text-sm pb-3 ">
@@ -51,9 +88,15 @@ const Profile = () => {
 
       <div className="flex justify- items-center  bg-white rounded-2xl m-5 p-3 ">
         <div className="flex justify-evenly items-center gap-4 ">
-          <img className="w-16 h-16 rounded-full" src={avatar} alt="" />
+          <img
+            className="w-16 h-16 rounded-full"
+            src={url + user.image || avatar}
+            alt=""
+          />
           <div>
-            <p className="font-bold text-2xl">{data?.full_name}</p>
+            <p className="font-bold text-2xl">
+              {decodeURIComponent(data?.full_name)}
+            </p>
             <p className="text-xs text-zinc-500">N/A</p>
           </div>
         </div>
@@ -64,13 +107,13 @@ const Profile = () => {
       <div className=" flex flex-col gap-2 bg-white rounded-2xl m-5 ">
         <div className="p-3 ">
           <p className="text-zinc-500 pb-1 font-medium">Employee ID</p>
-          <p className="font-bold">HR-EMP-00001</p>
+          <p className="font-bold">{user?.employee}</p>
         </div>
 
         <hr />
         <div className="p-3 ">
           <p className="text-zinc-500 pb-1 font-medium">Date of Joining</p>
-          <p className="font-bold">04-02-2020</p>
+          <p className="font-bold">{user?.date_of_joining}</p>
         </div>
         <hr />
         <div className="p-3 ">
@@ -82,28 +125,28 @@ const Profile = () => {
         <hr />
         <div className="p-3 ">
           <p className="text-zinc-500 pb-1 font-medium">Contact number</p>
-          <p className="font-bold">98493284903</p>
+          <p className="font-bold">{user?.cell_number}</p>
         </div>
       </div>
 
       {/* personal details */}
 
       <div className=" m-5 rounded-2xl bg-white  ">
-        <div onClick={() => setOpen1(!open1)} className="p-3 ">
+        <div onClick={() => setOpen1(!open1)} className="p-3 cursor-pointer">
           <p className="flex justify-between items-center font-bold">
             Personal Details{" "}
             <MdKeyboardArrowRight className="text-xl text-blue-600" />
           </p>
         </div>
         <hr />
-        <div onClick={() => setOpen2(!open2)} className="p-3 ">
+        <div onClick={() => setOpen2(!open2)} className="p-3 cursor-pointer">
           <p className="flex justify-between items-center font-bold">
             Education Details{" "}
             <MdKeyboardArrowRight className="text-xl text-blue-600" />
           </p>
         </div>
         <hr />
-        <div onClick={() => setOpen3(!open3)} className="p-3 ">
+        <div onClick={() => setOpen3(!open3)} className="p-3 cursor-pointer">
           <p className="flex justify-between items-center font-bold">
             Bank Details{" "}
             <MdKeyboardArrowRight className="text-xl text-blue-600" />
@@ -111,9 +154,13 @@ const Profile = () => {
         </div>
       </div>
 
-      {open1 && <PersonalDetails setOpen1={setOpen1} />}
-      {open2 && <EducationDetails setOpen2={setOpen2} />}
-      {open3 && <BankDetails setOpen3={setOpen3} />}
+      {open1 && (
+        <PersonalDetails setOpen1={setOpen1} open1={open1} user={user} />
+      )}
+      {open2 && (
+        <EducationDetails setOpen2={setOpen2} open2={open2} user={user} />
+      )}
+      {open3 && <BankDetails setOpen3={setOpen3} open3={open3} user={user} />}
 
       {/* lock screen */}
 
