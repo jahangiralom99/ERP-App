@@ -72,7 +72,7 @@ const Profile = () => {
   console.log(user);
 
   return (
-    <div className="bg-gray-200  text-black text-sm pb-3 ">
+    <div className="bg-gray-200  text-black text-sm pb-[60px] ">
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         <div className="flex items-center gap-4">

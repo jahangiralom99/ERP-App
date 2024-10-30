@@ -18,9 +18,6 @@ import MainLoader from "../components/Shared/MainLoader";
 import CommonBackButton from "../components/Button/CommonBackButton";
 
 const MarkAttendence = () => {
-  const camera = useRef(null);
-  const [image, setImage] = useState(null);
-  const [image1, setImage1] = useState(null);
   const [open2, setOpen2] = useState(false);
   const [open1, setOpen1] = useState(false);
   // address for Check in page
@@ -31,12 +28,18 @@ const MarkAttendence = () => {
   const [isCheckedIn, setIsCheckedIn] = useState(
     JSON.parse(localStorage.getItem("isCheckedIn")) || false
   ); // State for Check In/Out status
-  const [checkInTime, setCheckInTime] = useState(null);
-  const [checkOutTime, setCheckOutTime] = useState(null);
+  const [checkInTime, setCheckInTime] = useState(
+    localStorage.getItem("checkInTime") || null
+  );
+  const [checkOutTime, setCheckOutTime] = useState(
+    localStorage.getItem("checkOutTime") || null
+  );
   // base user
   const { url, data } = getStoredCart("login-info");
   // loader
   const [loader, setLoader] = useState(false);
+  // duration
+  const [duration, setDuration] = useState("");
 
   const webcamRef = useRef(null);
   const webcamRef2 = useRef(null);
@@ -66,6 +69,7 @@ const MarkAttendence = () => {
   // console.log(checkInTime);
   // console.log(checkOutTime);
 
+  // check IN
   const body = {
     server: url,
     doctype: "Employee Checkin",
@@ -78,6 +82,7 @@ const MarkAttendence = () => {
       longitude: longitude,
     },
   };
+  // check out
   const body2 = {
     server: url,
     doctype: "Employee Checkin",
@@ -131,7 +136,22 @@ const MarkAttendence = () => {
       .catch((err) => console.log(err));
   }, [url, name]);
 
+  // duration api call
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch(`${fetchURL}/duration?server=${url}&employee=${name}`)
+        .then((res) => res.json())
+        .then((result) => {
+          setDuration(result?.duration);
+        })
+        .catch((err) => console.log(err));
+    }, 1000); // Adjust the interval as needed (e.g., every 5 seconds)
+
+    return () => clearInterval(interval);
+  }, [url, name, isCheckedIn]); // Will reset interval whenever dependencies change
+
   const currentTime = new Date().toLocaleTimeString();
+  // console.log(currentTime);
   // console.log(currentTime);
   const handleCheckIn = () => {
     // Check if images and location data are provided
@@ -173,11 +193,12 @@ const MarkAttendence = () => {
           .then((data) => {
             console.log("success", data);
             // Setting Check-In
-            setCheckInTime(currentTime);
             setIsCheckedIn(true);
             setLoader(false);
             // post for front image
             if (data?.response_data?.data) {
+              setCheckInTime(currentTime);
+              localStorage.setItem("checkInTime", currentTime);
               UploadAttachmentFile(
                 imageUrl,
                 url,
@@ -212,17 +233,18 @@ const MarkAttendence = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            setCheckOutTime(currentTime);
             setIsCheckedIn(false);
             setLoader(false);
             setImageUrl2(null);
             setImageUrl(null);
             console.log("success", data);
             // Setting Check-In
-            setCheckInTime(currentTime);
+            // setCheckInTime(currentTime);
             setLoader(false);
             // post for front image
             if (data?.response_data?.data) {
+              setCheckOutTime(currentTime);
+              localStorage.setItem("checkOutTime", currentTime);
               UploadAttachmentFile(
                 imageUrl,
                 url,
@@ -445,6 +467,7 @@ const MarkAttendence = () => {
           setAddress={setAddress}
           checkOutTime={checkOutTime}
           checkInTime={checkInTime}
+          duration={duration}
         />
       </div>
     </div>

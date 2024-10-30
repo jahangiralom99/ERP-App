@@ -15,6 +15,7 @@ const BottomCheckIn = ({
   setAddress,
   checkInTime,
   checkOutTime,
+  duration,
 }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -122,7 +123,7 @@ const BottomCheckIn = ({
           <PiArrowsCounterClockwiseFill className="text-[#FF0000] text-2xl" />
           <p className="text- font-medium">
             {/* {checkInTime && checkOutTime && <p>{calculateDuration()}</p>} */}
-            ----^-----
+            {duration ? duration : "00"}
           </p>
           <p className="text-[#FF0000] text-xs font-medium"> Duration</p>
         </div>

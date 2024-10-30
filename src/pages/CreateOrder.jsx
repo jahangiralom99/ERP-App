@@ -60,7 +60,7 @@ const CreateOrder = () => {
   // fg
   const data = getStoredCart("order-info");
   const [items, setItems] = useState(data);
-  // const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   // color change for deleted items state
   const [change, setChange] = useState("");
   // order button change state
@@ -130,6 +130,7 @@ const CreateOrder = () => {
   // console.log(image);
   // create order btn
   const handleCreateOrder = () => {
+    // set loader
     if (selectedCompany == "") {
       toast.warn("Please Select Company Name", {
         position: "top-center",
@@ -174,17 +175,6 @@ const CreateOrder = () => {
         progress: undefined,
         theme: "dark",
       });
-    } else if (image == null) {
-      toast.warn("Please Select Attachment Image", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
     } else if (filter.length == 0) {
       toast.warn("Please Select Order Items", {
         position: "top-center",
@@ -197,6 +187,7 @@ const CreateOrder = () => {
         theme: "dark",
       });
     } else {
+      setLoader(true);
       // all item set
       const item = filter?.map((itm) => {
         const info = {
@@ -246,10 +237,12 @@ const CreateOrder = () => {
               updateData(i, AllData1[i]["qty"]);
               // window.location.reload();
             }
+            navigate("/orders");
             // console.log(AllData1);
+            setLoader(false);
             toast.success("Order Create", {
               position: "top-center",
-              autoClose: 1000,
+              autoClose: 1000, 
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -292,6 +285,7 @@ const CreateOrder = () => {
         })
         .catch((error) => {
           console.error("Error:", error);
+          setLoader(false);
         });
 
       // console.log("success");
@@ -440,6 +434,10 @@ const CreateOrder = () => {
   //   // );
   // };
   // console.log("image", filter);
+
+  if (loader) {
+    return <MainLoader />;
+  }
 
   if (!order === "" || !change == "") {
     return (
