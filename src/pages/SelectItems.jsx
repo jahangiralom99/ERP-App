@@ -115,7 +115,7 @@ const SelectItems = ({
   const handleCategoryClick = (name) => {
     // console.log(name);
     setActiveCategory(name);
-    const filterData = Object.values(AllData1)?.filter(
+    const filterData = Object?.values(AllData1)?.filter(
       (data) => data.item_group == name
     );
     setItemData1(filterData);
@@ -290,7 +290,7 @@ const SelectItems = ({
       <div className="flex flex-col gap-[2px]">
         {itemData1.length == 0 ? (
           <div>
-            {Object.values(AllData1).map((item, idx) => {
+            {Object?.values(AllData1).map((item, idx) => {
               return (
                 <div key={idx} className="bg-white p-3">
                   <div className="flex justify-between">
@@ -342,7 +342,7 @@ const SelectItems = ({
                         <p>{item?.qty}</p>{" "}
                         <FaPlus
                           className="cursor-pointer text-green-500 text-xl"
-                          onClick={(e) => handlePlus(item?.name, e)}
+                          onClick={() => handlePlus(item?.name)}
                         />
                       </div>
                       <p>{item?.qty * item?.valuation_rate}</p>

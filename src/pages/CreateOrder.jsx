@@ -242,7 +242,7 @@ const CreateOrder = () => {
             setLoader(false);
             toast.success("Order Create", {
               position: "top-center",
-              autoClose: 1000, 
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -343,30 +343,20 @@ const CreateOrder = () => {
   };
 
   // handle minus btn for modal
+  // handle minus btn for modal
   const handleMinus = (itemName) => {
-    setQuantities((prevQuantities) => {
-      const newQty = Math.max((prevQuantities[itemName] || 0) - 1, 0);
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [itemName]: Math.max((prevQuantities[itemName] || 0) - 1, 0),
+    }));
 
-      // Update qty in AllData1 immutably
-      AllData1[itemName] = {
-        ...AllData1[itemName],
-        qty: newQty, // Set the new qty
-      };
-
-      // Optionally call updateData if needed to handle external syncs
-      updateData(itemName, newQty);
-
-      return {
-        ...prevQuantities,
-        [itemName]: newQty,
-      };
-    });
+    AllData1[itemName]["qty"] = Math.max(AllData1[itemName]["qty"] - 1, 0);
+    updateData(itemName, AllData1[itemName]["qty"]);
   };
 
-  // input field vale
   // Input field handler for manual changes
   const handleInputChange = (itemName, event) => {
-    const newQty = parseInt(event.target.value) || 0; // Parse the input value or default to 0 if invalid
+    const newQty = parseInt(event.target.value) || 0; 
 
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
