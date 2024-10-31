@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   clearStoredCart,
+  clearStoredCart1,
   fetchURL,
   getStoredCart,
 } from "../utilities/function";
@@ -38,6 +39,9 @@ const LogoutModal = ({ setOpen8 }) => {
           clearStoredCart("login-info");
           clearStoredCart("order-info");
           clearStoredCart("item-all-data");
+          clearStoredCart1("checkInTime");
+          clearStoredCart1("checkOutTime");
+          clearStoredCart1("isCheckedIn");
           navigate("/login");
           window.location.reload();
           toast.success("Logout successfully", {

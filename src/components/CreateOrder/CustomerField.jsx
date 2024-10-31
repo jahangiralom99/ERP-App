@@ -85,7 +85,7 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
         {open3 && (
           <div
             onClick={(event) => event.stopPropagation()}
-            className="fixed border border-gray-300 top-[260px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] h-[300px] overflow-hidden p-4 shadow"
+            className="fixed border border-gray-300 top-[321px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] h-[300px] overflow-hidden p-4 shadow"
           >
             <div>
               <div className="flex justify-center gap-5">
@@ -130,7 +130,7 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
             <hr className="my-3" />
             {/* All Customer show  */}
             {searchQuery == "" ? (
-              <div className="flex h-full flex-col gap-4 overflow-y-scroll">
+              <div className="flex h-full flex-col gap-4 overflow-y-scroll pb-28">
                 {customer?.data?.map((item) => {
                   return (
                     <div
@@ -154,9 +154,9 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
               </div>
             ) : (
               // search query show
-              <div className="flex h-full flex-col gap-4 overflow-y-scroll">
+              <div className="h-full overflow-y-scroll">
                 {!searchResult?.data?.length == 0 ? (
-                  <div>
+                  <div className="flex flex-col gap-4 pb-28">
                     {searchResult?.data?.map((item) => {
                       return (
                         <div

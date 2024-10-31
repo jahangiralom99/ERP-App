@@ -8,6 +8,9 @@ import { data } from "autoprefixer";
 import CommonButtonClose from "./Button/CommonButtonClose";
 import CommonButtonClear from "./Button/CommonButtonClear";
 import MainLoader from "./Shared/MainLoader";
+import { toast } from "react-toastify";
+import CustomerField from "./CreateOrder/CustomerField";
+import CompanyField from "./CreateOrder/CompanyField";
 
 const OrderFilterField = ({
   setOpen,
@@ -140,13 +143,28 @@ const OrderFilterField = ({
 
   // handle Apply for Filter by Customer name and  date
   const handleFilter = () => {
-    fetchData();
-    setTimeout(() => {
-      setOpen(!open);
-    }, 2000);
+    if (selectedCustomer == "") {
+      toast.warn("Please Select Customer Name", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      fetchData();
+      setTimeout(() => {
+        setOpen(!open);
+      }, 2000);
+    }
   };
 
+  // if clear data load full data and clear Customer
   const clear2 = () => {
+    setData(data);
     setSelectedCustomer("");
   };
 
@@ -181,8 +199,10 @@ const OrderFilterField = ({
         {/* input field */}
 
         <div className="flex flex-col gap-3">
-          {/* Select customer */}
+          {/* company Name */}
+          <CompanyField />
 
+          {/* Select customer */}
           <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
             <legend className="ml-3 px-[5px] text-xs text-gray-500">
               Select Customer
@@ -257,7 +277,7 @@ const OrderFilterField = ({
                   <hr className="my-3" />
                   {/* All Customer show  */}
                   {searchQuery == "" ? (
-                    <div className="flex h-full flex-col gap-4 overflow-y-scroll">
+                    <div className="flex h-full flex-col gap-4 overflow-y-scroll pb-28">
                       {customer?.data?.map((item) => {
                         return (
                           <div
@@ -265,7 +285,7 @@ const OrderFilterField = ({
                               setSelectedCustomer(item.name);
                               setOpen3(!open3);
                             }}
-                            className="flex gap-3 text-sm"
+                            className="flex gap-3 text-sm "
                           >
                             <input
                               type="radio"
@@ -281,9 +301,9 @@ const OrderFilterField = ({
                     </div>
                   ) : (
                     // search query show
-                    <div className="flex h-full flex-col gap-4 overflow-y-scroll">
+                    <div className="flex h-full flex-col gap-4">
                       {!searchResult?.data?.length == 0 ? (
-                        <div>
+                        <div className="flex h-full flex-col overflow-y-scroll gap-4 pb-28">
                           {searchResult?.data?.map((item) => {
                             return (
                               <div
@@ -317,6 +337,7 @@ const OrderFilterField = ({
               )}
             </div>
           </fieldset>
+
           {/* date */}
           <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
             <legend className="ml-3 px-[5px] text-xs text-gray-500">

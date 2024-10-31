@@ -92,7 +92,7 @@ const CostCenter = ({
         {open2 && (
           <div
             onClick={(event) => event.stopPropagation()}
-            className="fixed border border-gray-300 top-[195px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] p-4 shadow"
+            className="fixed border border-gray-300 top-[258px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] p-4 shadow"
           >
             <div>
               <div className="flex justify-center gap-5">
@@ -139,7 +139,7 @@ const CostCenter = ({
             <hr className="my-3" />
             {/* All item show data  */}
             {searchQuery == "" ? (
-              <div className="flex flex-col gap-2 text-sm">
+              <div className="flex flex-col gap-4 text-sm">
                 {costCenter?.map((item) => {
                   return (
                     <div
@@ -162,10 +162,10 @@ const CostCenter = ({
                 })}
               </div>
             ) : (
-              <div className="flex flex-col gap-2 text-sm">
+              <div className=" text-sm">
                 {/* search query for  */}
                 {!searchResult?.length == 0 ? (
-                  <div>
+                  <div className="flex flex-col gap-4">
                     {searchResult?.map((item) => {
                       return (
                         <div

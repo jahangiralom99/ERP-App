@@ -230,6 +230,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
               progress: undefined,
               theme: "dark",
             });
+            setOpen5(false)
             SetUpdate(false);
           }
         })

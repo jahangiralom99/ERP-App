@@ -59,6 +59,9 @@ const getStoredCart = (store) => {
 const clearStoredCart = (store) => {
   localStorage.removeItem(`${window.location.hostname}-${store}`);
 };
+const clearStoredCart1 = (store) => {
+  localStorage.removeItem(`${store}`);
+};
 
 const removeItemFromCart = (store, itemId) => {
   let cart = getStoredCart(store);
@@ -261,5 +264,6 @@ export {
   updateDataOrder,
   clearStoredCart,
   UploadAttachmentFile,
+  clearStoredCart1
   // addToProceed2
 };

@@ -7,7 +7,12 @@ import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
-import { addToProceed, fetchURL, getStoredCart, updateData } from "../utilities/function";
+import {
+  addToProceed,
+  fetchURL,
+  getStoredCart,
+  updateData,
+} from "../utilities/function";
 import MainLoader from "../components/Shared/MainLoader";
 import OrderFilterField from "../components/OrderFilterField";
 import CommonBackButton from "../components/Button/CommonBackButton";
@@ -36,6 +41,7 @@ const Orders = () => {
     setAllData(AllData1);
   }, [loading]);
 
+  // fetch main data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,7 +59,14 @@ const Orders = () => {
           throw new Error(`Error: ${response.status}`);
         }
         const result = await response.json();
-        setData(result?.data);
+
+        // Sort data by 'creation' date in descending order (most recent first)
+        const sortedData = result?.data?.sort(
+          (a, b) => new Date(b.creation) - new Date(a.creation)
+        );
+
+        setData(sortedData);
+        // console.log(sortedData);
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -64,15 +77,15 @@ const Orders = () => {
     };
 
     fetchData();
-  }, [url]);
+  }, [url, selectedCustomer]);
 
-  // sfdgdfgdgf
+  // item data quantities 0
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
           `${fetchURL}/getall?erp_url=${url}&doctype_name=Item`
-        ); 
+        );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
@@ -144,9 +157,7 @@ const Orders = () => {
           <CommonBackButton value="Back" />
         </Link>
 
-        <div
-          className="bg-[#FF0000] border border-black p-[4px] rounded-lg font-medium text-sm text-white flex justify-center items-center"
-        >
+        <div className="bg-[#FF0000] border border-black p-[4px] rounded-lg font-medium text-sm text-white flex justify-center items-center">
           <BsFilterLeft
             onClick={() => setOpen(!open)}
             className="text-2xl text-white cursor-pointer"

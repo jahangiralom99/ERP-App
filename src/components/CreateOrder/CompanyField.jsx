@@ -83,7 +83,7 @@ const CompanyField = ({
         {open1 && (
           <div
             onClick={(event) => event.stopPropagation()}
-            className="fixed border border-gray-300 top-[140px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] p-4 shadow"
+            className="fixed border border-gray-300 top-[195px] left-1/2 -translate-x-1/2 px-3 bg-white rounded-box z-[1] w-[350px] p-4 shadow"
           >
             <div>
               <div className="flex justify-center gap-5">
@@ -127,7 +127,7 @@ const CompanyField = ({
 
             <hr className="my-3" />
             {searchQuery == "" ? (
-              <div className="flex flex-col gap-3 text-sm">
+              <div className="flex flex-col gap-4 text-sm">
                 {company?.data?.map((item) => {
                   return (
                     <div
@@ -152,10 +152,10 @@ const CompanyField = ({
                 })}
               </div>
             ) : (
-              <div className="flex flex-col gap-3 text-sm">
+              <div className="text-sm overflow-x-scroll">
                 {/* validation for search result   */}
                 {!searchResult?.data?.length == 0 ? (
-                  <div>
+                  <div className="flex flex-col gap-3">
                     {searchResult?.data?.map((item) => {
                       return (
                         <div
