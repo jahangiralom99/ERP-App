@@ -132,10 +132,15 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
 
   const mainArray = [...filter, ...quantity];
 
+
+  const rest = mainArray?.filter(item => item?.qty > 0)
+
+  // console.log(rest);
+
   // console.log(mainArray);
 
   //   map for update products
-  const items2 = mainArray?.map((item) => {
+  const items2 = rest?.map((item) => {
     // console.log(item.qty);
     const order = {
       item_code: item?.item_code,
