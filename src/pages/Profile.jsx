@@ -15,6 +15,7 @@ import ChangePassword from "../components/ChangePassword";
 import LogoutModal from "../components/LogoutModal";
 import { fetchURL, getStoredCart } from "../utilities/function";
 import MainLoader from "../components/Shared/MainLoader";
+import CommonBackButton from "../components/Button/CommonBackButton";
 
 const Profile = () => {
   const [checked, setChecked] = useState(false);
@@ -72,14 +73,14 @@ const Profile = () => {
   console.log(user);
 
   return (
-    <div className="bg-gray-200  text-black text-sm pb-[60px] ">
+    <div className="bg-gray-200  text-black text-sm pb-[60px] mt-14">
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 ">
         <div className="flex items-center gap-4">
           <Link to="/">
-            <IoMdArrowBack className="text-lg text-blue-600" />
+            <CommonBackButton className="py-1" value="Back" />
           </Link>
-          <p className=" font-medium">My Profile</p>
+          {/* <p className=" font-medium">My Profile</p> */}
         </div>
         <div>{/* <IoIosSearch className="text-xl text-blue-600" /> */}</div>
       </div>
@@ -90,8 +91,8 @@ const Profile = () => {
         <div className="flex justify-evenly items-center gap-4 ">
           <img
             className="w-16 h-16 rounded-full"
-            src={url + user.image || avatar}
-            alt=""
+            src={url + data?.user_image || avatar}
+            alt="user-image"
           />
           <div>
             <p className="font-bold text-2xl">

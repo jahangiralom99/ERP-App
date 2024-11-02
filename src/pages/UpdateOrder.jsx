@@ -16,7 +16,7 @@ import {
   RiQrScan2Line,
 } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -55,6 +55,8 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
   const [data1, setData1] = useState("");
   const [deviceId, setDeviceId] = useState(null);
   const [devices, setDevices] = useState([]);
+  // navigate
+  const navigate = useNavigate();
 
   const [open4, setOpen4] = useState(false);
   // image
@@ -140,14 +142,13 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
   const items2 = quantity?.map((item) => {
     // console.log(item.qty);
     const order = {
-      item_code : item?.item_code,
+      item_code: item?.item_code,
       item_name: item?.item_name,
       delivery_date: formattedDate,
       qty: item?.qty,
     };
     return order;
   });
-
 
   // {
   //   "erp_url": "https://ecommerce.ionicerp.xyz",
@@ -167,7 +168,6 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
   //     ]
   //   }
   // }
-
 
   // body for update sales orders
   const bodyInfo = {
@@ -230,7 +230,8 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
               progress: undefined,
               theme: "dark",
             });
-            setOpen5(false)
+            navigate("/orders");
+            setOpen5(false);
             SetUpdate(false);
           }
         })
@@ -269,25 +270,15 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     updateData(itemName, AllData1[itemName]["qty"]);
   };
 
-  // handle minus btn for modal
+  // handle minus btn for update
   const handleMinus = (itemName) => {
-    setQuantities((prevQuantities) => {
-      const newQty = Math.max((prevQuantities[itemName] || 0) - 1, 0);
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [itemName]: Math.max((prevQuantities[itemName] || 0) - 1, 0),
+    }));
 
-      // Update qty in AllData1 immutably
-      AllData1[itemName] = {
-        ...AllData1[itemName],
-        qty: newQty, // Set the new qty
-      };
-
-      // Optionally call updateData if needed to handle external syncs
-      updateData(itemName, newQty);
-
-      return {
-        ...prevQuantities,
-        [itemName]: newQty,
-      };
-    });
+    AllData1[itemName]["qty"] = Math.max(AllData1[itemName]["qty"] - 1, 0);
+    updateData(itemName, AllData1[itemName]["qty"]);
   };
 
   //   console.log(formattedDate);

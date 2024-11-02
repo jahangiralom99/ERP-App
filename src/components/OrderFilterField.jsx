@@ -200,7 +200,7 @@ const OrderFilterField = ({
 
         <div className="flex flex-col gap-3">
           {/* company Name */}
-          <CompanyField />
+          {/* <CompanyField /> */}
 
           {/* Select customer */}
           <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">

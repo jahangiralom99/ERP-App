@@ -19,7 +19,6 @@ const addToProceed = (newItem, store) => {
   return true;
 };
 
-
 // const addToProceed2 = (newItem, store, status) => {
 //   // Set a boolean property based on the status argument
 //   newItem.isActive = status; // `status` should be true or false
@@ -59,6 +58,7 @@ const getStoredCart = (store) => {
 const clearStoredCart = (store) => {
   localStorage.removeItem(`${window.location.hostname}-${store}`);
 };
+
 const clearStoredCart1 = (store) => {
   localStorage.removeItem(`${store}`);
 };
@@ -264,6 +264,6 @@ export {
   updateDataOrder,
   clearStoredCart,
   UploadAttachmentFile,
-  clearStoredCart1
+  clearStoredCart1,
   // addToProceed2
 };

@@ -21,6 +21,8 @@ const OdrerDetails = () => {
   const [loading, setLoading] = useState(false);
   // const [loading1, setLoading1] = useState(true)
   const { url } = getStoredCart("login-info");
+  // comments
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -41,11 +43,11 @@ const OdrerDetails = () => {
         }
         const result = await response.json();
         const filter = result?.data?.find((item) => item.name == name);
-        console.log("Filter", filter);
+        // console.log("Filter", filter);
         setData(filter);
         setLoading(false);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -117,6 +119,16 @@ const OdrerDetails = () => {
     return acc + item.amount * item.qty;
   }, 0);
 
+  // comments
+  const handleComments = () => {
+    if (comment == "") {
+      alert("Please enter a comment");
+    } else {
+      console.log("fdgfghterhehythyttyytytyt");
+      setComment("");
+    }
+  };
+
   if (loading) {
     return <MainLoader />;
   }
@@ -136,7 +148,10 @@ const OdrerDetails = () => {
             </div>
             <p className=" font-medium">Order Details</p> */}
           </div>
-          <div className="cursor-pointer bg-[#FF0000] p-[5px] border border-black rounded" onClick={() => setOpen5(!open5)}>
+          <div
+            className="cursor-pointer bg-[#FF0000] p-[5px] border border-black rounded"
+            onClick={() => setOpen5(!open5)}
+          >
             <TfiPencil className="text-lg text-white" />
           </div>
           {open5 && (
@@ -260,8 +275,15 @@ const OdrerDetails = () => {
               type="text"
               className="w-full p-2 border-none focus:outline-none"
               placeholder="Comment here..."
+              value={comment || ""}
+              onChange={(e) => setComment(e.target.value)}
             />
-            <button className=" text-[#FF0000] font-medium p-2">Send</button>
+            <button
+              onClick={handleComments}
+              className=" text-[#FF0000] font-medium p-2"
+            >
+              Send
+            </button>
           </div>
         </div>
       </div>

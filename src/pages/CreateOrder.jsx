@@ -342,7 +342,7 @@ const CreateOrder = () => {
     updateData(itemName, AllData1[itemName]["qty"]);
   };
 
-  // handle minus btn for modal
+
   // handle minus btn for modal
   const handleMinus = (itemName) => {
     setQuantities((prevQuantities) => ({
