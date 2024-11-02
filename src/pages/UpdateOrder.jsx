@@ -88,11 +88,13 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     });
   }, []);
 
+  // all data show for local storage
   useEffect(() => {
     const AllData1 = getStoredCart("item-all-data");
     setAllData(AllData1);
   }, []);
 
+  // file change button
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -100,6 +102,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     }
   };
 
+  // file remove
   const removeImage = () => {
     setImage(null);
   };
@@ -126,20 +129,13 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
 
   const m = getStoredCart("item-all-data");
   const filter = Object.values(m).filter((item) => item["qty"] > 0);
-  // console.log(filter);
 
-  //   {
-  //     "item_code": "Item Code",
-  //     "item_name": "Item Name",
-  //     "delivery_date": "2024-09-05",
-  //     "qty": Quantity,
-  //     "rate": 1 Pes Rate,
-  //     "amount": Total Amount,
-  //     "uom": "Item UOM"
-  // }
+  const mainArray = [...filter, ...quantity];
+
+  // console.log(mainArray);
 
   //   map for update products
-  const items2 = quantity?.map((item) => {
+  const items2 = mainArray?.map((item) => {
     // console.log(item.qty);
     const order = {
       item_code: item?.item_code,
@@ -150,25 +146,6 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     return order;
   });
 
-  // {
-  //   "erp_url": "https://ecommerce.ionicerp.xyz",
-  //   "doctype_name": "Sales Order",
-  //   "document_name" : "2024-00213",
-  //   "data": {
-  //     "customer": "hossan",
-  //     "transaction_date": "2024-09-05",
-  //     "custom_delivery_type": "",
-  //     "items": [
-  //       {
-  //         "item_code": "102",
-  //         "item_name": "Deshi Peyaj (Local Onion)",
-  //         "delivery_date": "2024-10-04",
-  //         "qty": 5
-  //       }
-  //     ]
-  //   }
-  // }
-
   // body for update sales orders
   const bodyInfo = {
     erp_url: url,
@@ -176,14 +153,12 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     document_name: name,
     data: {
       customer: data?.customer,
-      transaction_date: date,
       custom_delivery_type: "",
       items: items2,
     },
   };
 
-  // console.log("data",data, name);
-  console.log("body", bodyInfo);
+  // const operator = 
 
   // handle update
   const handleUpdateOrder = () => {
@@ -200,8 +175,6 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
       });
     } else {
       SetUpdate(true);
-      // console.log(name);
-
       // update sales order api
       fetch(`${fetchURL}/put_data`, {
         method: "PUT",
@@ -254,10 +227,6 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     // console.log("bofy info", bodyInfo);
   };
 
-  // const handleUpdateOrder = () => {
-  //     console.log("update ");
-  // }
-
   // handle plus btn for modal
   const handlePlus = (itemName) => {
     // console.log(i);
@@ -281,7 +250,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     updateData(itemName, AllData1[itemName]["qty"]);
   };
 
-  //   console.log(formattedDate);
+  // loader functions
   if (update) {
     return <MainLoader />;
   }

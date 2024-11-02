@@ -33,13 +33,15 @@ const Profile = () => {
   const [loader, setLoader] = useState(false);
 
   const onSubmit = (data) => {
-    console.log(data);
-    console.log(checked);
+    // console.log(data);
+    // console.log(checked);
   };
 
   const { data, url } = getStoredCart("login-info");
   // email decode URL
   const email = decodeURIComponent(data?.user_id);
+
+  console.log(data);
 
   useEffect(() => {
     setLoader(true);
@@ -70,7 +72,7 @@ const Profile = () => {
     return <MainLoader />;
   }
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <div className="bg-gray-200  text-black text-sm pb-[60px] mt-14">
@@ -91,7 +93,7 @@ const Profile = () => {
         <div className="flex justify-evenly items-center gap-4 ">
           <img
             className="w-16 h-16 rounded-full"
-            src={url + data?.user_image || avatar}
+            src={data?.user_image ? url + data?.user_image : avatar}
             alt="user-image"
           />
           <div>
@@ -165,7 +167,7 @@ const Profile = () => {
 
       {/* lock screen */}
 
-      <div className=" m-5 rounded-2xl bg-white  ">
+      {/* <div className=" m-5 rounded-2xl bg-white  ">
         <div className="p-3 flex justify-between">
           <p className="flex items-center gap-3 font-bold text-zinc-500">
             <CiLock className="text-xl" /> Enable Lock Screen{" "}
@@ -182,7 +184,7 @@ const Profile = () => {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* password */}
 
@@ -196,7 +198,7 @@ const Profile = () => {
           </p>
         </div>
         <hr />
-        <div className="p-3 ">
+        {/* <div className="p-3 ">
           <p className="flex justify-between items-center font-bold">
             <div className="flex items-center gap-2 ">
               <IoLanguageOutline className="text-xl" /> Select Language
@@ -204,8 +206,8 @@ const Profile = () => {
             <MdKeyboardArrowRight className="text-xl text-blue-600" />
           </p>
         </div>
-        <hr />
-        <div className="p-3 ">
+        <hr /> */}
+        {/* <div className="p-3 ">
           <p className="flex justify-between items-center font-bold">
             <div className="flex items-center gap-2 ">
               <IoColorPaletteOutline className="text-xl" />
@@ -214,13 +216,13 @@ const Profile = () => {
 
             <MdKeyboardArrowRight className="text-xl text-blue-600" />
           </p>
-        </div>
+        </div> */}
       </div>
       {open4 && <ChangePassword setOpen4={setOpen4} />}
 
       {/* Documents */}
 
-      <div className=" m-5 rounded-2xl bg-white  ">
+      {/* <div className=" m-5 rounded-2xl bg-white  ">
         <div className="p-3 flex justify-between">
           <p className="flex items-center gap-3 font-bold text-zinc-500">
             <GrDocumentText className="text-xl" /> Documents{" "}
@@ -228,7 +230,7 @@ const Profile = () => {
 
           <MdKeyboardArrowRight className="text-xl text-blue-600" />
         </div>
-      </div>
+      </div> */}
       {/* Logout */}
 
       <div
@@ -245,7 +247,7 @@ const Profile = () => {
       </div>
       {open8 && <LogoutModal setOpen8={setOpen8} />}
 
-      <div className="mx-6 text-blue-600 font-bold">v1.0.24-10-01</div>
+      <div className="mx-6 text-blue-600 font-bold">v1.0.0 02-11-2024</div>
     </div>
   );
 };

@@ -13,7 +13,6 @@ import pittyexpenses from "../assets/pittyexpenses.png";
 // import issue from "../assets/issue.png";
 // import Quatation from "../assets/Quatation.png";
 import task from "../assets/task.png";
-import { CiCirclePlus } from "react-icons/ci";
 import { RxCrossCircled } from "react-icons/rx";
 
 const ButtonFooter = ({ setOpen }) => {
@@ -41,7 +40,7 @@ const ButtonFooter = ({ setOpen }) => {
           <p className="text-black font-bold  ">Petty Expense</p>
         </button>
 
-        <Link to="/newpaymententry">
+        <Link>
           <button
             onClick={() => setOpen(false)}
             className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
@@ -74,7 +73,7 @@ const ButtonFooter = ({ setOpen }) => {
           <p className="text-black font-bold  ">Create Task</p>
         </button>
 
-        <Link to="/createvisit">
+        <Link>
           <button
             onClick={() => setOpen(false)}
             className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
@@ -125,7 +124,7 @@ const ButtonFooter = ({ setOpen }) => {
           <p className="text-black font-bold  ">Apply Leave</p>
         </button>
 
-        <Link to="/applyexpense">
+        <div>
           <button
             onClick={() => setOpen(false)}
             className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
@@ -141,7 +140,7 @@ const ButtonFooter = ({ setOpen }) => {
             />
             <p className="text-black font-bold  ">Apply Expense</p>
           </button>
-        </Link>
+        </div>
       </div>
     </>
   );

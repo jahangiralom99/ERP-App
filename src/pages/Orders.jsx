@@ -62,7 +62,7 @@ const Orders = () => {
 
         // Sort data by 'creation' date in descending order (most recent first)
         const sortedData = result?.data?.sort(
-          (a, b) => new Date(b.creation) - new Date(a.creation)
+          (a, b) => new Date(b.modified) - new Date(a.modified)
         );
 
         setData(sortedData);
@@ -214,7 +214,7 @@ const Orders = () => {
                       {item?.naming_series.slice(0, 8)} {item?.name}
                     </p>
                     <p className="text-xs text-zinc-500">
-                      {item?.creation?.slice(0, 10)}
+                      {item?.modified?.slice(0, 10)}
                     </p>
                   </div>
                   <div>

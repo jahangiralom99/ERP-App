@@ -116,32 +116,25 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-gray-200 h-screen">
-      <div className="flex justify-center items-center gap-5 px-5 h-1/4">
-        <div className="flex justify-center items-center gap-2  rounded-2xl p-2 bg-opacity-60">
-          <img className="w-[40px]" src={erp} alt="" />
-          <div>
-            <p className="text-2xl">
-              <span className="font-bold">IONIC</span>{" "}
-              <span className="font-">ERP</span>
-            </p>
-            <p className="pt-1">
-              <span className="font-medium "> Total Solution</span>
-            </p>
-          </div>
-        </div>
-        {/* <div className="bg-white rounded-lg p-2 text-2xl text-[#FF0000] ">
-          <IoIosGlobe />
-        </div> */}
-      </div>
+    <div className="bg-gray-200 h-screen pt-16 flex items-center justify-center">
+     
       <div className="rounded-3xl pt-[3px] pb-[2px] flex flex-col relative px-8">
-        <div className="bg-white text-center rounded-3xl h-full pt-5">
+        <div className="bg-white rounded-3xl h-full pt-5">
+          {/* <div className="flex justify-center items-center gap-4 rounded-2xl p-2 bg-opacity-60">
+            <img className="w-[40px]" src={erp} alt="" />
+            <div className="flex flex-col gap-2 ">
+              <p className="text-[30px]">
+                <span className="font-bold">IONIC ERP</span>{" "}
+              </p>
+                <p className="font-medium">Total Business Solution</p>
+            </div>
+          </div> */}
           <div className="text-center">
-            <img className="w-[120px] inline" src={loginLogo} alt="" />
+            <img className="w-[190px] inline" src={loginLogo} alt="" />
           </div>
-          <p className="text-xl font-semibold text-black px-5 pt-3">
+          {/* <p className="text-xl font-semibold text-black px-5 pt-3">
             Login To IONIC ERP
-          </p>
+          </p> */}
           {/* <p className="text-[13px] font-semibold text-gray-400 pl-5 mt-3">
             Enter Your IONIC ERP Credentials
           </p> */}
@@ -215,7 +208,7 @@ const Login = () => {
 
               <div className="flex justify-between items-center gap-2">
                 <p>Remember Me</p>
-                <Switch
+                <Switch className="" height={28} width={55} 
                   onColor={"#FF0000"}
                   onChange={setChecked}
                   uncheckedIcon={false}
@@ -225,11 +218,11 @@ const Login = () => {
               <input
                 type="submit"
                 value="Login"
-                className="border-[1px] w-[180px] mx-auto font-bold border-black bg-gradient-to-r from-black to-[#FF0000] text-white p-2 rounded-xl cursor-pointer"
+                className="border-[1px] w-[220px] mx-auto font-bold border-black bg-gradient-to-r from-black to-[#FF0000] text-white p-2 rounded-xl cursor-pointer"
               />
             </form>
 
-            <div className="mb-5">
+            <div className="mb-5 flex flex-col items-center justify-center gap-5 ">
               {/* <hr className="w-[70%]" /> */}
               {/* <p className="flex items-center text-center gap-2 text-[12px] pt-1 mt-2 mb-5">
                 Copyright <FaRegCopyright />
@@ -239,7 +232,7 @@ const Login = () => {
                 Copyright © 2009-2023 IONIC Corporation.
               </p>
               <a
-                className="text-[12px] hover:underline hover:text-[#FF0000]"
+                className="text-[12px] hover:underline hover:text-[#FF0000] text-center"
                 href="https://ioniccorporation.com/"
               >
                 Development By IONIC Corporation

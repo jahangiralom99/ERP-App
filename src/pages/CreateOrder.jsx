@@ -35,10 +35,7 @@ const CreateOrder = () => {
   const navigate = useNavigate();
   const date = formatDate();
   const [open4, setOpen4] = useState(false);
-  const [total, setTotal] = useState(0);
-
-  // dfd
-  // const [AllData2, setAllData2] = useState({});
+  const { url } = getStoredCart("login-info");
   // data
   const [AllData1, setAllData] = useState({});
   // show data
@@ -69,17 +66,18 @@ const CreateOrder = () => {
   const [image, setImage] = useState(null);
   const [responseMessage, setResponseMessage] = useState("");
 
-  // const [mf, setMf] = useState([]);
 
+  // get data for local storage
   useEffect(() => {
     const AllData1 = getStoredCart("item-all-data");
     setAllData(AllData1);
   }, []);
 
+  // filter data for local storage
   const m = getStoredCart("item-all-data");
   const filter = Object?.values(m)?.filter((item) => item["qty"] > 0);
 
-  // console.log("filterData", filter);
+
   // ALl item deleted from cart
   const handleDeleted = () => {
     if (!filter?.length == 0) {
@@ -115,19 +113,19 @@ const CreateOrder = () => {
     }
   };
 
-  const { url } = getStoredCart("login-info");
-
+ 
+// handle calender options
   const handleCalendarClick = () => {
     setOpen((prev) => !prev);
   };
 
+  // handle file change 
   const handleFileChange = (e) => {
     setResponseMessage("");
     const file = e.target.files[0];
     setImage(file);
   };
 
-  // console.log(image);
   // create order btn
   const handleCreateOrder = () => {
     // set loader
@@ -292,40 +290,12 @@ const CreateOrder = () => {
     }
   };
 
-  // item data for Company name
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `${fetchURL}/getall?erp_url=${url}&doctype_name=Item`
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error(`Error: ${response.status}`);
-  //       }
-  //       const result = await response.json();
-  //       const tem = result?.data;
-  //       // console.log(tem);
-  //       const l = {};
-  //       for (let i = 0; i < tem.length; i++) {
-  //         tem[i]["qty"] = 0;
-  //         l[tem[i].name] = tem[i];
-  //         // console.log(tem[i]);
-  //       }
-  //       addToProceed(l, "item-all-data");
-  //       // window.location.reload();
-  //       // setItemData(result);
-  //     } catch (err) {
-  //       console.log(err.message);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
+  // go back navigate
   const goBack = () => {
     navigate(-1);
   };
 
-  // total sum
+  // total sum of all
   const totalSum = filter.reduce((acc, item) => {
     return acc + item.standard_rate * item.qty;
   }, 0);
@@ -341,7 +311,6 @@ const CreateOrder = () => {
     AllData1[itemName]["qty"]++;
     updateData(itemName, AllData1[itemName]["qty"]);
   };
-
 
   // handle minus btn for modal
   const handleMinus = (itemName) => {
@@ -373,58 +342,8 @@ const CreateOrder = () => {
     updateData(itemName, newQty);
   };
 
-  // handle minus btn for order info
-  // const handlePlusOrder = (itemName) => {
-  //   setCount()
-  //   // console.log(itemName);
-  //   // setQuantities((prevQuantities) => ({
-  //   //   ...prevQuantities,
-  //   //   [itemName]: (prevQuantities[itemName] || 0) + 1,
-  //   // }));
-  //   // console.log(data);
-  //   // for (let i of data) {
-  //   //   // console.log(i);
-  //   //   if (i.item_code === itemName) {
-  //   //     // console.log(i);
-  //   //     i.qty += 1;
-  //   //     updateDataOrder(itemName, i.qty);
-  //   //   }
-  //   // }
-  // };
 
-  // Handle increasing quantity
-  // const handlePlusOrder = (name) => {
-  //   setData((prevItems) =>
-  //     data.map((item) =>
-  //       item.name === name
-  //         ? {
-  //             ...item,
-  //             qty: item.qty + 1, // Increment quantity
-  //             totalPrice: item.price * (item.qty + 1), // Update total price
-  //           }
-  //         : item
-  //     )
-  //   );
-  // };
-
-  // // Handle decreasing quantity for order
-  // const handleMinusOrder = (name) => {
-  //   console.log(name);
-
-  //   // setData((prevItems) =>
-  //   //   prevItems.map((item) =>
-  //   //     item.name === name
-  //   //       ? {
-  //   //           ...item,
-  //   //           qty: Math.max(item.qty - 1, 0), // Decrement quantity but not below 0
-  //   //           totalPrice: item.price * Math.max(item.qty - 1, 0), // Update total price
-  //   //         }
-  //   //       : item
-  //   //   )
-  //   // );
-  // };
-  // console.log("image", filter);
-
+// loader function for loading
   if (loader) {
     return <MainLoader />;
   }
