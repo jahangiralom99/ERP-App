@@ -56,10 +56,11 @@ export const router = createBrowserRouter([
         path: "/markattendence",
         element: <MarkAttendence />,
       },
-      {
-        path: "/expense",
-        element: <Expense />,
-      },
+      // expense
+      // {
+      //   path: "/expense",
+      //   element: <Expense />,
+      // },
       {
         path: "/expenseclaim",
         element: <ExpenseClaim />,

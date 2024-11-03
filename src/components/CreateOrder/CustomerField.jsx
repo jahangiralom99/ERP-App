@@ -37,15 +37,17 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
 
   const clear2 = () => {
     setSelectedCustomer("");
+    setSearchQuery("");
   };
 
   // https://erp-backend-xkze.vercel.app/gets/Company?erp_url=https://ecommerce.ionicerp.xyz&fields=["*"]&filters={"company_name": "IONIC Corporation"}&limit_page_length=9999
+
+  // api call
 
   // search for customers
   const handleSearch = async () => {
     const query = encodeURIComponent(`[["name", "like", "%${searchQuery}%"]]`);
     const url1 = `${fetchURL}/gets/Customer?erp_url=${url}&filters=${query}&fields=["*"]`;
-
     try {
       const groupsData = await fetch(url1);
       const data = await groupsData.json();
@@ -54,6 +56,12 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
       console.error("Error fetching data:", error);
     }
   };
+
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch();
+    }
+  }, [searchQuery]);
 
   // console.log(searchQuery);
 
@@ -65,7 +73,10 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
         Select Customer
       </legend>
       <div
-        onClick={() => setOpen3(!open3)}
+        onClick={() => {
+          setOpen3(!open3);
+          setSearchQuery("");
+        }}
         className=" flex  gap-4 items-center justify-between w-full pl-4 pb-2"
       >
         <div className="flex items-center gap-4">
@@ -104,7 +115,7 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
             {/* search */}
 
             <label
-              onChange={handleSearch}
+              // onChange={handleSearch}
               className="input input-bordered h-10 mt-3 flex items-center gap-2"
             >
               <svg
@@ -120,6 +131,7 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
                 />
               </svg>
               <input
+                value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 type="text"
                 className="grow"

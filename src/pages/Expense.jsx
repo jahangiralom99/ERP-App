@@ -23,49 +23,46 @@ const Expense = () => {
   const [month, setMonth] = useState("Select Month");
   const [startDate, setStartDate] = useState(new Date());
 
+  // for data fetching
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { url } = getStoredCart("login-info");
 
-    // for data fetching
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const { url } = getStoredCart("login-info");
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Journal Entry`,
-            {
-              method: "GET",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://erp-backend-xkze.vercel.app/getall?erp_url=${url}&doctype_name=Expense Claim`,
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
           }
-          const result = await response.json();
-          setData(result?.data);
-          setLoading(false);
-        } catch (err) {
-          console.log(err);
-          setError(err.message);
-        } finally {
-          setLoading(false);
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
         }
-      };
-  
-      fetchData();
-    }, [url]);
-  
-    if (loading) {
-      return <MainLoader />;
-    }
-  
-    console.log(data);
+        const result = await response.json();
+        setData(result?.data);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchData();
+  }, [url]);
 
+  if (loading) {
+    return <MainLoader />;
+  }
+
+  // console.log(data);
 
   const handleCalendarClick = () => {
     setOpen4((prev) => !prev);
@@ -74,7 +71,7 @@ const Expense = () => {
   return (
     <div className="text-black text-sm mt-28">
       <SubHeading
-        title="My Expenses"
+        title="Back"
         icon={<BsFilterLeft onClick={() => setOpen(!open)} />}
       />
 
@@ -96,7 +93,7 @@ const Expense = () => {
           onclick1={open}
         />
       )}
-      {open6 && <PendingExpense />}
+      {open6 && <PendingExpense data={data}  />}
       {open1 && <ExpenseHistory />}
 
       {/* plus button */}

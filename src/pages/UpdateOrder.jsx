@@ -132,8 +132,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
 
   const mainArray = [...filter, ...quantity];
 
-
-  const rest = mainArray?.filter(item => item?.qty > 0)
+  const rest = mainArray?.filter((item) => item?.qty > 0);
 
   // console.log(rest);
 
@@ -163,7 +162,30 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     },
   };
 
-  // const operator = 
+  // deleted items
+  const handleDeleted = () => {
+    if (filter?.length !== 0) {
+      // Create a copy of AllData1 and set all quantities to 0
+      const updatedData = { ...AllData1 };
+      const keyList = Object.keys(m);
+
+      for (let key of keyList) {
+        updatedData[key] = { ...updatedData[key], qty: 0 };
+        updateData(key, updatedData[key]["qty"]);
+      }
+      setAllData(updatedData); 
+      toast.success("All Items Deleted", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true, 
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  };
 
   // handle update
   const handleUpdateOrder = () => {
@@ -508,7 +530,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         <div className="pt-5 text-sm text-black font-medium pb-16">
           <div className="flex justify-between">
             <p className="text-zinc-500">Items*</p>
-            <div>
+            <div onClick={handleDeleted}>
               <CommonButtonClose close="Delete All" />
             </div>
           </div>

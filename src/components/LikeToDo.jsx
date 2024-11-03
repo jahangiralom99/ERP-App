@@ -23,7 +23,7 @@ const LikeToDo = ({ orderLink }) => {
     {
       name: "Orders",
       icon: order,
-      link: orderLink ? orderLink : "/orders", // Dynamic link
+      link: orderLink ? orderLink : "/orders",
     },
     {
       name: "Expense",

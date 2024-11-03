@@ -6,10 +6,10 @@ const ExpenseClaim = ({ setOpen }) => {
   return (
     <div className="fixed top-0 mt-28 w-full bg-gray-200 mb-32 ">
       <SubHeading
-        title="Explain Claim"
+        title="Back"
         icon={
           <Link to="/updateexpense">
-            <TfiPencil />{" "}
+            <TfiPencil />
           </Link>
         }
       />

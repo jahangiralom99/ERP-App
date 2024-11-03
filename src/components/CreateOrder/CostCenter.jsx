@@ -44,8 +44,10 @@ const CostCenter = ({
     fetchData();
   }, [url, selectedCompany]);
 
+  // clear button 
   const clear1 = () => {
     setSelectedCostCenter("");
+    setSearchQuery("");
   };
 
   // search for customers
@@ -66,19 +68,27 @@ const CostCenter = ({
     }
   };
 
+  
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch();
+    }
+  }, [searchQuery]);
+
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
-      <legend className="ml-3 px-[5px] text-xs text-gray-500">
-        Location
-      </legend>
+      <legend className="ml-3 px-[5px] text-xs text-gray-500">Location</legend>
       <div
-        onClick={() => setOpen2(!open2)}
+        onClick={() => {
+          setOpen2(!open2);
+          setSearchQuery("");
+        }}
         className="flex gap-4 items-center justify-between w-full pl-4 pb-2"
       >
         <div className="flex items-center gap-4">
           <FaBuildingColumns className="text-[#FF0000]" />
           <p className=" text-start w-[100px] whitespace-nowrap font-medium cursor-pointer">
-            {selectedCostCenter || "Select  Location"}
+            {selectedCostCenter || "Select Location"}
           </p>
         </div>
         <div className="cursor-pointer">
@@ -113,7 +123,7 @@ const CostCenter = ({
             {/* search */}
 
             <label
-              onChange={handleSearch}
+              // onChange={handleSearch}
               className="input input-bordered h-10 mt-3 flex items-center gap-2"
             >
               <svg
@@ -128,7 +138,7 @@ const CostCenter = ({
                   clipRule="evenodd"
                 />
               </svg>
-              <input
+              <input value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 type="text"
                 className="grow"

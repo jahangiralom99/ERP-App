@@ -22,7 +22,7 @@ const UpdateExpense = () => {
   };
   return (
     <div className=" bg-white pb-12 mt-28 px-4  w-full">
-      <SubHeading title="Update Expense" />
+      <SubHeading title="Back" />
 
       {/* form */}
 

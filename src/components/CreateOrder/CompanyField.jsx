@@ -37,16 +37,16 @@ const CompanyField = ({
     };
 
     fetchData();
-  }, [url]);
+  }, [url]); 
 
   const clear = () => {
     setSelectedCompany("");
+    setSearchQuery("");
   };
 
   const handleSearch = async () => {
     const query = encodeURIComponent(`[["name", "like", "%${searchQuery}%"]]`);
     const url1 = `${fetchURL}/gets/Company?erp_url=${url}&filters=${query}&fields=["*"]`;
-
     try {
       const groupsData = await fetch(url1);
       const data = await groupsData.json();
@@ -56,13 +56,23 @@ const CompanyField = ({
     }
   };
 
+
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch();
+    }
+  }, [searchQuery]);
+
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
       <legend className="ml-3 px-[5px] text-xs text-gray-500">
         Company<sup>*</sup>
       </legend>
       <div
-        onClick={() => setOpen1(!open1)}
+        onClick={() => {
+          setOpen1(!open1);
+          setSearchQuery("");
+        }}
         className="flex gap-4 items-center justify-between w-full pl-4 pb-2"
       >
         <div className="flex items-center gap-4">
@@ -102,7 +112,7 @@ const CompanyField = ({
             {/* search */}
 
             <label
-              onChange={handleSearch}
+              // onChange={handleSearch}
               className="input input-bordered h-10 mt-3 flex items-center gap-2"
             >
               <svg
@@ -117,7 +127,7 @@ const CompanyField = ({
                   clipRule="evenodd"
                 />
               </svg>
-              <input
+              <input value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 type="text"
                 className="grow"
@@ -152,7 +162,7 @@ const CompanyField = ({
                 })}
               </div>
             ) : (
-              <div className="text-sm overflow-x-scroll">
+              <div className="text-sm overflow-y-scroll py-1">
                 {/* validation for search result   */}
                 {!searchResult?.data?.length == 0 ? (
                   <div className="flex flex-col gap-3">

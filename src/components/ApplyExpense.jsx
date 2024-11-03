@@ -33,7 +33,7 @@ const ApplyExpense = ({ setOpen2 }) => {
 
   return (
     <div className=" bg-white pb-60 mt-28 px-4  w-full">
-      <SubHeading title="Apply Expense" />
+      <SubHeading title="Back" />
 
       {/* form */}
 

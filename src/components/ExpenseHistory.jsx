@@ -13,7 +13,7 @@ const ExpenseHistory = () => {
 
         <div className="flex justify-between items-center bg-white p-3 rounded-2xl">
           <p className="font-bold">Expense Claimed (6510.0)</p>
-          <RiArrowDropRightLine className="text-2xl text-blue-600" />
+          <RiArrowDropRightLine className="text-2xl text-[#FF0000]" />
         </div>
 
         {/* details card*/}
@@ -24,7 +24,7 @@ const ExpenseHistory = () => {
               <button className="border rounded-xl px-3 font-bold p-[5px] border-[#FF0000] text-[#FF0000] ">
                 Travel & 2 more
               </button>
-              <button className="border rounded-xl px-3 font-bold p-[5px] text-[#2A6541] ">
+              <button className="border border-[#2A6541] rounded-xl px-3 font-bold p-[5px] text-[#2A6541] ">
                 Approved
               </button>
             </div>
@@ -43,7 +43,7 @@ const ExpenseHistory = () => {
             <button className="border rounded-xl px-3 font-bold p-[5px] border-[#FF0000] text-[#FF0000] ">
               Travel & 2 more
             </button>
-            <button className="border rounded-xl px-3 font-bold p-[5px] text-[#2A6541] ">
+            <button className="border border-[#2A6541] rounded-xl px-3 font-bold p-[5px] text-[#2A6541] ">
               Approved
             </button>
           </div>
