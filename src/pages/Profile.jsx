@@ -72,7 +72,7 @@ const Profile = () => {
     return <MainLoader />;
   }
 
-  // console.log(user);
+  console.log(user);
 
   return (
     <div className="bg-gray-200  text-black text-sm pb-[60px] mt-14">
@@ -97,10 +97,18 @@ const Profile = () => {
             alt="user-image"
           />
           <div>
-            <p className="font-bold text-2xl">
+            <p className="font-bold text-[18px]">
               {decodeURIComponent(data?.full_name)}
             </p>
-            <p className="text-xs text-zinc-500">N/A</p>
+            <p className="text-xs text-zinc-500">
+            <span className="font-bold">Department</span>  {user?.department ? user?.department : "None"}
+            </p>
+            <p className="text-xs text-zinc-500">
+            <span className="font-bold">Designation</span> : {user?.designation ? user?.designation : "None"}
+            </p>
+            <p className="text-xs text-zinc-500">
+             <span className="font-bold">Location</span> : {user?.payroll_cost_center ? user?.payroll_cost_center : "None"}
+            </p>
           </div>
         </div>
       </div>
