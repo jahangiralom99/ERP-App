@@ -44,7 +44,7 @@ const CostCenter = ({
     fetchData();
   }, [url, selectedCompany]);
 
-  // clear button 
+  // clear button
   const clear1 = () => {
     setSelectedCostCenter("");
     setSearchQuery("");
@@ -68,7 +68,6 @@ const CostCenter = ({
     }
   };
 
-  
   useEffect(() => {
     if (searchQuery) {
       handleSearch();
@@ -77,7 +76,9 @@ const CostCenter = ({
 
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
-      <legend className="ml-3 px-[5px] text-xs text-gray-500">Location</legend>
+      <legend className="ml-3 px-[5px] text-xs text-gray-500">
+        Location <span className="text-[#FF0000] text-xl">*</span>
+      </legend>
       <div
         onClick={() => {
           setOpen2(!open2);
@@ -138,7 +139,8 @@ const CostCenter = ({
                   clipRule="evenodd"
                 />
               </svg>
-              <input value={searchQuery || ""}
+              <input
+                value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 type="text"
                 className="grow"

@@ -174,11 +174,19 @@ const OdrerDetails = () => {
         <div className="bg-white rounded-xl p-3 ">
           <div className=" flex justify-between">
             <div>
-              <p className="text-xs text-[#FF0000]">
-                {data?.naming_series?.slice(0, 8)} {data?.name}
+              <p className="text-xs text-[#FF0000] font-bold">
+                Order No : {data?.naming_series?.slice(0, 8)} {data?.name}
+                <p className="text-xs text-zinc-500">
+                 Date :  {data?.creation?.slice(0, 10)}
+                </p>
               </p>
-              <p className="text-xs text-zinc-500">
-                {data?.creation?.slice(0, 10)}
+              <p>
+                <p className="text-xs text-black font-semibold">
+                  Name : {data?.customer_name}
+                </p>
+                <p className="text-xs text-zinc-500 font-bold">
+                  Location : {data?.cost_center}
+                </p>
               </p>
             </div>
             <div>
@@ -190,18 +198,18 @@ const OdrerDetails = () => {
 
           <div className="pt-3 flex gap-2 justify-between flex-wrap ">
             <p>
-              <p className="text-xs text-zinc-500 text-center">
-                Expected Delivery
+              <p className="text-xs text-zinc-500 ">Expected Delivery</p>
+              <p className="text-xs  font-bold">{data?.delivery_date}</p>
+            </p>
+            <p>
+              <p className="text-xs text-zinc-500 ">Created By</p>
+              <p className="text-xs text-center font-bold">
+                {data?.modified_by}
               </p>
-              <p className="text-xs text-center">{data?.delivery_date}</p>
             </p>
             <p>
-              <p className="text-xs text-zinc-500 text-center">Created By</p>
-              <p className="text-xs text-center">John</p>
-            </p>
-            <p>
-              <p className="text-xs text-zinc-500 text-center">Customer Name</p>
-              <p className="text-xs text-center">{data?.customer_name}</p>
+              <p className="text-xs text-zinc-500">Company</p>
+              <p className="text-xs font-bold">{data?.company}</p>
             </p>
           </div>
         </div>
@@ -229,28 +237,28 @@ const OdrerDetails = () => {
         <hr />
 
         <div className="flex justify-between text-sm font-medium">
-          Tax & Discount
+         Total Balance :
         </div>
 
         <hr />
 
         <div>
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <p className="text-sm font-medium pb-1  text-zinc-500">
               Total Tax:
             </p>
             <p className="text-sm font-medium">&#2547; 0.00</p>
-          </div>
+          </div> */}
           <div className="flex justify-between">
             <p className="text-sm font-medium pb-1  text-zinc-500">
               Sub total:
             </p>
             <p className="text-sm font-medium">&#2547; {totalSum}</p>
           </div>
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <p className="text-sm font-medium pb-1  text-zinc-500">Discount:</p>
             <p className="text-sm font-medium">&#2547; 0.00</p>
-          </div>
+          </div> */}
         </div>
 
         <hr />
@@ -267,7 +275,7 @@ const OdrerDetails = () => {
 
       {/* comments */}
 
-      <div className="mx-5 mt-5 flex flex-col gap-3  bg-white rounded-xl p-3">
+      {/* <div className="mx-5 mt-5 flex flex-col gap-3  bg-white rounded-xl p-3">
         <div>
           <p className="text-sm font-medium pb-3">Comments</p>
           <div className="flex items-center border-[1px] border-[#FF0000]  rounded-lg overflow-hidden">
@@ -286,7 +294,7 @@ const OdrerDetails = () => {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

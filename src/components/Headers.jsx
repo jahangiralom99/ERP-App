@@ -9,7 +9,7 @@ const Headers = () => {
   // email decode URL
   // const slic = data?.full_name.split("%");
   // console.log(slic);
-  const email = decodeURIComponent(data?.full_name.slice(0, 10));
+  const email = decodeURIComponent(data?.full_name.slice(0, 12));
 
   // console.log(data);
 
@@ -18,8 +18,8 @@ const Headers = () => {
       <div className="flex justify-between items-center h-14 w-full bg-white px-5 ">
         <Link to="/">
           <p className="flex items-center gap-1">
-            <img className="w-20 h-8" src={logo} alt="" />
-            <p className="font-bold">IONIC ERP</p>
+            <img className="w-28 h-10" src={logo} alt="" />
+            {/* <p className="font-bold">IONIC ERP</p> */}
           </p>
         </Link>
         <div className="flex items-center justify-center gap-4">

@@ -70,7 +70,7 @@ const CustomerField = ({ selectedCustomer, setSelectedCustomer }) => {
   return (
     <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
       <legend className="ml-3 px-[5px] text-xs text-gray-500">
-        Select Customer
+        Select Customer <span className="text-[#FF0000] text-xl">*</span>
       </legend>
       <div
         onClick={() => {

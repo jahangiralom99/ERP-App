@@ -66,7 +66,6 @@ const CreateOrder = () => {
   const [image, setImage] = useState(null);
   const [responseMessage, setResponseMessage] = useState("");
 
-
   // get data for local storage
   useEffect(() => {
     const AllData1 = getStoredCart("item-all-data");
@@ -76,7 +75,6 @@ const CreateOrder = () => {
   // filter data for local storage
   const m = getStoredCart("item-all-data");
   const filter = Object?.values(m)?.filter((item) => item["qty"] > 0);
-
 
   // ALl item deleted from cart
   const handleDeleted = () => {
@@ -113,13 +111,12 @@ const CreateOrder = () => {
     }
   };
 
- 
-// handle calender options
+  // handle calender options
   const handleCalendarClick = () => {
     setOpen((prev) => !prev);
   };
 
-  // handle file change 
+  // handle file change
   const handleFileChange = (e) => {
     setResponseMessage("");
     const file = e.target.files[0];
@@ -325,7 +322,7 @@ const CreateOrder = () => {
 
   // Input field handler for manual changes
   const handleInputChange = (itemName, event) => {
-    const newQty = parseInt(event.target.value) || 0; 
+    const newQty = parseInt(event.target.value) || 0;
 
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -342,8 +339,57 @@ const CreateOrder = () => {
     updateData(itemName, newQty);
   };
 
+  const handleAddItemOpen = () => {
+    if (selectedCompany == "") {
+      toast.warn("Please Select Company Name", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (selectedCostCenter == "") {
+      toast.warn("Please Select CostCenter ", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (selectedCustomer == "") {
+      toast.warn("Please Select Customer Name", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else if (formattedDate == "") {
+      toast.warn("Please Select Date", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      setItemOpen(!itemOpen);
+    }
+  };
 
-// loader function for loading
+  // loader function for loading
   if (loader) {
     return <MainLoader />;
   }
@@ -402,7 +448,7 @@ const CreateOrder = () => {
         {/* date */}
         <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
           <legend className="ml-3 px-[5px] text-xs text-gray-500">
-            Delivery Date
+            Delivery Date <span className="text-[#FF0000] text-xl">*</span>
           </legend>
           <div className="flex gap-4 items-center w-full pl-4 pb-2">
             <SlCalender
@@ -440,8 +486,8 @@ const CreateOrder = () => {
       {/* qr scanner */}
 
       {open4 && (
-        <div className="absolute px-10 left-1/2 -translate-x-1/2 w-full top-32 z-20  bg-white">
-          <BarcodeScannerComponent
+        <div className="absolute px-10 left-1/2 -translate-x-1/2 w-full h-full top-32 z-20  bg-white">
+          {/* <BarcodeScannerComponent
             width={500}
             // height={500}
             onUpdate={(err, result) => {
@@ -450,6 +496,18 @@ const CreateOrder = () => {
                 console.log(result);
                 setData1(result?.text || "");
               } else setData1("Not Found");
+            }}
+          /> */}
+          <BarcodeScannerComponent
+            width={500}
+            facingMode="environment" // Use back camera
+            onUpdate={(err, result) => {
+              if (result) {
+                console.log(result);
+                setData1(result?.text || "");
+              } else {
+                setData1("Not Found");
+              }
             }}
           />
           <p>{data1}</p>
@@ -460,9 +518,10 @@ const CreateOrder = () => {
 
       <div className="px-5 flex flex-col">
         <div className="flex flex-col gap-3">
+          {/* () => setItemOpen(!itemOpen) */}
           <div>
             <button
-              onClick={() => setItemOpen(!itemOpen)}
+              onClick={handleAddItemOpen}
               className="w-full bg-gradient-to-r from-black to-[#FF0000] p-2 rounded-xl flex justify-center items-center gap-2 text-white font-bold"
             >
               {" "}
@@ -550,7 +609,7 @@ const CreateOrder = () => {
             {/* button */}
             <div>
               <div
-                onClick={() => setItemOpen(!itemOpen)}
+                onClick={handleAddItemOpen}
                 className="p-3 flex items-center gap-2 cursor-pointer"
               >
                 <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-lg" />
@@ -562,17 +621,17 @@ const CreateOrder = () => {
 
             {/* Taxes and Discount`` */}
 
-            <p className="p-3">Taxes & Discount</p>
+            <p className="p-3">Total Balance </p>
 
             <hr />
 
             <div className="p-3 ">
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <p className="text-zinc-500">Total Tax : </p>
                 <p className="flex items-center gap-1">
                   <FaBangladeshiTakaSign /> <span>0.00</span>{" "}
                 </p>
-              </div>
+              </div> */}
 
               <div className="flex justify-between">
                 <p className="text-zinc-500">Sub total : </p>
@@ -581,13 +640,13 @@ const CreateOrder = () => {
                 </p>
               </div>
 
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <p className="text-zinc-500">Discount : </p>
                 <p className="flex items-center gap-1">
                   <FiMinus />
                   <FaBangladeshiTakaSign /> <span>0.00</span>{" "}
                 </p>
-              </div>
+              </div> */}
             </div>
 
             <hr />

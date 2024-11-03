@@ -173,12 +173,12 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         updatedData[key] = { ...updatedData[key], qty: 0 };
         updateData(key, updatedData[key]["qty"]);
       }
-      setAllData(updatedData); 
+      setAllData(updatedData);
       toast.success("All Items Deleted", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: false,
-        closeOnClick: true, 
+        closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
@@ -277,6 +277,23 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
     updateData(itemName, AllData1[itemName]["qty"]);
   };
 
+  const handleAddItemOpen = () => {
+    if (formattedDate == "") {
+      toast.warn("Please Select Date", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      setItemOpen(!itemOpen);
+    }
+  };
+
   // loader functions
   if (update) {
     return <MainLoader />;
@@ -309,7 +326,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         {/* company */}
         <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
           <legend className="ml-3 px-[5px] text-xs text-gray-500">
-            Company<sup>*</sup>
+            Company<span className="text-[#FF0000] text-xl">*</span>
           </legend>
           <div
             onClick={() => setOpen1(!open1)}
@@ -335,7 +352,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         {/* cost center */}
         <fieldset className="relative border-[1px] border-gray-600 rounded-xl ">
           <legend className="ml-3 px-[5px] text-xs text-gray-500">
-            Cost Center
+            Cost Center <span className="text-[#FF0000] text-xl">*</span>
           </legend>
           <div
             onClick={() => setOpen2(!open2)}
@@ -360,7 +377,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         {/* Select customer */}
         <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
           <legend className="ml-3 px-[5px] text-xs text-gray-500">
-            Select Customer
+            Select Customer <span className="text-[#FF0000] text-xl">*</span>
           </legend>
           <div
             onClick={() => setOpen3(!open3)}
@@ -385,7 +402,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         {/* date */}
         <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
           <legend className="ml-3 px-[5px] text-xs text-gray-500">
-            Delivery Date
+            Delivery Date <span className="text-[#FF0000] text-xl">*</span>
           </legend>
           <div className="flex  gap-4 items-center w-full pl-4 pb-2">
             <SlCalender
@@ -466,7 +483,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         <div className="flex flex-col gap-3">
           <div>
             <button
-              onClick={() => setItemOpen(!itemOpen)}
+              onClick={handleAddItemOpen}
               className="w-full bg-gradient-to-r from-black to-[#FF0000] p-2 rounded-xl flex justify-center items-center gap-2 text-white font-bold"
             >
               {" "}
@@ -599,7 +616,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
             <hr />
 
             {/* button */}
-            <div onClick={() => setItemOpen(!itemOpen)}>
+            <div onClick={handleAddItemOpen}>
               <div className="p-3 flex items-center gap-2 cursor-pointer">
                 <FaCirclePlus className="text-[#FF0000] bg-white rounded-full text-lg" />
                 <p className="">Add New Item</p>
@@ -610,17 +627,17 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
 
             {/* Taxes and Discount`` */}
 
-            <p className="p-3">Taxes & Discount</p>
+            <p className="p-3">Total Balance</p>
 
             <hr />
 
             <div className="p-3 ">
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <p className="text-zinc-500">Total Tax : </p>
                 <p className="flex items-center gap-1">
                   <FaBangladeshiTakaSign /> <span>0.00</span>{" "}
                 </p>
-              </div>
+              </div> */}
 
               <div className="flex justify-between">
                 <p className="text-zinc-500">Sub total : </p>
@@ -639,13 +656,13 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
                 </p>
               </div>
 
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <p className="text-zinc-500">Discount : </p>
                 <p className="flex items-center gap-1">
                   <FiMinus />
                   <FaBangladeshiTakaSign /> <span>0.00</span>{" "}
                 </p>
-              </div>
+              </div> */}
             </div>
 
             <hr />

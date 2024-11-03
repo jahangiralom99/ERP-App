@@ -93,7 +93,7 @@ const Expense = () => {
           onclick1={open}
         />
       )}
-      {open6 && <PendingExpense data={data}  />}
+      {open6 && <PendingExpense data={data} />}
       {open1 && <ExpenseHistory />}
 
       {/* plus button */}

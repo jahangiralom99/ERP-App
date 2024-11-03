@@ -232,6 +232,18 @@ const Orders = () => {
                     <p className="text-xs text-zinc-500 ">
                       Customer : {item?.customer_name}
                     </p>
+                    <p className="text-xs text-zinc-500 ">
+                      Location : {item?.cost_center}
+                    </p>
+
+                    <p className="flex items-center gap-1">
+                      <p className="text-xs text-zinc-500 text-center">
+                        Created By :
+                      </p>
+                      <p className="text-xs text-center">
+                        {item?.modified_by}
+                      </p>
+                    </p>
                     <p className="text-xs text-black font-semibold">
                       {item?.company}
                     </p>

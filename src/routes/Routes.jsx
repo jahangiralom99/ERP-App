@@ -61,14 +61,14 @@ export const router = createBrowserRouter([
       //   path: "/expense",
       //   element: <Expense />,
       // },
-      {
-        path: "/expenseclaim",
-        element: <ExpenseClaim />,
-      },
-      {
-        path: "/expenseclaimhistory",
-        element: <ExpenseClaimHistory />,
-      },
+      // {
+      //   path: "/expenseclaim",
+      //   element: <ExpenseClaim />,
+      // },
+      // {
+      //   path: "/expenseclaimhistory",
+      //   element: <ExpenseClaimHistory />,
+      // },
       {
         path: "/applyexpense",
         element: <ApplyExpense />,

@@ -14,23 +14,16 @@ const PendingExpense = ({ data }) => {
   // Child Table tata fetch
   // base_url/getchildtable?erp_url=erp_url&doctype_name=Doctype_Name&child_table=Child_Table_Under_This_Doctype&name=Doctype_id_or_name
 
-  // const data2 = []
-
   // useEffect(() => {
-  //   data.map((item) => {
-  //     fetch(
-  //       `${fetchURL}/getchildtable?erp_url=${url}&doctype_name=Expense Claim&child_table=Expense Claim Detail&name=${item?.name}`
-  //     )
-  //       .then((res) => res.json())
-  //       .then((result) => {
-  //         data2.push(result)
-  //         console.log(result);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   });
-  // }, [url]);
-
-  // console.log(data);
+  //   fetch(
+  //     `${fetchURL}/getchildtable?erp_url=${url}&doctype_name=Expense Claim&child_table=Expense Claim Detail&name=HR-EXP-2024-00001`
+  //   )
+  //     .then((res) => res.json())
+  //     .then((result) => {
+  //       // console.log(result);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, [url, data]);
 
   return (
     <>
