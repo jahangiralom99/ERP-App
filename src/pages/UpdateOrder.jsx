@@ -182,7 +182,8 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     }
   };
@@ -198,7 +199,8 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else {
       SetUpdate(true);
@@ -228,7 +230,8 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "dark",
+              theme: "colored",
+              className: "custom-toast",
             });
             navigate("/orders");
             setOpen5(false);
@@ -244,7 +247,8 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: "colored",
+            className: "custom-toast",
           });
           console.error("Error:", error);
         })
@@ -287,7 +291,8 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else {
       setItemOpen(!itemOpen);
@@ -700,7 +705,7 @@ const UpdateOrder = ({ setOpen5, data, items, open5, name }) => {
           </button>
         </div>
         {itemOpen ? (
-          <div className="absolute -top-16 left-0 bottom-0 w-full h-full bg-slate-200 z-20">
+          <div className="absolute -top-16 left-0 bottom-0 w-full h-full bg-slate-200">
             <SelectItems
               handlePlus={handlePlus}
               handleMinus={handleMinus}

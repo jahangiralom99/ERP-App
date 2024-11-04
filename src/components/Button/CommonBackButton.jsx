@@ -2,7 +2,7 @@ import { IoMdArrowBack } from "react-icons/io";
 
 const CommonBackButton = ({ value , className}) => {
   return (
-    <div className={`flex items-center gap-4 bg-gradient-to-r from-black to-[#FF0000] text-white px-4 rounded-lg ${className}`}>
+    <div className={`flex items-center gap-1 bg-[#FF0000] text-white px-[9px] py-[1px] rounded-lg border border-gray-400 ${className}`}>
       <div>
         <IoMdArrowBack className="text-lg" />
       </div>

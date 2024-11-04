@@ -16,7 +16,7 @@ const Attachment = ({
 
   return (
     <div className="w-full">
-      <button className="w-full bg-gradient-to-r from-black to-[#FF0000] text-white p-2 rounded-xl flex justify-center items-center gap-2 relative font-bold">
+      <button className="w-full bg-gray-400 text-white p-2 rounded-xl flex justify-center items-center gap-2 relative font-bold">
         <IoArrowUpCircleOutline className="text-2xl rounded-full" />
         <span>Attachment</span>
         <input

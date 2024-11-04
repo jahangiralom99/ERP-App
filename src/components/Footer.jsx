@@ -14,28 +14,28 @@ const Footer = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center h-10 w-full bg-white fixed bottom-0 left-0 right-0 max-w-screen-sm mx-auto">
+      <div className="flex justify-between items-center h-12 w-full bg-[#FF0000] fixed bottom-0 left-0 right-0 max-w-screen-sm mx-auto">
         <div className="flex justify-evenly items-center w-full ">
           <Link to="/">
-            <RiHome2Line className="text-xl" />
+            <RiHome2Line className="text-xl text-white" />
           </Link>
 
-          <FaTasks className="text-xl" />
+          <FaTasks className="text-xl text-white" />
         </div>
         <div
           onClick={() => setOpen(!open)}
           className="text-5xl relative h-10 w-20"
         >
           {open ? (
-            <RxCrossCircled className="absolute  bottom-[14px] text-4xl bg-white rounded-full" />
+            <RxCrossCircled className="absolute text-white bottom-[14px] text-4xl rounded-full" />
           ) : (
-            <CiCirclePlus className="absolute bottom-[14px] text-4xl bg-white rounded-full" />
+            <CiCirclePlus className="absolute bottom-[20px] text-[50px] bg-[#FF0000] text-white rounded-full" />
           )}
         </div>
         <div className="flex justify-evenly items-center w-full ">
-          <RiNewsLine className="text-xl" />
+          <RiNewsLine className="text-xl text-white" />
           <Link to="/profile">
-            <FaRegUser className="text-xl" />
+            <FaRegUser className="text-xl text-white" />
           </Link>
         </div>
       </div>

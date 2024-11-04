@@ -74,7 +74,8 @@ const Login = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: "colored",
+            className: "custom-toast",
           });
         } else {
           // Trigger error toast if no cookies are found
@@ -86,7 +87,8 @@ const Login = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: "colored",
+            className: "custom-toast",
           });
         }
       })
@@ -99,7 +101,8 @@ const Login = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: "colored",
+          className: "custom-toast",
         });
         // toast.success("Login failed. Please try again.");
         console.error("Login error:", error);
@@ -117,7 +120,6 @@ const Login = () => {
 
   return (
     <div className="bg-gray-200 h-screen pt-16 flex items-center justify-center">
-     
       <div className="rounded-3xl pt-[3px] pb-[2px] flex flex-col relative px-8">
         <div className="bg-white rounded-3xl h-full pt-5">
           {/* <div className="flex justify-center items-center gap-4 rounded-2xl p-2 bg-opacity-60">
@@ -208,7 +210,10 @@ const Login = () => {
 
               <div className="flex justify-between items-center gap-2">
                 <p>Remember Me</p>
-                <Switch className="" height={28} width={55} 
+                <Switch
+                  className=""
+                  height={28}
+                  width={55}
                   onColor={"#FF0000"}
                   onChange={setChecked}
                   uncheckedIcon={false}

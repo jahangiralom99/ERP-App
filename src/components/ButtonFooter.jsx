@@ -18,18 +18,21 @@ import { RxCrossCircled } from "react-icons/rx";
 const ButtonFooter = ({ setOpen }) => {
   return (
     <>
-      <div className="fixed bottom-0 bg-opacity-70 h-screen w-full bg-black max-w-screen-md "></div>
+      <div
+        onClick={() => setOpen(false)}
+        className="fixed  top-0 bg-opacity-70 h-[800px] w-full bg-black max-w-screen-md "
+      ></div>
       <RxCrossCircled
         onClick={() => setOpen(false)}
-        className="absolute bottom-[14px] cursor-pointer text-4xl text-white rounded-full"
+        className="absolute bottom-[14px] cursor-pointer text-4xl bg-[#FF0000] text-white rounded-full"
       />
-      <div className="fixed bottom-14 left-0 right-0 flex flex-col items-center gap-2 justify-center">
+      <div onClick={() => setOpen(false)} className="fixed bottom-14 left-0 right-0 flex flex-col items-center gap-2 justify-center">
         <button
           onClick={() => setOpen(false)}
-          className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
+          className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-36 shadow-md"
         >
           <img
-            className="w-[12px] pb-1 "
+            className="w-[20px] pb-2 "
             src={pittyexpenses}
             alt=""
             style={{
@@ -37,16 +40,16 @@ const ButtonFooter = ({ setOpen }) => {
                 "invert(22%) sepia(94%) saturate(6698%) hue-rotate(356deg) brightness(93%) contrast(104%)",
             }}
           />
-          <p className="text-black font-bold  ">Petty Expense</p>
+          <p className="text-black font-bold ">Petty Expense</p>
         </button>
 
         <Link>
           <button
             onClick={() => setOpen(false)}
-            className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
+            className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-36 shadow-md"
           >
             <img
-              className="w-[12px] pb-1 "
+              className="w-[20px] pb-2 "
               src={payment}
               alt=""
               style={{
@@ -59,10 +62,10 @@ const ButtonFooter = ({ setOpen }) => {
         </Link>
         <button
           onClick={() => setOpen(false)}
-          className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
+          className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-36 shadow-md"
         >
           <img
-            className="w-[12px] pb-1 "
+            className="w-[20px] pb-2 "
             src={task}
             alt=""
             style={{
@@ -76,10 +79,10 @@ const ButtonFooter = ({ setOpen }) => {
         <Link>
           <button
             onClick={() => setOpen(false)}
-            className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
+            className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-36 shadow-md"
           >
             <img
-              className="w-[12px] pb-1 "
+              className="w-[20px] pb-2"
               src={visit}
               alt=""
               style={{
@@ -94,10 +97,10 @@ const ButtonFooter = ({ setOpen }) => {
         <Link to="/createorders">
           <button
             onClick={() => setOpen(false)}
-            className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
+            className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-36 shadow-md"
           >
             <img
-              className="w-[12px] pb-1 "
+              className="w-[20px] pb-2"
               src={order}
               alt=""
               style={{
@@ -110,10 +113,10 @@ const ButtonFooter = ({ setOpen }) => {
         </Link>
         <button
           onClick={() => setOpen(false)}
-          className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
+          className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-36 shadow-md"
         >
           <img
-            className="w-[12px] pb-1 "
+            className="w-[20px] pb-2"
             src={leave}
             alt=""
             style={{
@@ -127,10 +130,10 @@ const ButtonFooter = ({ setOpen }) => {
         <div>
           <button
             onClick={() => setOpen(false)}
-            className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-32 shadow-md"
+            className="flex justify-start items-center pl-3 gap-2 bg-white border border-[#727272] text-xs rounded-xl py-1 w-36 shadow-md"
           >
             <img
-              className="w-[12px] pb-1 "
+              className="w-[20px] pb-2"
               src={expenses}
               alt=""
               style={{

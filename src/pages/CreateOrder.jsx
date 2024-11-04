@@ -95,7 +95,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else {
       toast.info("Item Not Found", {
@@ -106,7 +107,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     }
   };
@@ -135,7 +137,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else if (selectedCostCenter == "") {
       toast.warn("Please Select CostCenter ", {
@@ -146,7 +149,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else if (selectedCustomer == "") {
       toast.warn("Please Select Customer Name", {
@@ -157,7 +161,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else if (formattedDate == "") {
       toast.warn("Please Select Date", {
@@ -168,7 +173,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else if (filter.length == 0) {
       toast.warn("Please Select Order Items", {
@@ -179,7 +185,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else {
       setLoader(true);
@@ -243,7 +250,8 @@ const CreateOrder = () => {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "dark",
+              theme: "colored",
+              className: "custom-toast",
             });
           }
           if (data?.response_data?.data) {
@@ -349,10 +357,11 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else if (selectedCostCenter == "") {
-      toast.warn("Please Select CostCenter ", {
+      toast.warn("Please Select Location ", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: false,
@@ -360,7 +369,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else if (selectedCustomer == "") {
       toast.warn("Please Select Customer Name", {
@@ -371,7 +381,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else if (formattedDate == "") {
       toast.warn("Please Select Date", {
@@ -382,7 +393,8 @@ const CreateOrder = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "colored",
+        className: "custom-toast",
       });
     } else {
       setItemOpen(!itemOpen);
@@ -417,7 +429,7 @@ const CreateOrder = () => {
         </div>
         <div
           onClick={() => setOpen4(!open4)}
-          className="bg-[#FF0000] p-[4px] rounded border border-black"
+          className="bg-[#FF0000] p-[3px] rounded border border-gray-400"
         >
           <RiQrScan2Line className="text-xl text-white" />
         </div>
@@ -660,16 +672,16 @@ const CreateOrder = () => {
           </div>
         </div>
 
-        <div className="flex gap-3 px-5 bg-gray-100 fixed bottom-10 left-0 right-0 justify-center pb-2">
+        <div className="flex gap-3 px-5 bg-gray-100 fixed bottom-[66px] left-0 right-0 justify-center pb-2">
           <div onClick={goBack} className="w-full">
-            <button className="border-[1px] bg-black border-zinc-400 font-bold text-white p-3 rounded-xl w-full">
+            <button className="border-[1px] bg-black border-zinc-400 font-bold text-white p-2 rounded-xl w-full">
               Close
             </button>
           </div>
           {order == "" ? (
             <button
               onClick={handleCreateOrder}
-              className="border-[1px] p-3 bg-gradient-to-r from-black to-[#FF0000] text-white rounded-xl font-bold w-full"
+              className="border-[1px] p-2  bg-[#FF0000] text-white rounded-xl font-bold w-full"
             >
               Order Create
             </button>
@@ -684,7 +696,7 @@ const CreateOrder = () => {
         </div>
       </div>
       {itemOpen ? (
-        <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-slate-200 z-20">
+        <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-slate-200 z-50">
           <SelectItems
             handlePlus={handlePlus}
             handleMinus={handleMinus}

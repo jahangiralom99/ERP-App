@@ -177,7 +177,7 @@ const SelectItems = ({
 
 
   return (
-    <div className="bg-gray-200 z-20 text-black mt-14">
+    <div className="bg-gray-200 z-20 text-black mt-14 px-2 mb-12">
       {/* heading */}
       <div className="flex justify-between items-center h-14 w-full bg-white px-6 relative">
         <div className="flex items-center gap-4">
@@ -337,7 +337,7 @@ const SelectItems = ({
 
       {/* button */}
       <div onClick={handleCreateOrder}>
-        <button className="fixed bottom-0 z-20 border-[1px] p-4 bg-gradient-to-r from-black to-[#FF0000] font-bold text-white rounded-xl text-medium w-full">
+        <button className="fixed bottom-0 z-50 border-[1px] p-4 bg-gradient-to-r from-black to-[#FF0000] font-bold text-white rounded-xl text-medium w-full">
           Add Item
         </button>
       </div>

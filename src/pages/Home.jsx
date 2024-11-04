@@ -15,6 +15,9 @@ const Home = () => {
         <img className="h-[500px]" src={img1} alt="" />
         <img className="h-[500px]" src={img2} alt="" />
       </div> */}
+      {/* <div>
+
+      </div> */}
 
       {/* header */}
 

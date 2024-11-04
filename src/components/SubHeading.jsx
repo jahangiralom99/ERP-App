@@ -10,7 +10,7 @@ const SubHeading = ({ title, icon, icon2, path }) => {
       <Link
         onClick={goBack}
         to={path}
-        className="flex items-center gap-4 bg-gradient-to-r from-black to-[#FF0000] text-white px-4 py-1 rounded"
+        className="flex items-center border border-gray-400 gap-2 bg-[#FF0000] text-white px-2 py-[1px]   rounded-sm "
       >
         <div>
           <IoMdArrowBack className="text-lg text-white" />

@@ -7,7 +7,7 @@ const Root = () => {
     <div>
       <Headers />
       <Outlet />
-      <div className="fixed bottom-0 left-0 right-0 flex justify-center ">
+      <div className="fixed bottom-0 left-0 right-0 flex justify-center z-40">
         <Footer />
       </div>
     </div>

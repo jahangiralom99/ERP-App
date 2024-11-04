@@ -7,23 +7,8 @@ import { fetchURL, getStoredCart } from "../utilities/function";
 // import MainLoader from "./Shared/MainLoader";
 
 const PendingExpense = ({ data }) => {
-  // console.log(data[0].name);
-  // const [table, setTable] = useState([]);
-  // const { url } = getStoredCart("login-info");
-
   // Child Table tata fetch
   // base_url/getchildtable?erp_url=erp_url&doctype_name=Doctype_Name&child_table=Child_Table_Under_This_Doctype&name=Doctype_id_or_name
-
-  // useEffect(() => {
-  //   fetch(
-  //     `${fetchURL}/getchildtable?erp_url=${url}&doctype_name=Expense Claim&child_table=Expense Claim Detail&name=HR-EXP-2024-00001`
-  //   )
-  //     .then((res) => res.json())
-  //     .then((result) => {
-  //       // console.log(result);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, [url, data]);
 
   return (
     <>
@@ -36,12 +21,13 @@ const PendingExpense = ({ data }) => {
 
         {/* details card*/}
         {data?.map((item) => {
+          // console.log(item);
           return (
-            <Link to="/expenseclaim">
+            <Link to={`/expenseclaim/${item?.name}`}>
               <div className=" bg-white p-3 rounded-2xl mt-3">
                 <div className="flex justify-between items-center bg-white  rounded-2xl mt-3">
                   <button className="border rounded-xl px-3 font-bold p-[5px] border-[#FF0000] text-[#FF0000] ">
-                    Travel & 2 more
+                    {item?.name}
                   </button>
                   <button className="border rounded-xl px-3 font-bold p-[5px] bg-orange-400 text-white ">
                     {item?.status}

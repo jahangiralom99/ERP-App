@@ -129,6 +129,24 @@ const OdrerDetails = () => {
     }
   };
 
+  // color change for draft or to Delivery and Bill to Delivery
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Draft":
+        return "bg-gray-300 text-white";
+      case "Completed":
+        return "bg-green-500 text-white"; 
+      case "To Bill":
+        return "bg-[#FF0000] text-white"; 
+      case "To Deliver":
+        return "bg-[#fcb32b] text-white";
+      case "To Deliver and Bill":
+        return "bg-gray-600 text-white"; 
+      default:
+        return "bg-white"; 
+    }
+  };
+
   if (loading) {
     return <MainLoader />;
   }
@@ -177,7 +195,7 @@ const OdrerDetails = () => {
               <p className="text-xs text-[#FF0000] font-bold">
                 Order No : {data?.naming_series?.slice(0, 8)} {data?.name}
                 <p className="text-xs text-zinc-500">
-                 Date :  {data?.creation?.slice(0, 10)}
+                  Date : {data?.creation?.slice(0, 10)}
                 </p>
               </p>
               <p>
@@ -190,9 +208,16 @@ const OdrerDetails = () => {
               </p>
             </div>
             <div>
-              <button className="bg-orange-400 text-white border-[1px]  p-[5px] rounded-lg font-medium text-sm ">
+              <button
+                className={`${getStatusColor(
+                  data?.status
+                )} border-[1px] p-1 px-2 rounded-lg font-medium text-[10px] `}
+              >
                 {data?.status}
               </button>
+              {/* <button className="bg-orange-400 text-white border-[1px] rounded-lg font-medium text-[10px] p-1">
+                {data?.status}
+              </button> */}
             </div>
           </div>
 
@@ -202,7 +227,7 @@ const OdrerDetails = () => {
               <p className="text-xs  font-bold">{data?.delivery_date}</p>
             </p>
             <p>
-              <p className="text-xs text-zinc-500 ">Created By</p>
+              <p className="text-xs text-zinc-500 ">Created</p>
               <p className="text-xs text-center font-bold">
                 {data?.modified_by}
               </p>
@@ -237,7 +262,7 @@ const OdrerDetails = () => {
         <hr />
 
         <div className="flex justify-between text-sm font-medium">
-         Total Balance :
+          Total Balance :
         </div>
 
         <hr />

@@ -14,7 +14,7 @@ const Headers = () => {
   // console.log(data);
 
   return (
-    <div className="fixed top-0 left-0 right-0  z-50">
+    <div className="fixed top-0 left-0 right-0 z-30">
       <div className="flex justify-between items-center h-14 w-full bg-white px-5 ">
         <Link to="/">
           <p className="flex items-center gap-1">

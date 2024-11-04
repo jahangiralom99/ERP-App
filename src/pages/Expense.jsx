@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import CommonBackButton from "../components/Button/CommonBackButton";
 import { getStoredCart } from "../utilities/function";
 import MainLoader from "../components/Shared/MainLoader";
+import { CiCirclePlus } from "react-icons/ci";
 
 const Expense = () => {
   const [open, setOpen] = useState(false);
@@ -62,8 +63,6 @@ const Expense = () => {
     return <MainLoader />;
   }
 
-  // console.log(data);
-
   const handleCalendarClick = () => {
     setOpen4((prev) => !prev);
   };
@@ -97,8 +96,17 @@ const Expense = () => {
       {open1 && <ExpenseHistory />}
 
       {/* plus button */}
-      <Link to="/applyexpense">
+      {/* <Link to="/applyexpense">
         <PlusButton />
+      </Link> */}
+      <Link
+        to="/applyexpense"
+        className=" p-4 w-14 h-14 rounded-lg font-medium text-sm  flex justify-center items-center fixed bottom-12 right-5"
+        // style={{
+        //   background: "radial-gradient(circle, black 30%, black 50%)",
+        // }}
+      >
+        <CiCirclePlus className="absolute bottom-[18px] text-[45px] bg-black text-white rounded-full" />
       </Link>
     </div>
   );

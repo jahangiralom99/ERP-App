@@ -28,7 +28,7 @@ const LikeToDo = ({ orderLink }) => {
     {
       name: "Expense",
       icon: expenses,
-      // link: "/expense",
+      link: "/expense",
     },
     {
       name: "Leave",
@@ -77,20 +77,21 @@ const LikeToDo = ({ orderLink }) => {
   ];
 
   // Show only first 6 items if showAll is false, otherwise show all
-  const itemsToShow = showAll ? menuItems : menuItems.slice(0, 6);
+  // if you need to show button on first 6 items
+  // const itemsToShow = showAll ? menuItems : menuItems.slice(0, 6);
 
   return (
     <div className="p-5">
       <div className="pb-3 flex justify-between items-center">
         <p className="text-zinc-500 font-medium">What would you like to do?</p>
-        <p className="text-[#FF0000]">
+        {/* <p className="text-[#FF0000]">
           <IoMdSettings />
-        </p>
+        </p> */}
       </div>
 
       {/* Cards Grid */}
       <div className="grid grid-cols-3 gap-3 font-medium text-xs mb-5">
-        {itemsToShow.map((item, index) => (
+        {menuItems?.map((item, index) => (
           item.link ? (
             <Link to={item.link} key={index}>
               <div className="bg-white flex justify-center items-center flex-col p-3 rounded-xl">
@@ -124,12 +125,12 @@ const LikeToDo = ({ orderLink }) => {
       </div>
 
       {/* View More / View Less Button */}
-      <button
+      {/* <button
         onClick={() => setShowAll(!showAll)}
         className="border-[1px] w-full font-bold border-black bg-gradient-to-r from-black to-[#FF0000] text-white p-2 rounded-xl flex items-center justify-center gap-2"
       >
         {showAll ? "View Less" : "View More"}
-      </button>
+      </button> */}
     </div>
   );
 };

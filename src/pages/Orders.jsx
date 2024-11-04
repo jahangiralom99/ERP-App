@@ -16,6 +16,7 @@ import {
 import MainLoader from "../components/Shared/MainLoader";
 import OrderFilterField from "../components/OrderFilterField";
 import CommonBackButton from "../components/Button/CommonBackButton";
+import { CiCirclePlus } from "react-icons/ci";
 
 const Orders = () => {
   const [open, setOpen] = useState(false);
@@ -127,9 +128,15 @@ const Orders = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Draft":
-        return "bg-orange-400 text-white"; // Gray for Draft
+        return "bg-gray-300 text-white"; // Gray for Draft
+      case "Completed":
+        return "bg-green-500 text-white"; // Gray for Draft
+      case "To Bill":
+        return "bg-[#FF0000] text-white"; // Gray for Draft
+      case "To Deliver":
+        return "bg-[#fcb32b] text-white"; // Gray for Draft
       case "To Deliver and Bill":
-        return "bg-orange-600 text-white"; // Yellow for To Deliver
+        return "bg-gray-600 text-white"; // Yellow for To Deliver
       default:
         return "bg-white"; // Default color
     }
@@ -157,7 +164,7 @@ const Orders = () => {
           <CommonBackButton value="Back" />
         </Link>
 
-        <div className="bg-[#FF0000] border border-black p-[4px] rounded-lg font-medium text-sm text-white flex justify-center items-center">
+        <div className="bg-[#FF0000] border border-gray-400 p-[3px] rounded-lg font-medium text-sm text-white flex justify-center items-center">
           <BsFilterLeft
             onClick={() => setOpen(!open)}
             className="text-2xl text-white cursor-pointer"
@@ -187,12 +194,12 @@ const Orders = () => {
       </Link> */}
       <Link
         to="/createorders"
-        className="border-[1px] p-4 w-14 h-14 rounded-lg font-medium text-sm text-white flex justify-center items-center fixed bottom-12 right-5 border-[#FF0000]"
-        style={{
-          background: "radial-gradient(circle, black 30%, black 50%)",
-        }}
+        className=" p-4 w-14 h-14 rounded-lg font-medium text-sm  flex justify-center items-center fixed bottom-12 right-5"
+        // style={{
+        //   background: "radial-gradient(circle, black 30%, black 50%)",
+        // }}
       >
-        <FaPlus className="text-[30px] font-bold" />
+       <CiCirclePlus className="absolute bottom-[18px] text-[45px] bg-black text-white rounded-full" />
       </Link>
 
       {/* orders */}
@@ -221,7 +228,7 @@ const Orders = () => {
                     <button
                       className={`${getStatusColor(
                         item?.status
-                      )} border-[1px] p-[5px] rounded-lg font-medium text-sm `}
+                      )} border-[1px] p-[5px] px-2 rounded-lg font-medium text-[12px] `}
                     >
                       {item?.status}
                     </button>
@@ -229,17 +236,15 @@ const Orders = () => {
                 </div>
                 <div className="pt-3 flex gap-2 justify-between ">
                   <p>
-                    <p className="text-xs text-zinc-500 ">
-                      Customer : {item?.customer_name}
+                    <p className="text-xs text-zinc-500 font-bold">
+                      {item?.customer_name}
                     </p>
                     <p className="text-xs text-zinc-500 ">
-                      Location : {item?.cost_center}
+                      {item?.cost_center}
                     </p>
 
                     <p className="flex items-center gap-1">
-                      <p className="text-xs text-zinc-500 text-center">
-                        Created By :
-                      </p>
+                    
                       <p className="text-xs text-center">
                         {item?.modified_by}
                       </p>

@@ -57,18 +57,18 @@ export const router = createBrowserRouter([
         element: <MarkAttendence />,
       },
       // expense
-      // {
-      //   path: "/expense",
-      //   element: <Expense />,
-      // },
-      // {
-      //   path: "/expenseclaim",
-      //   element: <ExpenseClaim />,
-      // },
-      // {
-      //   path: "/expenseclaimhistory",
-      //   element: <ExpenseClaimHistory />,
-      // },
+      {
+        path: "/expense",
+        element: <Expense />,
+      },
+      {
+        path: "/expenseclaim/:name",
+        element: <ExpenseClaim />,
+      },
+      {
+        path: "/expenseclaimhistory",
+        element: <ExpenseClaimHistory />,
+      },
       {
         path: "/applyexpense",
         element: <ApplyExpense />,
