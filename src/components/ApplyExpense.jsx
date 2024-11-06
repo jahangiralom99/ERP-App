@@ -17,6 +17,7 @@ const ApplyExpense = ({ setOpen2 }) => {
   const [open1, setOpen1] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState(null);
   // company state
   const [selectedCompany, setSelectedCompany] = useState("");
   // cost of center state
@@ -26,6 +27,65 @@ const ApplyExpense = ({ setOpen2 }) => {
     setOpen((prev) => !prev);
   };
   const navigate = useNavigate();
+
+  // added expense
+  const [expenses, setExpenses] = useState([
+    // {
+    //   date: "2024-10-06",
+    //   type: "Calls",
+    //   reason: "Monthly calls",
+    //   amount: 233.0,
+    // },
+  ]);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // open btn
+  const handleAddOpenBtn = () => {
+    if (selectedCompany == "" && selectedCostCenter == "") {
+      alert("Please select a company");
+    } else {
+      setOpen3(!open3);
+    }
+  };
+
+  const total = expenses.reduce((acc, value) => {
+    return acc + parseFloat(value.amount);
+  }, 0);
+
+  // console.log(total);
+
+  // add
+  const handleAddExpense = (newExpense) => {
+    if (selectedCompany == "" && selectedCostCenter == "") {
+      alert("Please select a company");
+    } else {
+      setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+      setOpen3(false); 
+    }
+  };
+
+  // update
+  const handleOpenModal = (expense) => {
+    setSelectedExpense(expense); // Set the expense to be edited
+    setOpen4(true); // Open the modal
+  };
+
+  // update
+  const handleAddOrUpdateExpense = (newExpense) => {
+    if (selectedExpense) {
+      // If an expense is selected, update it
+      setExpenses((prevExpenses) =>
+        prevExpenses.map((expense) =>
+          expense.id === selectedExpense.id ? newExpense : expense
+        )
+      );
+    } else {
+      // Add new expense
+      setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+    }
+    setOpen4(false); // Close the modal
+    setSelectedExpense(null); // Reset selected expense
+  };
 
   const goBack = () => {
     navigate(-1); // Goes back to the previous page
@@ -59,33 +119,52 @@ const ApplyExpense = ({ setOpen2 }) => {
         <div className="flex justify-between px-5 font-bold ">
           <p>Expenses</p>
           <button
-            onClick={() => setOpen3(!open3)}
+            onClick={handleAddOpenBtn}
             className="text-[#FF0000] border border-[#FF0000] rounded-lg px-3 py-1  font-semibold"
           >
             Add
           </button>
         </div>
 
-        {open3 && <NewExpenseItem setOpen3={setOpen3} />}
+        {open3 && (
+          <NewExpenseItem
+            open3={open3}
+            setOpen3={setOpen3}
+            addExpense={handleAddExpense}
+          />
+        )}
 
-        <div
-          onClick={() => setOpen4(!open4)}
-          className="flex justify-between  border rounded-lg p-3 mt-4 shadow-lg"
-        >
-          <div>
-            <p className="font-bold">Calls</p>
-            <p className="text-zinc-400">Oct6</p>
+        {expenses?.map((item, idx) => (
+          <div
+            key={idx}
+            onClick={() => handleOpenModal(item)}
+            className="flex justify-between  border rounded-lg p-3 mt-4 shadow-lg"
+          >
+            <div>
+              <p className="font-bold">{item?.type}</p>
+              {item?.date ? new Date(item.date).toLocaleDateString() : ""}
+            </div>
+            <div className="flex gap-2 items-center font-bold">
+              {item?.amount}{" "}
+              <RiArrowDropRightLine className="text-2xl text-[#FF0000]" />
+            </div>
           </div>
-          <div className="flex gap-2 items-center font-bold">
-            233.0 <RiArrowDropRightLine className="text-2xl text-[#FF0000]" />
-          </div>
-        </div>
-        {open4 && <UpdateExpenseItem setOpen4={setOpen4} />}
+        ))}
 
-        <div className="px-5 flex justify-end mt-4 mb-4">
+        {open4 && (
+          <UpdateExpenseItem
+            setOpen4={setOpen4}
+            expense={selectedExpense}
+            onUpdate={handleAddOrUpdateExpense}
+            // onClose={() => setOpenModal(false)}
+          />
+        )}
+
+        {/* total page */}
+        <div className="px-5 flex justify-end mt-8 mb-4">
           <p>
             <span className="text-zinc-400 font-bold">Total: </span>{" "}
-            <span className="font-bold">233.0</span>
+            <span className="font-bold">{total}</span>
           </p>
         </div>
 
@@ -111,10 +190,12 @@ const ApplyExpense = ({ setOpen2 }) => {
 
 export default ApplyExpense;
 
-// Disable button for 
-{/* <button
+// Disable button for
+{
+  /* <button
 // onClick={handleCreateOrder}
 className="border-[1px] p-3 bg-gradient-to-r from-slate-500 to-blue-950 text-white rounded-xl text-medium w-full cursor-not-allowed"
 >
 Order Create
-</button> */}
+</button> */
+}

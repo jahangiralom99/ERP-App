@@ -14,6 +14,8 @@ import ExpenseClaim from "../components/ExpenseClaim";
 import ExpenseClaimHistory from "../components/ExpenseClaimHistory";
 import ApplyExpense from "../components/ApplyExpense";
 import UpdateExpense from "../components/UpdateExpense";
+import Leave from "../pages/Leave";
+import NewLeaveRequest from "../pages/NewLeaveRequest";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +78,15 @@ export const router = createBrowserRouter([
       {
         path: "/updateexpense",
         element: <UpdateExpense />,
+      },
+      // leave
+      {
+        path: "/leave",
+        element: <Leave />,
+      },
+      {
+        path: "/newleaverequest",
+        element: <NewLeaveRequest />,
       },
     ],
   },

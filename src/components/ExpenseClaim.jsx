@@ -67,10 +67,14 @@ const ExpenseClaim = ({ setOpen }) => {
       "Nov",
       "Dec",
     ];
-    const monthIndex = parseInt(dateString.slice(5, 7), 10) - 1;
-    const day = dateString.slice(8, 10);
-    const formattedDate = `${monthNames[monthIndex]}-${parseInt(day, 10)}`; //
-    return formattedDate;
+
+    // Extract just the date part (YYYY-MM-DD) from the string
+    const datePart = dateString.split(" ")[0];
+    const monthIndex = parseInt(datePart.slice(5, 7), 10) - 1;
+    const day = parseInt(datePart.slice(8, 10), 10);
+
+    // Format: "Month-Day", e.g., "Nov-5"
+    return `${monthNames[monthIndex]}-${day}`;
   }
 
   // sum all balance

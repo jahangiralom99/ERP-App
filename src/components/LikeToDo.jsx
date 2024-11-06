@@ -33,6 +33,7 @@ const LikeToDo = ({ orderLink }) => {
     {
       name: "Leave",
       icon: leave,
+      link: "/leave",
     },
     {
       name: "Payroll",
