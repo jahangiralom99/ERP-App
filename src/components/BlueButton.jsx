@@ -1,6 +1,6 @@
-const BlueButton = ({name}) => {
+const BlueButton = ({ name, onClick }) => {
   return (
-    <button className="border-[1px] p-3 bg-gradient-to-r from-blue-600 to-blue-950 text-white rounded-xl text-medium w-full">
+    <button onClick={onClick} className="border-[1px] p-2 bg-[#FF0000] text-white rounded-xl text-medium w-full">
       {name}
     </button>
   );

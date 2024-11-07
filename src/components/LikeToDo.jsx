@@ -46,6 +46,7 @@ const LikeToDo = ({ orderLink }) => {
     {
       name: "Attendance",
       icon: attendence,
+      link: "/attendance",
     },
     {
       name: "Transactions",
@@ -92,7 +93,7 @@ const LikeToDo = ({ orderLink }) => {
 
       {/* Cards Grid */}
       <div className="grid grid-cols-3 gap-3 font-medium text-xs mb-5">
-        {menuItems?.map((item, index) => (
+        {menuItems?.map((item, index) =>
           item.link ? (
             <Link to={item.link} key={index}>
               <div className="bg-white flex justify-center items-center flex-col p-3 rounded-xl">
@@ -109,7 +110,10 @@ const LikeToDo = ({ orderLink }) => {
               </div>
             </Link>
           ) : (
-            <div key={index} className="bg-white flex justify-center items-center flex-col p-3 rounded-xl">
+            <div
+              key={index}
+              className="bg-white flex justify-center items-center flex-col p-3 rounded-xl"
+            >
               <img
                 className="w-8 pb-1"
                 src={item.icon}
@@ -122,7 +126,7 @@ const LikeToDo = ({ orderLink }) => {
               <p className="text-black">{item.name}</p>
             </div>
           )
-        ))}
+        )}
       </div>
 
       {/* View More / View Less Button */}

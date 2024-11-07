@@ -16,6 +16,8 @@ import ApplyExpense from "../components/ApplyExpense";
 import UpdateExpense from "../components/UpdateExpense";
 import Leave from "../pages/Leave";
 import NewLeaveRequest from "../pages/NewLeaveRequest";
+import Attendance from "../pages/Attendance";
+import DraftAttendance from "../components/DraftAttendance";
 
 export const router = createBrowserRouter([
   {
@@ -87,6 +89,15 @@ export const router = createBrowserRouter([
       {
         path: "/newleaverequest",
         element: <NewLeaveRequest />,
+      },
+      // Attendance
+      {
+        path: "/attendance",
+        element: <Attendance />,
+      },
+      {
+        path: "/draftattendance",
+        element: <DraftAttendance />,
       },
     ],
   },

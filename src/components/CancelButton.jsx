@@ -4,9 +4,9 @@ const CancelButton = ({ path }) => {
   return (
     <Link
       to={path}
-      className="border-[1px] border-zinc-400 text-zinc-600  rounded-xl w-full"
+      className="border-[1px] bg-black text-white rounded-xl w-full"
     >
-      <button className=" border-zinc-400 text-zinc-600 p-3  rounded-xl w-full">
+      <button className=" p-3  w-full">
         Cancel
       </button>
     </Link>

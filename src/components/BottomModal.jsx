@@ -1,22 +1,30 @@
 import React from "react";
 import { IoIosSearch } from "react-icons/io";
+import CommonButtonClose from "./Button/CommonButtonClose";
+import CommonButtonClear from "./Button/CommonButtonClear";
 
 const BottomModal = ({ setonclick, title, item }) => {
   return (
-    <div className=" fixed top-[250px] left-0 right-0 mx-auto px-3  bg-white rounded-box z-[1] w-[300px] p-2 shadow">
+    <div className=" fixed top-[246px] left-0 right-0 mx-auto px-3  bg-white rounded-box z-[1] w-[400px] border border-gray-300 p-4 shadow">
       <div>
         <div className="flex justify-between">
-          <p className=" text-[12px] text-[#ff3232] font-bold">clear</p>
+          {/* <p className=" text-[12px] text-[#ff3232] font-bold">clear</p> */}
+          <div>
+            <CommonButtonClear />
+          </div>
           <p className=" text-[12px] text- font-bold">
             {/* Select Naming Series */}
             {title}
           </p>
-          <p
+          {/* <p
             onClick={() => setonclick(false)}
             className=" text-[12px] text-blue-600 font-bold"
           >
             close
-          </p>
+          </p> */}
+          <div onClick={() => setonclick(false)}>
+            <CommonButtonClose close="Close" />
+          </div>
         </div>
       </div>
 
