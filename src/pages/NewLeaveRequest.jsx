@@ -29,9 +29,10 @@ const NewLeaveRequest = () => {
   // sate for leave displaying
   const [selectedCustomer, setSelectedCustomer] = useState("");
   // employ for state
-  const [selectEmploy, setSelectEmploy] = useState("");
+  // const [selectEmploy, setSelectEmploy] = useState("");
 
   const { url, data } = getStoredCart("login-info");
+  const email = decodeURIComponent(data?.user_id);
   // get Select Customer api set
   const [customer, setCustomer] = useState([]);
   // search for selected customer
@@ -39,6 +40,8 @@ const NewLeaveRequest = () => {
   const [searchResult, setSearchResult] = useState([]);
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
+  // user
+  const [user, setUser] = useState({});
 
   const [open3, setOpen3] = useState(false);
 
@@ -61,6 +64,33 @@ const NewLeaveRequest = () => {
 
     fetchData();
   }, []);
+
+  // employ if get
+  useEffect(() => {
+    setLoader(true);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${fetchURL}/getall?erp_url=${url}&doctype_name=Employee`
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const result = await response.json();
+        const findEmail = result?.data?.find(
+          (item) => item?.prefered_email === email
+        );
+        setUser(findEmail);
+        setLoader(false);
+      } catch (err) {
+        setLoader(false);
+        console.log(err.message);
+      }
+    };
+    fetchData();
+  }, [url, email]);
+
+  // console.log(user?.name);
 
   const clear2 = () => {
     setSelectedCustomer("");
@@ -101,7 +131,7 @@ const NewLeaveRequest = () => {
   const body = {
     server: url,
     doctype: "Leave Application",
-    employee: selectEmploy,
+    employee: user?.name,
     company: "IONIC Corporation",
     from_date: formattedDate,
     // leave_approver: "potidinbd@gmail.com",
@@ -167,18 +197,6 @@ const NewLeaveRequest = () => {
       });
     } else if (description === "") {
       toast.warn("Please Select Leave Reason", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        className: "custom-toast",
-      });
-    } else if (selectEmploy === "") {
-      toast.warn("Please Select Employ", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: false,
@@ -310,10 +328,10 @@ const NewLeaveRequest = () => {
         /> */}
 
         {/* employ  */}
-        <EmployField
+        {/* <EmployField
           setSelectEmploy={setSelectEmploy}
           selectEmploy={selectEmploy}
-        />
+        /> */}
 
         {/* leave type  */}
         <fieldset className="relative border-[1px] border-gray-600 rounded-xl">
