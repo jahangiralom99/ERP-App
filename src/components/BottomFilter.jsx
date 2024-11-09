@@ -15,15 +15,23 @@ const BottomFilter = ({
   setonclick2,
   onclick3,
   setonclick3,
+  setYear,
+  setMonth,
+  year,
+  month,
+  handleFilter
 }) => {
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [open5, setOpen5] = useState(false);
-  const [year, setYear] = useState("");
-  const [month, setMonth] = useState("");
+  // const [year, setYear] = useState("Selected year");
+  // const [month, setMonth] = useState("Selected month");
 
-  console.log(year, month);
+  const handleClearFilter = () => {
+    setYear("Selected year");
+    setMonth("Selected month");
+  }
 
   return (
     <div className="fixed top-[110px] left-1/2 -translate-x-1/2 w-full  bg-gray-50  rounded-t-xl z-10 flex justify-center items-center text-black font-bold text-sm">
@@ -128,7 +136,7 @@ const BottomFilter = ({
         </div>
 
         <div className="flex gap-3 px- justify-between py-3">
-          <button
+          <button onClick={handleClearFilter}
             // onClick={() => setonclick1(!onclick1)}
             className="border-[1px] bg-black text-white font-bold p-3 rounded-xl  w-[130px]"
           >
@@ -136,7 +144,7 @@ const BottomFilter = ({
           </button>
           {/* <CancelButton path={'/leave'}/> */}
 
-          <button className="border-[1px]  p-3 bg-gradient-to-r from-black to-[#FF0000] text-white rounded-xl whitespace-nowrap text-bold  w-[130px]">
+          <button onClick={handleFilter} className="border-[1px]  p-3 bg-gradient-to-r from-black to-[#FF0000] text-white rounded-xl whitespace-nowrap text-bold  w-[130px]">
             Apply Filters
           </button>
           {/* <BlueButton name={'Apply Filters'}/> */}

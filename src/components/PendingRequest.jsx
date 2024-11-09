@@ -10,7 +10,7 @@ const PendingRequest = ({ data }) => {
       <Card>
         <div className="flex justify-between items-center">
           <p>Leave Balance(40.0)</p>
-          <RiArrowDropRightLine className="text-blue-600 text-3xl" />
+          <RiArrowDropRightLine className="text-[#FF0000] text-3xl" />
         </div>
       </Card>
 
@@ -21,7 +21,7 @@ const PendingRequest = ({ data }) => {
             <button className="border border-[#FF0000] text-[#FF0000] p-2 px-3 rounded-2xl">
               {item?.leave_type}
             </button>
-            <button className="border border-[#FF0000] text-[#FF0000] p-2 px-3 rounded-2xl">
+            <button className="bg-gray-400 text-white p-2 px-3 rounded-2xl">
               {item?.status}
             </button>
           </div>

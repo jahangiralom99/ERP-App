@@ -37,7 +37,7 @@ const Attendance = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${fetchURL}/getall?erp_url=${url}&doctype_name=Attendance`,
+          `${fetchURL}/getall?erp_url=${url}&doctype_name=Employee Checkin`,
           {
             method: "GET",
             headers: {
@@ -67,7 +67,7 @@ const Attendance = () => {
     return <MainLoader />;
   }
 
-  // console.log(data);
+  console.log(data);
 
   return (
     <div className=" bg-gray-200 pb-32 mt-28 text-sm  text-black  ">
@@ -114,7 +114,7 @@ const Attendance = () => {
           <div className="p-3 flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <p className="bg-[#4AB054] h-5 w-5 rounded-full"></p>
-              <p className="font-bold">present 2</p>
+              <p className="font-bold">present {data?.length}</p>
             </div>
             <div className="flex items-center gap-2">
               <p className="bg-[#2093ED] h-5 w-5 rounded-full"></p>
@@ -142,7 +142,7 @@ const Attendance = () => {
                 <SlCalender className="text-lg text-[#FF0000]" />
                 {item?.attendance_date}
               </p>
-              <p className="font-bold">{item?.employee}</p>
+              <p className="font-bold">{item?.name}</p>
             </div>
             <div className="px-5 flex justify-between pb-3 text-center">
               <div className="border-r-[2px] pr-5">
