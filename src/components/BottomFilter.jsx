@@ -20,8 +20,10 @@ const BottomFilter = ({
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [open5, setOpen5] = useState(false);
-  const [year, setYear] = useState("Select Year");
-  const [month, setMonth] = useState("Select Month");
+  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("");
+
+  console.log(year, month);
 
   return (
     <div className="fixed top-[110px] left-1/2 -translate-x-1/2 w-full  bg-gray-50  rounded-t-xl z-10 flex justify-center items-center text-black font-bold text-sm">

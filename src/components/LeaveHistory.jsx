@@ -3,6 +3,10 @@ import Card from "./Card";
 import { RiArrowDropRightLine } from "react-icons/ri";
 
 const LeaveHistory = () => {
+
+  
+
+
   return (
     <div className="flex flex-col">
       <Card>
