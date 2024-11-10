@@ -20,7 +20,7 @@ const Attendance = () => {
   const [month, setMonth] = useState("Select Month");
   const [year, setYear] = useState("Select Year");
   const { url } = getStoredCart("login-info");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleMonthClick = () => {
     setMonth(month);
@@ -34,30 +34,33 @@ const Attendance = () => {
 
   // fetch main data
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${fetchURL}/getall?erp_url=${url}&doctype_name=Employee Checkin`,
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
+    setLoading(true);
+    const fetchData = () => {
+      fetch(`${fetchURL}/getall?erp_url=${url}&doctype_name=Customer`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
           }
-        );
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const result = await response.json();
-        setData(result?.data);
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+          return response.json();
+        })
+        .then((result) => {
+          console.log("result", result);
+          // setData(result?.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     };
 
     fetchData();
@@ -67,7 +70,7 @@ const Attendance = () => {
     return <MainLoader />;
   }
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className=" bg-gray-200 pb-32 mt-28 text-sm  text-black  ">
